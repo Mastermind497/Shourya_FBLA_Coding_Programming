@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * A new instance of this class is created for every new user and every
  * browser tab/window.
  */
-@Route("")
+@Route("example")
 @PWA(name = "Vaadin Application",
         shortName = "Vaadin App",
         description = "This is an example Vaadin application.",

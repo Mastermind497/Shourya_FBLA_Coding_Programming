@@ -14,7 +14,6 @@ public class StudentData {
     private String lastName;
     private int studentID;
     private short grade;
-    private double communityServiceHours;
     private String communityServiceCategory;
     private String email;
     private short yearsDone;
@@ -30,18 +29,16 @@ public class StudentData {
      * @param lastName                 Last Name
      * @param studentID                Student ID
      * @param grade                    Grade
-     * @param communityServiceHours    Community Service Hours Completed
      * @param communityServiceCategory Category of Community Service Event
      * @param email                    Email Address
      * @param yearsDone                Number of years completed, including this year
      */
-    public StudentData(String firstName, String lastName, int studentID, short grade, double communityServiceHours,
+    public StudentData(String firstName, String lastName, int studentID, short grade,
                        String communityServiceCategory, String email, short yearsDone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.studentID = studentID;
         this.grade = grade;
-        this.communityServiceHours = communityServiceHours;
         this.communityServiceCategory = communityServiceCategory;
         this.email = email;
         this.yearsDone = yearsDone;
@@ -54,18 +51,16 @@ public class StudentData {
      * @param lastName                 Last Name
      * @param studentID                Student ID
      * @param grade                    Grade
-     * @param communityServiceHours    Community Service Hours Completed
      * @param communityServiceCategory Category of Community Service Event
      * @param email                    Email Address
      * @param yearsDone                Number of years completed, including this year
      */
-    public StudentData(String firstName, String lastName, int studentID, int grade, double communityServiceHours,
+    public StudentData(String firstName, String lastName, int studentID, int grade,
                        String communityServiceCategory, String email, int yearsDone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.studentID = studentID;
         this.grade = (short) grade;
-        this.communityServiceHours = communityServiceHours;
         this.communityServiceCategory = communityServiceCategory;
         this.email = email;
         this.yearsDone = (short) yearsDone;
@@ -116,14 +111,6 @@ public class StudentData {
 
     public int getGradeInt() {
         return grade;
-    }
-
-    public double getCommunityServiceHours() {
-        return communityServiceHours;
-    }
-
-    public void setCommunityServiceHours(double communityServiceHours) {
-        this.communityServiceHours = communityServiceHours;
     }
 
     public String getCommunityServiceCategory() {
@@ -195,7 +182,7 @@ public class StudentData {
     }
 
     public void createStudent() {
-        MySQLMethods.createStudent(firstName, lastName, studentID, grade, communityServiceHours, communityServiceCategory,
+        MySQLMethods.createStudent(firstName, lastName, studentID, grade, communityServiceCategory,
                 email, yearsDone);
     }
 }

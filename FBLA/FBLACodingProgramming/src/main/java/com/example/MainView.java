@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * A new instance of this class is created for every new user and every
  * browser tab/window.
  */
-@Route("example")
+@Route("example8")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class MainView extends VerticalLayout {
@@ -57,5 +57,4 @@ public class MainView extends VerticalLayout {
 
         add(textField, button);
     }
-
 }

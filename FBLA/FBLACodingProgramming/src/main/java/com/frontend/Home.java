@@ -52,7 +52,9 @@ public class Home extends AppLayout {
             UI.getCurrent().navigate(Home.class)
         );
         MenuItem addData = menuBar.addItem("Add Data");
+        MenuItem editData = menuBar.addItem("Edit Data");
         MenuItem viewData = menuBar.addItem("View Data");
+        MenuItem genReport = menuBar.addItem("Reports");
         MenuItem documentation = menuBar.addItem("Documentation");
 
         //Creates Submenus for the MenuBar Options to make it clean and easy to read
@@ -60,14 +62,24 @@ public class Home extends AppLayout {
         addDataSubMenu.addItem("Add a Student", event ->
             UI.getCurrent().navigate(CreateStudent.class)
         );
-        addDataSubMenu.addItem("Add Student Hours", event -> {
-            UI.getCurrent().navigate(AddHours.class);
-        });
+        addDataSubMenu.addItem("Add Student Hours", event ->
+            UI.getCurrent().navigate(AddHours.class)
+        );
+
+        SubMenu editDataSubMenu = editData.getSubMenu();
+        editDataSubMenu.addItem("Edit Student Information");
+        editDataSubMenu.addItem("Edit Student Event Information");
+        editDataSubMenu.addItem("Delete Student");
 
         SubMenu viewDataSubMenu = viewData.getSubMenu();
-        viewDataSubMenu.addItem("View Student Information");
+        viewDataSubMenu.addItem("View Student Information", event ->
+                UI.getCurrent().navigate(ViewStudentInformationQuestion.class)
+        );
         viewDataSubMenu.addItem("View Student Event History");
-        viewDataSubMenu.addItem("Generate Report");
+
+        SubMenu genRepSubMenu = genReport.getSubMenu();
+        genRepSubMenu.addItem("Generate Individual Report");
+        genRepSubMenu.addItem("Generate Overall Report");
 
         //Creates a Vertical Layout to store all the above components
         VerticalLayout verticalLayout = new VerticalLayout();

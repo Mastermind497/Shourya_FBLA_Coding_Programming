@@ -27,6 +27,9 @@ import com.vaadin.flow.router.Route;
 
 import java.io.IOException;
 
+import static com.backend.MySQLMethods.selectTracker;
+import static com.backend.MySQLMethods.selectTrackerString;
+
 @Route("create-student")
 public class CreateStudent extends AppLayout {
     private static int count = 0;
@@ -68,11 +71,6 @@ public class CreateStudent extends AppLayout {
         IntegerField gradeField = new IntegerField("Grade");
         gradeField.setPlaceholder("10");
         gradeField.setValueChangeMode(ValueChangeMode.EAGER);
-
-        NumberField initCommunityServiceHoursField = new NumberField("Current Hours");
-        initCommunityServiceHoursField.setPlaceholder("67.5");
-        initCommunityServiceHoursField.setErrorMessage("That is not a Number, Please Enter a Number");
-        initCommunityServiceHoursField.setValueChangeMode(ValueChangeMode.EAGER);
 
         //Dropdown Menu
         Select<String> communityServiceCategoryField = new Select<>();
@@ -139,7 +137,6 @@ public class CreateStudent extends AppLayout {
         studentIDField.setRequiredIndicatorVisible(true);
         emailField.setRequiredIndicatorVisible(true);
         gradeField.setRequiredIndicatorVisible(true);
-        initCommunityServiceHoursField.setRequiredIndicatorVisible(true);
         communityServiceCategoryField.setRequiredIndicatorVisible(true);
 
         //Adds Components with their desired widths
@@ -148,7 +145,6 @@ public class CreateStudent extends AppLayout {
         addStudentForm.add(studentIDField, 1);
         addStudentForm.add(emailField, 2);
         addStudentForm.add(gradeField, 1);
-        addStudentForm.add(initCommunityServiceHoursField, 2);
         addStudentForm.add(communityServiceCategoryField, 1);
         addStudentForm.add(checkBoxes, 1);
         addStudentForm.add(numberOfYears, 1);
@@ -193,11 +189,6 @@ public class CreateStudent extends AppLayout {
                         "Please enter the Current Grade", 9, 12))
                 .bind(StudentData::getGradeInt, StudentData::setGrade);
 
-        binder.forField(initCommunityServiceHoursField)
-                .withValidator(new DoubleRangeValidator(
-                        "Please enter a Valid Number of Community Service Hours (Enter 0 if None)", 0.0, null))
-                .bind(StudentData::getCommunityServiceHours, StudentData::setCommunityServiceHours);
-
         binder.forField(communityServiceCategoryField).bind(StudentData::getCommunityServiceCategory, StudentData::setCommunityServiceCategory);
 
         binder.forField(freshman).bind(StudentData::isFreshman, StudentData::setFreshman);
@@ -208,17 +199,21 @@ public class CreateStudent extends AppLayout {
         //add listeners for the buttons
         save.addClickListener(event -> {
             if (binder.writeBeanIfValid(student)) {
-                student.setYearsDone((short) count);
-                student.createStudent();
-                try {
-                    FileMethods.addToStudent(student.getFirstName(), student.getLastName(), student.getStudentID());
+                if (selectTrackerString(student.getFirstName(), student.getLastName(), student.getStudentID(), "firstName") == null) {
+                    student.setYearsDone((short) count);
+                    student.createStudent();
+                    try {
+                        FileMethods.addToStudent(student.getFirstName(), student.getLastName(), student.getStudentID());
+                    } catch (IOException e) {
+                        Notification.show("Student couldn't be added to File");
+                    }
+                    Notification.show("Your data is being processed");
+                    binder.readBean(null);
+                    Notification.show("Your data has been processed!");
                 }
-                catch (IOException e) {
-                    Notification.show("Student couldn't be added to File");
+                else {
+                    Notification.show("A Student with those details already exists");
                 }
-                Notification.show("Your data is being processed");
-                binder.readBean(null);
-                Notification.show("Your data has been processed!");
             }
             else {
                 Notification.show("There was an error. Please Try Again");

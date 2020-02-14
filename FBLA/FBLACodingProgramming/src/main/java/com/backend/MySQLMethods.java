@@ -29,11 +29,12 @@ public class MySQLMethods {
 //    public static void main(String[] args) throws Exception {
 //        createDatabase();
 //        createTable();
-//        createStudent("Shourya", "Bansal", 224272, (short)10, 1.9, "T", "t", true, (short) 0);
-//        System.out.println(selectTrackerDouble("Shourya", "Bansal", "communityServiceHours"));
-//        createStudentTable("Shourya", "Bansal");
-//        addStudentHours("Shourya", "Bansal", "Fun", 8.65, 2020, 1, 26);
-//        System.out.println(selectTrackerDouble("Shourya", "Bansal", "communityServiceHours"));
+//        createStudent("Shourya", "Bansal", 224272, (short)10 , "T", "t", (short) 0);
+//        System.out.println(selectTrackerDouble("Shourya", "Bansal", 224272, "communityServiceHours"));
+//        createStudentTable("Shourya", "Bansal", 224272);
+//        addStudentHours("Shourya", "Bansal", 224272, "Fun", 8.65, 2020, 1, 26);
+//        System.out.println(selectTrackerDouble("Shourya", "Bansal", 224272, "communityServiceHours"));
+//        System.out.println("Test" + selectTrackerString("John", "Doe", 123456, "firstName"));
 //    }
 
     /**
@@ -151,12 +152,11 @@ public class MySQLMethods {
      * @param lastName                 The Last Name of the Student
      * @param studentID                The Student's Student ID Number
      * @param grade                    The Student's Grade Number
-     * @param communityServiceHours    The Number of Community Service Hours completed by the student
      * @param communityServiceCategory The Category of Award Aimed for by the Student
      * @param email                    The Student's Email Address
      * @param yearsDone                The number of years of FBLA Completed
      */
-    public static void createStudent(String firstName, String lastName, int studentID, short grade, double communityServiceHours,
+    public static void createStudent(String firstName, String lastName, int studentID, short grade,
                                      String communityServiceCategory, String email, short yearsDone) {
         try {
             //Formats name
@@ -170,9 +170,9 @@ public class MySQLMethods {
             //Calculates Today's Date
             java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
-            String query = " insert into " + tableName + " (firstName, lastName, fullName, studentID, grade, communityServiceHours, communityServiceCategory,"
+            String query = " insert into " + tableName + " (firstName, lastName, fullName, studentID, grade, communityServiceCategory,"
                     + "email, yearsDone, lastEdited)"
-                    + " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    + " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             //Creates a preparedStatement to insert into mysql command line
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -181,11 +181,10 @@ public class MySQLMethods {
             preparedStatement.setString(3, fullName);
             preparedStatement.setInt(4, studentID);
             preparedStatement.setShort(5, grade);
-            preparedStatement.setDouble(6, communityServiceHours);
-            preparedStatement.setString(7, communityServiceCategory);
-            preparedStatement.setString(8, email);
-            preparedStatement.setShort(9, yearsDone);
-            preparedStatement.setDate(10, date);
+            preparedStatement.setString(6, communityServiceCategory);
+            preparedStatement.setString(7, email);
+            preparedStatement.setShort(8, yearsDone);
+            preparedStatement.setDate(9, date);
 
             //executes statement
             preparedStatement.execute();
@@ -296,34 +295,43 @@ public class MySQLMethods {
      * @return the String Type data
      * @throws Exception to prevent SQL Errors
      */
-    public static String selectTrackerString(String firstName, String lastName, int studentID, String data) throws Exception {
-        String studentName = makeName(firstName, lastName, studentID);
-        //Creates a connection
-        connection = getConnection();
-
-        //SQL Query to find find data
-        String query = "select " + data + " from " + tableName + " where fullName = '" + studentName + "'";
-
-        //Create the java Statement (Goes in Query)
-        statement = connection.createStatement();
-
-        //The Result after executing the query
-        ResultSet resultSet = statement.executeQuery(query);
-        resultSet.next();
-
-        //returns the String inside column "data"
-        String output = resultSet.getString(data);
-
+    public static String selectTrackerString(String firstName, String lastName, int studentID, String data) {
+        String output = null;
         try {
-            //Ends everything
-            connection.close();
-            statement.close();
-            resultSet.close();
-        } catch (Exception e) {
-            //Do Nothing
+            String studentName = makeName(firstName, lastName, studentID);
+            //Creates a connection
+            connection = getConnection();
+
+            //SQL Query to find find data
+            String query = "select " + data + " from " + tableName + " where fullName = '" + studentName + "'";
+
+            //Create the java Statement (Goes in Query)
+            statement = connection.createStatement();
+
+            //The Result after executing the query
+            ResultSet resultSet = statement.executeQuery(query);
+            resultSet.next();
+
+            //returns the String inside column "data"
+            output = resultSet.getString(data);
+
+            try {
+                //Ends everything
+                connection.close();
+                statement.close();
+                resultSet.close();
+            } catch (Exception e) {
+                //Do Nothing
+            }
+            if (output == null || output.equals("")) {
+                return null;
+            }
+            return output;
+        }
+        catch (Exception e) {
+            return null;
         }
 
-        return output;
     }
 
     /**

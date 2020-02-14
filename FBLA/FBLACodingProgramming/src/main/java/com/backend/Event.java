@@ -107,6 +107,16 @@ public class Event {
         this.day = date.getDay();
     }
 
+    public void setStudent(Student student) {
+        this.firstName = student.getFirstName();
+        this.lastName = student.getLastName();
+        this.studentID = student.getStudentID();
+    }
+
+    public Student getStudent() {
+        return new Student(firstName, lastName, studentID);
+    }
+
     public void addEvent() {
         try {
             addStudentHours(firstName, lastName, studentID, eventName, hours,
