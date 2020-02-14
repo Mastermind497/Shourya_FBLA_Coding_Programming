@@ -1,4 +1,4 @@
-package com.example;
+/*package com.example;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * A new instance of this class is created for every new user and every
  * browser tab/window.
  */
+/*
 @Route("example")
 @PWA(name = "Vaadin Application",
         shortName = "Vaadin App",
@@ -39,6 +40,7 @@ public class ExampleView extends VerticalLayout {
      *
      * @param service The message service. Automatically injected Spring managed bean.
      */
+/*
     public ExampleView(@Autowired GreetService service) {
 
         // Use TextField for standard text input
@@ -63,3 +65,5 @@ public class ExampleView extends VerticalLayout {
     }
 
 }
+
+ */
