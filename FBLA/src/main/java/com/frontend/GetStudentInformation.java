@@ -27,7 +27,7 @@ public class GetStudentInformation extends AppLayout {
         addToNavbar(Home.makeHeader());
 
         //Layouts to help in orienting
-        VerticalLayout aligner = new VerticalLayout;
+        VerticalLayout aligner = new VerticalLayout();
         HorizontalLayout choice = new HorizontalLayout();
 
         Button viewData = new Button("View Data");
