@@ -1,6 +1,3 @@
-/**
- * Created by shour on 2/8/2020 at 11:05 PM
- */
 package com.frontend;
 
 import com.vaadin.flow.component.UI;
@@ -63,9 +60,9 @@ public class ViewStudentInformationQuestion extends AppLayout {
         //Horizontal Layout for 2 Buttons for the 2nd Question
         HorizontalLayout question2 = new HorizontalLayout();
         Button individual = new Button("Individual");
-            individual.addClickListener(event -> {
-                UI.getCurrent().navigate(ViewStudentInformationIndividual.class);
-            });
+            individual.addClickListener(event ->
+                UI.getCurrent().navigate(ViewStudentInformationIndividual.class)
+            );
         Button everyone = new Button("Everyone");
     }
 }

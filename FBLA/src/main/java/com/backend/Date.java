@@ -1,6 +1,3 @@
-/**
- * Created by shour on 2/8/2020 at 9:24 PM
- */
 package com.backend;
 
 /**

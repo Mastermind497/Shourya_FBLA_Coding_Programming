@@ -293,10 +293,9 @@ public class MySQLMethods {
      * @param studentID The Student's Student ID Number
      * @param data      The data field being accessed
      * @return the String Type data
-     * @throws Exception to prevent SQL Errors
      */
     public static String selectTrackerString(String firstName, String lastName, int studentID, String data) {
-        String output = null;
+        String output;
         try {
             String studentName = makeName(firstName, lastName, studentID);
             //Creates a connection
@@ -435,7 +434,7 @@ public class MySQLMethods {
 
         //returns the String inside column "data"
         resultSet.next();
-        Boolean output = resultSet.getBoolean(data);
+        boolean output = resultSet.getBoolean(data);
 
         //Closes all variables
         resultSet.close();
@@ -788,7 +787,7 @@ public class MySQLMethods {
         statement = connection.createStatement();
 
         //Creates variable for count
-        int count = -1;
+        int count;
 
         String query = "select count(*) from " + tableName;
         try {
@@ -802,7 +801,6 @@ public class MySQLMethods {
             connection.close();
             statement.close();
         }
-
         return count;
     }
 
@@ -835,7 +833,7 @@ public class MySQLMethods {
         return (double) (stageOne) / 100;
     }
 
-    public static void setUp() throws Exception{
+    public static void setUp() {
         createDatabase();
         createTable();
     }

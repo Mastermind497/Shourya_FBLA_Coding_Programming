@@ -1,6 +1,3 @@
-/**
- * Created by shour on 2/8/2020 at 8:54 PM
- */
 package com.backend;
 
 import static com.backend.MySQLMethods.addStudentHours;

@@ -25,8 +25,7 @@ import com.vaadin.flow.server.PWA;
 @Route("")
 @PWA(name = "FBLA Data Tracker",
         shortName = "Data Tracker",
-        description = "This is the Application made by Shourya Bansal for the FBLA Coding & Programming Competitive Event",
-        enableInstallPrompt = true)
+        description = "This is the Application made by Shourya Bansal for the FBLA Coding & Programming Competitive Event")
 public class Home extends AppLayout {
     //Creates the Home Screen
     public Home() throws Exception{

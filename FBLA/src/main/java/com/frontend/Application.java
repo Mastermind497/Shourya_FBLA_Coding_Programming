@@ -5,6 +5,9 @@ import org.eclipse.jetty.annotations.AnnotationConfiguration;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.webapp.*;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 import java.net.URI;
 import java.net.URL;
@@ -12,9 +15,20 @@ import java.net.URL;
 /**
  * The entry point of the Spring Boot application.
  */
-public class Application {
+@SpringBootApplication
+public class Application extends SpringBootServletInitializer {
 
-    public static void main(String[] args) throws Exception {
+    /**
+     * For Spring-Boot Running
+     * @param args standard main method argument
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+    /**
+     * For Jetty Running
+     */
+    public static void jettyMain(String[] args) throws Exception {
         URL webRootLocation = Application.class.getResource("/webapp/");
         URI webRootUri = webRootLocation.toURI();
         WebAppContext context = new WebAppContext();
