@@ -25,7 +25,8 @@ import com.vaadin.flow.server.PWA;
 @Route("")
 @PWA(name = "FBLA Data Tracker",
         shortName = "Data Tracker",
-        description = "This is the Application made by Shourya Bansal for the FBLA Coding & Programming Competitive Event")
+        description = "This is the Application made by Shourya Bansal for the FBLA Coding " +
+                "& Programming competition in the 2019-2020 school year")
 public class Home extends AppLayout {
     //Creates the Home Screen
     public Home() throws Exception{
@@ -37,7 +38,7 @@ public class Home extends AppLayout {
      * This speeds up the process significantly instead of having to recreate and
      * retype the code each and every time. This also cleans code up.
      */
-    public static VerticalLayout makeHeader() throws Exception {
+    public static VerticalLayout makeHeader() {
         //If there is internet, sets main image to the FBLA-PBL logo
         Image logo = new Image("https://www.fbla-pbl.org/media/FBLA-PBL_registered.png", "FBLA-PBL Logo");
         logo.setHeight("60px");
@@ -72,7 +73,7 @@ public class Home extends AppLayout {
 
         SubMenu viewDataSubMenu = viewData.getSubMenu();
         viewDataSubMenu.addItem("View Student Information", event ->
-                UI.getCurrent().navigate(ViewStudentInformationQuestion.class)
+                UI.getCurrent().navigate(GetStudentInformationQuestion.class)
         );
         viewDataSubMenu.addItem("View Student Event History");
 

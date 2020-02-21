@@ -1,7 +1,6 @@
 package com.backend;
 
-import static com.backend.MySQLMethods.createDatabase;
-import static com.backend.MySQLMethods.setUp;
+import java.sql.Date;
 
 /**
  * This is a class which helps in running MySQL Methods and takes in all the values needed
@@ -14,6 +13,7 @@ public class StudentData {
     private String lastName;
     private int studentID;
     private short grade;
+    private int communityServiceHours;
     private String communityServiceCategory;
     private String email;
     private short yearsDone;
@@ -21,6 +21,7 @@ public class StudentData {
     private boolean sophomore;
     private boolean junior;
     private boolean senior;
+    private Date lastEdited;
 
     /**
      * A Constructor for a Student if all the values are already known.
@@ -113,6 +114,14 @@ public class StudentData {
         return grade;
     }
 
+    public int getCommunityServiceHours() {
+        return communityServiceHours;
+    }
+
+    public void setCommunityServiceHours(int communityServiceHours) {
+        this.communityServiceHours = communityServiceHours;
+    }
+
     public String getCommunityServiceCategory() {
         return communityServiceCategory;
     }
@@ -179,6 +188,14 @@ public class StudentData {
         if (this.senior) {
             yearsDone++;
         } else yearsDone--;
+    }
+
+    public Date getLastEdited() {
+        return lastEdited;
+    }
+
+    public void setLastEditedNow() {
+        MySQLMethods.updateToCurrentDate(firstName, lastName, studentID);
     }
 
     public void createStudent() {

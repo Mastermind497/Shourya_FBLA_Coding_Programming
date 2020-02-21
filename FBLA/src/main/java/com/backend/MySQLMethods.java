@@ -1,6 +1,7 @@
 package com.backend;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.StringTokenizer;
 
@@ -18,7 +19,7 @@ public class MySQLMethods {
     private static final String Driver = "com.mysql.cj.jdbc.Driver";
     //The name of the database and table. It is a public static string because it is the same all the time in any file
     public static String databaseName = "student_data";
-    private static String tableName = "tracker";
+    private static final String tableName = "tracker";
     //The location of the database
     private static String DB_URL = "jdbc:mysql://localhost:3306/";
     //Connection and Statement
@@ -57,8 +58,7 @@ public class MySQLMethods {
 
             //Selects this new database for all queries if it is not already selected
             if (!DB_URL.contains(databaseName)) DB_URL += databaseName;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Database Creation Failed");
             e.printStackTrace();
         }
@@ -192,8 +192,7 @@ public class MySQLMethods {
             //Ends everything
             connection.close();
             statement.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
@@ -326,8 +325,7 @@ public class MySQLMethods {
                 return null;
             }
             return output;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
 
@@ -525,6 +523,103 @@ public class MySQLMethods {
     }
 
     /**
+     * This method gets the data of a student with the information listed, but returns it all in its
+     * special class as a StudentData object.
+     *
+     * @param firstName The Student's First Name
+     * @param lastName  The Student's Last Name
+     * @param studentID The Student's ID
+     * @return A StudentData Object with all of the Student's Information
+     * @throws Exception In case column names don't exist or connection to database fails
+     */
+    public static StudentData selectTrackerAsStudent(String firstName, String lastName, int studentID) throws Exception {
+        //converts name to studentName following convention format
+        String studentName = makeName(firstName, lastName, studentID);
+
+        StudentData studentData = new StudentData();
+
+        //creates a connection
+        connection = getConnection();
+
+        //SQL Query to find find data
+        String query = "select * from " + tableName + " where fullName = '" + studentName + "'";
+
+        //Create the java Statement (Goes in Query)
+        Statement statement = connection.createStatement();
+
+        //The Result after executing the query
+        ResultSet resultSet = statement.executeQuery(query);
+        resultSet.next();
+
+        //Adds the Data to the StudentData Object
+        studentData.setFirstName(resultSet.getString("firstName"));
+        studentData.setLastName(resultSet.getString("lastName"));
+        studentData.setStudentID(resultSet.getInt("studentID"));
+        studentData.setGrade(resultSet.getShort("Grade"));
+        studentData.setCommunityServiceHours(resultSet.getInt("communityServiceHours"));
+        studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
+        studentData.setYearsDone(resultSet.getShort("yearsDone"));
+        studentData.setEmail(resultSet.getString("email"));
+
+
+        //closes resources
+        statement.close();
+        resultSet.close();
+        connection.close();
+
+        return studentData;
+    }
+
+    /**
+     * Creates an ArrayList which holds the data of all Student's whose data is stored.
+     * This makes it much faster to view data of every student.
+     *
+     * @return An ArrayList storing all Student Data
+     * @throws Exception For Column Names and Failing Connections
+     */
+    public static ArrayList<StudentData> selectFullTracker() throws Exception {
+        //The ArrayList
+        ArrayList<StudentData> studentDataList = new ArrayList<>();
+        //creates a connection
+        connection = getConnection();
+
+        //SQL Query to find find data
+        String query = "select * from " + tableName;
+
+        //Create the java Statement (Goes in Query)
+        Statement statement = connection.createStatement();
+
+        //The Result after executing the query
+        ResultSet resultSet = statement.executeQuery(query);
+
+        //While there is more data, it keeps running
+        while (resultSet.next()) {
+            //Creates a StudentData Object
+            StudentData studentData = new StudentData();
+
+            //Adds the Data to the StudentData Object
+            studentData.setFirstName(resultSet.getString("firstName"));
+            studentData.setLastName(resultSet.getString("lastName"));
+            studentData.setStudentID(resultSet.getInt("studentID"));
+            studentData.setGrade(resultSet.getShort("Grade"));
+            studentData.setCommunityServiceHours(resultSet.getInt("communityServiceHours"));
+            studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
+            studentData.setYearsDone(resultSet.getShort("yearsDone"));
+            studentData.setEmail(resultSet.getString("email"));
+
+            //Adds the StudentData to the List
+            studentDataList.add(studentData);
+        }
+
+        //closes resources
+        statement.close();
+        resultSet.close();
+        connection.close();
+
+        return studentDataList;
+    }
+
+    /**
      * This allows access to all of a student's events
      *
      * @param firstName the student's first name
@@ -685,7 +780,7 @@ public class MySQLMethods {
      * @param eventName the name of the event being changed
      * @throws Exception for SQL Errors
      */
-    public static void updateStudent(String firstName, String lastName, int studentID, String dataType, String newData, String eventName) throws Exception {
+    public static void updateEvent(String firstName, String lastName, int studentID, String dataType, String newData, String eventName) throws Exception {
         //gets connection with database
         connection = getConnection();
 
@@ -739,6 +834,7 @@ public class MySQLMethods {
     /**
      * This turns a name into the format first_last for more uses in a database and to allow for more
      * consistency.
+     *
      * @param firstName the student's first name
      * @param lastName  the student's last name
      * @return the String containing the new name
@@ -749,8 +845,9 @@ public class MySQLMethods {
 
     /**
      * This method would be used to make student table names in MySQL (firstName_lastName_studentID)
+     *
      * @param firstName First Name
-     * @param lastName Last Name
+     * @param lastName  Last Name
      * @param studentID Student ID
      * @return formatted Name
      */
