@@ -560,7 +560,53 @@ public class MySQLMethods {
         studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
         studentData.setYearsDone(resultSet.getShort("yearsDone"));
         studentData.setEmail(resultSet.getString("email"));
+        studentData.setLastEdited(resultSet.getDate("lastEdited"));
 
+        //closes resources
+        statement.close();
+        resultSet.close();
+        connection.close();
+
+        return studentData;
+    }
+
+    /**
+     * This method gets the data of a student with the information listed, but returns it all in its
+     * special class as a StudentData object.
+     *
+     * @param student The Student who is being queried
+     * @return A StudentData Object with all of the Student's Information
+     * @throws Exception In case column names don't exist or connection to database fails
+     */
+    public static StudentData selectTrackerAsStudent(Student student) throws Exception {
+        //converts name to studentName following convention format
+        String studentName = makeName(student.getFirstName(), student.getLastName(), student.getStudentID());
+
+        StudentData studentData = new StudentData();
+
+        //creates a connection
+        connection = getConnection();
+
+        //SQL Query to find find data
+        String query = "select * from " + tableName + " where fullName = '" + studentName + "'";
+
+        //Create the java Statement (Goes in Query)
+        Statement statement = connection.createStatement();
+
+        //The Result after executing the query
+        ResultSet resultSet = statement.executeQuery(query);
+        resultSet.next();
+
+        //Adds the Data to the StudentData Object
+        studentData.setFirstName(resultSet.getString("firstName"));
+        studentData.setLastName(resultSet.getString("lastName"));
+        studentData.setStudentID(resultSet.getInt("studentID"));
+        studentData.setGrade(resultSet.getShort("Grade"));
+        studentData.setCommunityServiceHours(resultSet.getInt("communityServiceHours"));
+        studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
+        studentData.setYearsDone(resultSet.getShort("yearsDone"));
+        studentData.setEmail(resultSet.getString("email"));
+        studentData.setLastEdited(resultSet.getDate("lastEdited"));
 
         //closes resources
         statement.close();
@@ -606,6 +652,7 @@ public class MySQLMethods {
             studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
             studentData.setYearsDone(resultSet.getShort("yearsDone"));
             studentData.setEmail(resultSet.getString("email"));
+            studentData.setLastEdited(resultSet.getDate("lastEdited"));
 
             //Adds the StudentData to the List
             studentDataList.add(studentData);

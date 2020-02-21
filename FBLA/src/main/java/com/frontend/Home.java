@@ -73,7 +73,7 @@ public class Home extends AppLayout {
 
         SubMenu viewDataSubMenu = viewData.getSubMenu();
         viewDataSubMenu.addItem("View Student Information", event ->
-                UI.getCurrent().navigate(GetStudentInformationQuestion.class)
+                UI.getCurrent().navigate(GetStudentInformation.class)
         );
         viewDataSubMenu.addItem("View Student Event History");
 

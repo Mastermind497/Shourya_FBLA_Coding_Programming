@@ -194,8 +194,8 @@ public class StudentData {
         return lastEdited;
     }
 
-    public void setLastEditedNow() {
-        MySQLMethods.updateToCurrentDate(firstName, lastName, studentID);
+    public void setLastEdited(Date lastEdited) {
+        this.lastEdited = lastEdited;
     }
 
     public void createStudent() {
