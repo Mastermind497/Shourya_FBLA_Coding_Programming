@@ -98,10 +98,14 @@ public class Event {
         this.day = day;
     }
 
-    public void setDate(Date date){
+    public void setDate(Date date) {
         this.year = date.getYear();
         this.month = date.getMonth();
         this.day = date.getDay();
+    }
+
+    public Student getStudent() {
+        return new Student(firstName, lastName, studentID);
     }
 
     public void setStudent(Student student) {
@@ -110,16 +114,11 @@ public class Event {
         this.studentID = student.getStudentID();
     }
 
-    public Student getStudent() {
-        return new Student(firstName, lastName, studentID);
-    }
-
     public void addEvent() {
         try {
             addStudentHours(firstName, lastName, studentID, eventName, hours,
                     year, month, day);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -1,6 +1,6 @@
 package com.backend;
 
-import java.util.*;
+import java.util.StringTokenizer;
 
 public class Student {
     private String firstName;
@@ -67,8 +67,7 @@ public class Student {
     public String toString() {
         if (!createNewStudent) {
             return firstName + " " + lastName + ", " + studentID;
-        }
-        else {
+        } else {
             return "CREATE NEW STUDENT";
         }
     }

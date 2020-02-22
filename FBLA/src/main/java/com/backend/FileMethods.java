@@ -9,12 +9,14 @@ public class FileMethods {
     //The path to the student name file
     public static String studentPath = workingDirectory + "\\data\\studentList.user";
 
-    public static void main(String[] args) {
-        System.out.println(workingDirectory);
-    }
+//    public static void main(String[] args) throws IOException{
+//        System.out.println(workingDirectory);
+//        clearStudentList();
+//    }
 
     /**
      * Adds the name of a student to a custom file with extension .user (a text based file) to help keep track of the students quickly
+     *
      * @deprecated now use firstName and lastName {@link #addToStudent(String, String, int)}
      */
     @Deprecated
@@ -28,8 +30,9 @@ public class FileMethods {
 
     /**
      * Adds the name of a student to a custom file with extension .user (a text based file) to help keep track of the students quickly
+     *
      * @param firstName First Name
-     * @param lastName Last Name
+     * @param lastName  Last Name
      * @param studentID the Student ID
      * @throws IOException in case file doesn't exist
      */
@@ -40,7 +43,11 @@ public class FileMethods {
         out.println(firstName.toUpperCase() + ", " + lastName.toUpperCase() + ", " + studentID);
         out.close();
     }
-    
+
+    public static void clearStudentList() throws IOException {
+        new PrintWriter(new BufferedWriter(new FileWriter(studentPath)));
+    }
+
     //Returns the save location of all of the files which are created
     public static String getWorkingDirectory() {
         return System.getProperty("user.dir");
@@ -59,6 +66,7 @@ public class FileMethods {
 
     /**
      * Gets all current Students
+     *
      * @return an Array Containing all of the Students
      */
     public static Student[] getStudents() throws IOException {

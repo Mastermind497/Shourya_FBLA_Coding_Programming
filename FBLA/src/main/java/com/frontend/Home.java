@@ -29,7 +29,7 @@ import com.vaadin.flow.server.PWA;
                 "& Programming competition in the 2019-2020 school year")
 public class Home extends AppLayout {
     //Creates the Home Screen
-    public Home() throws Exception{
+    public Home() {
         addToNavbar(makeHeader());
     }
 
@@ -49,7 +49,7 @@ public class Home extends AppLayout {
 
         //Starts Setting up MenuBar Options
         MenuItem home = menuBar.addItem("Home", event ->
-            UI.getCurrent().navigate(Home.class)
+                UI.getCurrent().navigate(Home.class)
         );
         MenuItem addData = menuBar.addItem("Add Data");
         MenuItem editData = menuBar.addItem("Edit Data");
@@ -60,10 +60,10 @@ public class Home extends AppLayout {
         //Creates Submenus for the MenuBar Options to make it clean and easy to read
         SubMenu addDataSubMenu = addData.getSubMenu();
         addDataSubMenu.addItem("Add a Student", event ->
-            UI.getCurrent().navigate(CreateStudent.class)
+                UI.getCurrent().navigate(CreateStudent.class)
         );
         addDataSubMenu.addItem("Add Student Hours", event ->
-            UI.getCurrent().navigate(AddHours.class)
+                UI.getCurrent().navigate(AddHours.class)
         );
 
         SubMenu editDataSubMenu = editData.getSubMenu();

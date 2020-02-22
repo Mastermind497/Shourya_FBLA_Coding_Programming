@@ -17,9 +17,9 @@ public class MySQLMethods {
     private static final String unlocker = "password";
     //The Driver
     private static final String Driver = "com.mysql.cj.jdbc.Driver";
+    private static final String tableName = "tracker";
     //The name of the database and table. It is a public static string because it is the same all the time in any file
     public static String databaseName = "student_data";
-    private static final String tableName = "tracker";
     //The location of the database
     private static String DB_URL = "jdbc:mysql://localhost:3306/";
     //Connection and Statement
@@ -35,7 +35,7 @@ public class MySQLMethods {
 //        createStudentTable("Shourya", "Bansal", 224272);
 //        addStudentHours("Shourya", "Bansal", 224272, "Fun", 8.65, 2020, 1, 26);
 //        System.out.println(selectTrackerDouble("Shourya", "Bansal", 224272, "communityServiceHours"));
-//        System.out.println("Test" + selectTrackerString("John", "Doe", 123456, "firstName"));
+//        System.out.println("Test: " + selectTrackerString("Shourya", "Bansal", 224272, "studentID"));
 //    }
 
     /**
@@ -160,7 +160,7 @@ public class MySQLMethods {
                                      String communityServiceCategory, String email, short yearsDone) {
         try {
             //Formats name
-            String fullName = changeName(firstName, lastName);
+            String fullName = makeName(firstName, lastName, studentID);
 
             createStudentTable(firstName, lastName, studentID);
 
@@ -342,13 +342,13 @@ public class MySQLMethods {
      * @throws Exception for SQL Errors
      */
     public static double selectTrackerDouble(String firstName, String lastName, int studentID, String data) throws Exception {
-        String studentName = changeName(firstName, lastName);
+        String fullName = makeName(firstName, lastName, studentID);
 
         //Uses getConnection to create a connection with the database
         connection = getConnection();
 
         //SQL Query to find find data
-        String query = "SELECT " + data + " FROM " + tableName + " WHERE fullName = '" + studentName + "' AND studentID = '" + studentID + "'";
+        String query = "SELECT " + data + " FROM " + tableName + " WHERE fullName = '" + fullName + "'";
 
         //Create the java Statement (Goes in Query)
         statement = connection.createStatement();
@@ -813,7 +813,7 @@ public class MySQLMethods {
         connection.close();
 
         //Update last edited
-        updateToCurrentDate(firstName, lastName, studentID);
+        if (!dataType.equals("lastEdited")) updateToCurrentDate(firstName, lastName, studentID);
     }
 
     /**

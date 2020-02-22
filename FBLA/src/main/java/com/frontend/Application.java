@@ -20,11 +20,13 @@ public class Application extends SpringBootServletInitializer {
 
     /**
      * For Spring-Boot Running
+     *
      * @param args standard main method argument
      */
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
+
     /**
      * For Jetty Running
      */

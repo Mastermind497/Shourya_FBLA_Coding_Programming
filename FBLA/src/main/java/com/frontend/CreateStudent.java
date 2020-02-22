@@ -16,10 +16,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.validator.DoubleRangeValidator;
 import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -27,14 +25,13 @@ import com.vaadin.flow.router.Route;
 
 import java.io.IOException;
 
-import static com.backend.MySQLMethods.selectTracker;
 import static com.backend.MySQLMethods.selectTrackerString;
 
 @Route("create-student")
 public class CreateStudent extends AppLayout {
     private static int count = 0;
 
-    public CreateStudent() throws Exception {
+    public CreateStudent() {
         //Creates the MenuBar again in this page
         addToNavbar(Home.makeHeader());
 
@@ -210,12 +207,10 @@ public class CreateStudent extends AppLayout {
                     Notification.show("Your data is being processed");
                     binder.readBean(null);
                     Notification.show("Your data has been processed!");
-                }
-                else {
+                } else {
                     Notification.show("A Student with those details already exists");
                 }
-            }
-            else {
+            } else {
                 Notification.show("There was an error. Please Try Again");
             }
         });

@@ -1,13 +1,10 @@
 package com.frontend;
 
-import com.backend.FileMethods;
 import com.backend.MySQLMethods;
-import com.backend.Student;
 import com.backend.StudentData;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.notification.Notification;
@@ -15,15 +12,13 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 //TODO Make this class fully-functional
 @Route("get-student-info")
 public class GetStudentInformation extends AppLayout {
-    public GetStudentInformation() throws Exception{
+    public GetStudentInformation() {
         addToNavbar(Home.makeHeader());
 
         //Layouts to help in orienting
@@ -32,9 +27,9 @@ public class GetStudentInformation extends AppLayout {
 
         Button viewData = new Button("View Data");
         viewData.addThemeVariants(ButtonVariant.MATERIAL_OUTLINED);
-        viewData.addClickListener(event -> {
-            viewData();
-        });
+        viewData.addClickListener(event ->
+            viewData()
+        );
 
         Button exportData = new Button("Export Data");
         exportData.addThemeVariants(ButtonVariant.MATERIAL_OUTLINED);
@@ -61,8 +56,7 @@ public class GetStudentInformation extends AppLayout {
         ArrayList<StudentData> data = new ArrayList<>();
         try {
             data = MySQLMethods.selectFullTracker();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Notification.show(e.getMessage());
         }
 

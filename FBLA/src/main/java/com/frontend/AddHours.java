@@ -15,21 +15,14 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.binder.ValidationResult;
-import com.vaadin.flow.data.binder.Validator;
-import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.validator.DoubleRangeValidator;
-import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
-import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +30,7 @@ import java.util.Arrays;
 @Route("add-hours")
 public class AddHours extends AppLayout {
     static Date eventDate = new Date();
+
     public AddHours() throws Exception {
         //Adds Navigation
         addToNavbar(Home.makeHeader());
@@ -65,8 +59,8 @@ public class AddHours extends AppLayout {
         students.add(new Student(true));
         ComboBox<Student> studentChoices = new ComboBox<>();
         studentChoices.setItems(students);
-        studentChoices.addValueChangeListener(e ->{
-            if (studentChoices.getValue().getCreateNewStudent()){
+        studentChoices.addValueChangeListener(e -> {
+            if (studentChoices.getValue().getCreateNewStudent()) {
                 UI.getCurrent().navigate(CreateStudent.class);
             }
         });
@@ -135,8 +129,7 @@ public class AddHours extends AppLayout {
                 Notification.show("Your data is being processed");
                 binder.readBean(null);
                 Notification.show("Your data has been processed!");
-            }
-            else Notification.show("There was an error. Please Try Again");
+            } else Notification.show("There was an error. Please Try Again");
         });
 
         reset.addClickListener(e -> {
