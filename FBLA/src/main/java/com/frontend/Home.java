@@ -67,7 +67,9 @@ public class Home extends AppLayout {
         );
 
         SubMenu editDataSubMenu = editData.getSubMenu();
-        editDataSubMenu.addItem("Edit Student Information");
+            editDataSubMenu.addItem("Edit Student Information", event ->
+                UI.getCurrent().navigate(EditStudentInformation.class)
+            );
         editDataSubMenu.addItem("Edit Student Event Information");
         editDataSubMenu.addItem("Delete Student");
 

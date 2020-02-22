@@ -157,7 +157,7 @@ public class CreateStudent extends AppLayout {
         Button reset = new Button("Reset");
         actions.add(save, reset);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        reset.addThemeVariants(ButtonVariant.MATERIAL_OUTLINED);
+        reset.addThemeVariants(ButtonVariant.LUMO_ERROR);
         actions.setAlignItems(FlexComponent.Alignment.CENTER);
         actions.setAlignSelf(FlexComponent.Alignment.CENTER);
 
@@ -231,5 +231,9 @@ public class CreateStudent extends AppLayout {
 
     public static void removeFromCount() {
         count--;
+    }
+
+    public static int getCount() {
+        return count;
     }
 }

@@ -1,0 +1,34 @@
+# Maven files
+target/
+
+# Eclipse files
+.project
+.settings
+.classpath
+
+# IDEA files
+.idea
+*.iml
+
+# Testing
+.driver
+.gatling
+error-screenshots
+selenium_standalone_zips
+webdriver/
+
+# macOs
+.DS_Store
+
+# Frontend
+/build-tools/bin/
+/build-tools/etc/
+/build-tools/lib/
+/build-tools/node/
+/build-tools/node_modules/
+/build-tools/yarn.lock
+
+# NPM
+node_modules
+webpack.generated.js
+

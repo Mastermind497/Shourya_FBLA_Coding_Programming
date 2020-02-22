@@ -799,10 +799,10 @@ public class MySQLMethods {
         //gets connection with database
         connection = getConnection();
 
-        String fullName = changeName(firstName, lastName);
+        String fullName = makeName(firstName, lastName, studentID);
 
         //Generates a query
-        String query = "update tracker set " + dataType + " = " + newData + " where fullName = '" + fullName + "' and studentID = '" + studentID + "'";
+        String query = "update tracker set " + dataType + " = " + newData + " where fullName = '" + fullName + "'";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
 
         //executes query
@@ -865,7 +865,7 @@ public class MySQLMethods {
      *
      * @param nameIn the input name, which should only consist of first name and last name
      * @return Name in the Format first_last
-     * @deprecated {@link #changeName(String, String)}
+     * @deprecated {@link #makeName(String, String, int)}
      */
     @Deprecated
     public static String changeName(String nameIn) {
@@ -885,7 +885,9 @@ public class MySQLMethods {
      * @param firstName the student's first name
      * @param lastName  the student's last name
      * @return the String containing the new name
+     * @deprecated {@link #makeName(String, String, int)}{@link #makeName(Student)}
      */
+    @Deprecated
     public static String changeName(String firstName, String lastName) {
         return (firstName + "_" + lastName).toLowerCase();
     }
@@ -900,6 +902,15 @@ public class MySQLMethods {
      */
     public static String makeName(String firstName, String lastName, int studentID) {
         return (firstName + "_" + lastName + "_" + studentID).toLowerCase();
+    }
+
+    /**
+     * Formats the name of a student
+     * @param student The Student whose name is being formatted
+     * @return the name in the format of firstName_lastName_studentID
+     */
+    public static String makeName(Student student) {
+        return makeName(student.getFirstName(), student.getLastName(), student.getStudentID());
     }
 
     /**

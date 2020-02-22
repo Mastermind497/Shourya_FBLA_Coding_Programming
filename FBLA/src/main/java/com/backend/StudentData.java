@@ -202,4 +202,18 @@ public class StudentData {
         MySQLMethods.createStudent(firstName, lastName, studentID, grade, communityServiceCategory,
                 email, yearsDone);
     }
+
+    private void setStudentData(StudentData studentData) {
+        this.firstName = studentData.getFirstName();
+        this.lastName = studentData.getLastName();
+        this.studentID = studentData.getStudentID();
+        this.grade =studentData.getGrade();
+        this.communityServiceCategory = studentData.getCommunityServiceCategory();
+        this.email = studentData.getEmail();
+        this.yearsDone = studentData.getYearsDone();
+    }
+
+    public void getStudentData(Student student) {
+
+    }
 }
