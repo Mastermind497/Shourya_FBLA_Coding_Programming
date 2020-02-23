@@ -74,6 +74,7 @@
             </snapshots>
         </repository>
     </repositories>
+
     <pluginRepositories>
         <pluginRepository>
             <id>central</id>
@@ -118,6 +119,13 @@
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.19</version>
+        </dependency>
+
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
@@ -195,6 +203,12 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
@@ -234,6 +248,11 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-testbench</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.vaadin.jetty</groupId>
+            <artifactId>jetty-vaadin</artifactId>
+            <version>2.1</version>
         </dependency>
     </dependencies>
 
@@ -280,7 +299,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
             </plugin>
+
             <plugin>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-maven-plugin</artifactId>
@@ -300,7 +323,7 @@
             <!-- Production mode is activated using -Pproduction -->
             <id>production</id>
             <properties>
-                <vaadin.productionMode>true</vaadin.productionMode>
+                <vaadin.productionMode>false</vaadin.productionMode>
             </properties>
             <dependencies>
                 <dependency>

@@ -22,10 +22,11 @@ import com.vaadin.flow.server.PWA;
  * @author Shourya Bansal
  */
 @Route("home")
-//@PWA(name = "FBLA Data Tracker",
-//        shortName = "Data Tracker",
-//        description = "This is the Application made by Shourya Bansal for the FBLA Coding " +
-//                "& Programming competition in the 2019-2020 school year")
+@PWA(name = "FBLA Data Tracker",
+        shortName = "Data Tracker",
+        description = "This is the Application made by Shourya Bansal for the FBLA Coding " +
+                "& Programming competition in the 2019-2020 school year",
+        startPath = "home")
 public class Home extends AppLayout {
     //Creates the Home Screen
     public Home() {

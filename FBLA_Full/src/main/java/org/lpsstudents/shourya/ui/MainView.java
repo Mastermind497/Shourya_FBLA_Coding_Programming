@@ -18,6 +18,7 @@ import com.vaadin.flow.component.page.Viewport;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
@@ -35,11 +36,12 @@ import java.util.List;
 import java.util.Optional;
 @Viewport(VIEWPORT)
 
-@PWA(name = "FBLA Data Tracker", shortName = "FBLA",
-		startPath = "login",
-		backgroundColor = "#227aef", themeColor = "#227aef",
-		offlinePath = "offline-page.html",
-		offlineResources = {"images/offline-login-banner.jpg"})
+@Route("test")
+//@PWA(name = "FBLA Data Tracker", shortName = "FBLA Genie",
+//		startPath = "login",
+//		backgroundColor = "#227aef", themeColor = "#227aef",
+//		offlinePath = "offline-page.html",
+//		offlineResources = {"images/offline-login-banner.jpg"})
 public class MainView extends AppLayout {
 
 	private final ConfirmDialog confirmDialog = new ConfirmDialog();

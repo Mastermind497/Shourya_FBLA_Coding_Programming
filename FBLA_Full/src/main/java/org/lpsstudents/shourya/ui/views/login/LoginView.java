@@ -15,7 +15,7 @@ import org.lpsstudents.shourya.ui.utils.BakeryConst;
 import org.lpsstudents.shourya.ui.views.storefront.StorefrontView;
 
 @Route
-@PageTitle("FBLA")
+@PageTitle("FBLA Genie")
 @JsModule("./styles/shared-styles.js")
 @Viewport(BakeryConst.VIEWPORT)
 public class LoginView extends LoginOverlay
@@ -24,7 +24,7 @@ public class LoginView extends LoginOverlay
 	public LoginView() {
 		LoginI18n i18n = LoginI18n.createDefault();
 		i18n.setHeader(new LoginI18n.Header());
-		i18n.getHeader().setTitle("FBLA");
+		i18n.getHeader().setTitle("FBLA Genie");
 		i18n.getHeader().setDescription(
 			"admin@vaadin.com + admin\n" + "barista@vaadin.com + barista");
 		i18n.setAdditionalInformation(null);
@@ -34,10 +34,10 @@ public class LoginView extends LoginOverlay
 		i18n.getForm().setUsername("Email");
 		i18n.getForm().setPassword("Password");
 		setI18n(i18n);
-		setForgotPasswordButtonVisible(false);
+		setForgotPasswordButtonVisible(true);
 		setAction("login");
 	}
-	
+
 	@Override
 	public void beforeEnter(BeforeEnterEvent event) {
 		if (SecurityUtils.isUserLoggedIn()) {

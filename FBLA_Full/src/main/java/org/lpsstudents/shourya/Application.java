@@ -1,5 +1,6 @@
 package org.lpsstudents.shourya;
 
+import org.lpsstudents.shourya.ui.Home;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -17,7 +18,7 @@ import org.lpsstudents.shourya.ui.MainView;
 /**
  * Spring boot web application initializer.
  */
-@SpringBootApplication(scanBasePackageClasses = { SecurityConfiguration.class, MainView.class, Application.class,
+@SpringBootApplication(scanBasePackageClasses = { SecurityConfiguration.class, Home.class, Application.class,
 		UserService.class }, exclude = ErrorMvcAutoConfiguration.class)
 @EnableJpaRepositories(basePackageClasses = { UserRepository.class })
 @EntityScan(basePackageClasses = { User.class })
