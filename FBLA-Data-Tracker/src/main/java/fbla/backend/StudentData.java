@@ -1,4 +1,4 @@
-package com.backend;
+package fbla.backend;
 
 import java.sql.Date;
 
@@ -213,7 +213,7 @@ public class StudentData {
         this.yearsDone = studentData.getYearsDone();
     }
 
-    public Student getStudent() {
-        return new Student(firstName, lastName, studentID);
+    public void getStudentData(Student student) {
+
     }
 }

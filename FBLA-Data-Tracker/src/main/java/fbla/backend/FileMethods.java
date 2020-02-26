@@ -1,7 +1,6 @@
-package com.backend;
+package fbla.backend;
 
 import java.io.*;
-import java.sql.PreparedStatement;
 
 public class FileMethods {
     //The Working Directory to make it easier to access
@@ -45,14 +44,6 @@ public class FileMethods {
         out.close();
     }
 
-    public static void addToStudent(Student student) throws IOException {
-        //making the second term true allows us to append the text file without removing what was previously there.
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(studentPath, true)));
-        //Adds student Name to file
-        out.println(student.getFirstName().toUpperCase() + ", " + student.getLastName().toUpperCase() + ", " + student.getStudentID());
-        out.close();
-    }
-
     public static void clearStudentList() throws IOException {
         new PrintWriter(new BufferedWriter(new FileWriter(studentPath)));
     }
@@ -87,28 +78,5 @@ public class FileMethods {
             students[i] = temp;
         }
         return students;
-    }
-
-    /**
-     * Removes a student from the list of students
-     * @param student The student that will be removed
-     * @return the student removed
-     * @throws IOException in case the file is not found
-     */
-    public static Student removeStudent(Student student) throws IOException {
-        //Gets Current Students
-        Student[] currentStudents = getStudents();
-
-        //Clears Text File of Students
-        clearStudentList();
-
-        //Adds the students back (excluding the student to remove)
-        for (Student currentStudent : currentStudents) {
-            if (!currentStudent.getFullName().equals(student.getFullName())) {
-                addToStudent(currentStudent);
-            }
-        }
-
-        return student;
     }
 }

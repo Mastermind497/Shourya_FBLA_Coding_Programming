@@ -1,4 +1,4 @@
-package com.backend;
+package fbla.backend;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,16 +27,16 @@ public class MySQLMethods {
     private static Connection connection = null;
     private static ResultSet resultSet = null;
 
-    public static void main(String[] args) throws Exception {
-        createDatabase();
-        createTable();
-        createStudent("Shourya", "Bansal", 224272, (short)10 , "T", "t", (short) 0);
-        System.out.println(selectTrackerDouble("Shourya", "Bansal", 224272, "communityServiceHours"));
-        createStudentTable("Shourya", "Bansal", 224272);
-        addStudentHours("Shourya", "Bansal", 224272, "Fun", 8.65, 2020, 1, 26);
-        System.out.println(selectTrackerDouble("Shourya", "Bansal", 224272, "communityServiceHours"));
-        System.out.println("Test: " + selectTrackerString("Shourya", "Bansal", 224272, "studentID"));
-    }
+//    public static void main(String[] args) throws Exception {
+//        createDatabase();
+//        createTable();
+//        createStudent("Shourya", "Bansal", 224272, (short)10 , "T", "t", (short) 0);
+//        System.out.println(selectTrackerDouble("Shourya", "Bansal", 224272, "communityServiceHours"));
+//        createStudentTable("Shourya", "Bansal", 224272);
+//        addStudentHours("Shourya", "Bansal", 224272, "Fun", 8.65, 2020, 1, 26);
+//        System.out.println(selectTrackerDouble("Shourya", "Bansal", 224272, "communityServiceHours"));
+//        System.out.println("Test: " + selectTrackerString("Shourya", "Bansal", 224272, "studentID"));
+//    }
 
     /**
      * This method runs at the start of any Query. It checks
@@ -57,13 +57,10 @@ public class MySQLMethods {
             connection.close();
 
             //Selects this new database for all queries if it is not already selected
-        }
-        catch (Exception e) {
+            if (!DB_URL.contains(databaseName)) DB_URL += databaseName;
+        } catch (Exception e) {
             System.out.println("Database Creation Failed");
             e.printStackTrace();
-        }
-        finally {
-            if (!DB_URL.contains(databaseName)) DB_URL += databaseName;
         }
     }
 
@@ -817,36 +814,6 @@ public class MySQLMethods {
 
         //Update last edited
         if (!dataType.equals("lastEdited")) updateToCurrentDate(firstName, lastName, studentID);
-    }
-    public static void updateTracker(Student initialStudent, StudentData newData) throws Exception {
-        //gets connection with database
-        connection = getConnection();
-
-        String fullName = initialStudent.getFullName();
-
-        //Updates Last Edited While Name is Known
-        updateToCurrentDate(initialStudent.getFirstName(), initialStudent.getLastName(), initialStudent.getStudentID());
-
-        //Generates a query
-        String query = "update " + tableName + " set " +
-                "firstName = '" + newData.getFirstName() + "', " +
-                "lastName = '" + newData.getLastName() + "', " +
-                "studentID = '" + newData.getStudentID() + "', " +
-                "grade = '" + newData.getGrade() + "', " +
-                "communityServiceHours = '" + newData.getCommunityServiceHours() + "', " +
-                "communityServiceCategory = '" + newData.getCommunityServiceCategory() + "', " +
-                "email = '" + newData.getEmail() + "', " +
-                "yearsDone = '" + newData.getYearsDone() + "', " +
-                "fullName = '" + makeName(newData.getFirstName(), newData.getLastName(), newData.getStudentID()) +
-                "' where fullName = '" + fullName + "'";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-
-        //executes query
-        preparedStatement.executeUpdate();
-
-        //close resources
-        preparedStatement.close();
-        connection.close();
     }
 
     /**

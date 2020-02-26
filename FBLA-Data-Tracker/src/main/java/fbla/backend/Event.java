@@ -1,8 +1,11 @@
-package com.backend;
+package fbla.backend;
 
-import static com.backend.MySQLMethods.addStudentHours;
+import static fbla.backend.MySQLMethods.addStudentHours;
 
-public class Event extends Student {
+public class Event {
+    private String firstName;
+    private String lastName;
+    private int studentID;
     private String eventName;
     private double hours;
     private int year;
@@ -11,7 +14,9 @@ public class Event extends Student {
 
     public Event(String firstName, String lastName, int studentID, String eventName, double hours,
                  int year, int month, int day) {
-        super(firstName, lastName, studentID);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.studentID = studentID;
         this.eventName = eventName;
         this.hours = hours;
         this.year = year;
@@ -21,6 +26,30 @@ public class Event extends Student {
 
     public Event() {
         //Just Creates an Event Object
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getStudentID() {
+        return studentID;
+    }
+
+    public void setStudentID(int studentID) {
+        this.studentID = studentID;
     }
 
     public String getEventName() {
@@ -76,16 +105,18 @@ public class Event extends Student {
     }
 
     public Student getStudent() {
-        return super.getStudent();
+        return new Student(firstName, lastName, studentID);
     }
 
     public void setStudent(Student student) {
-        super.setStudent(student);
+        this.firstName = student.getFirstName();
+        this.lastName = student.getLastName();
+        this.studentID = student.getStudentID();
     }
 
     public void addEvent() {
         try {
-            addStudentHours(super.getFirstName(), super.getLastName(), super.getStudentID(), eventName, hours,
+            addStudentHours(firstName, lastName, studentID, eventName, hours,
                     year, month, day);
         } catch (Exception e) {
             e.printStackTrace();

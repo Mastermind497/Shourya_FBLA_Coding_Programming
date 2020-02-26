@@ -1,6 +1,4 @@
-package com.backend;
-
-import com.vaadin.flow.component.notification.Notification;
+package fbla.backend;
 
 import java.util.StringTokenizer;
 
@@ -38,13 +36,8 @@ public class Student {
         return lastName;
     }
 
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getFullName() {
-        return MySQLMethods.makeName(this);
     }
 
     public int getStudentID() {
@@ -62,32 +55,12 @@ public class Student {
         this.studentID = Integer.parseInt(st.nextToken());
     }
 
-    public Student getStudent() {
-        return this;
-    }
-
-    public void setStudent(Student newStudent) {
-        this.firstName = newStudent.getFirstName();
-        this.lastName = newStudent.getLastName();
-        this.studentID = newStudent.getStudentID();
-    }
-
     public boolean getCreateNewStudent() {
         return this.createNewStudent;
     }
 
     public void setCreateNewStudent(boolean createNewStudent) {
         this.createNewStudent = createNewStudent;
-    }
-
-    public StudentData getStudentData() {
-        try {
-            return MySQLMethods.selectTrackerAsStudent(this);
-        }
-        catch (Exception e) {
-            Notification.show(e.getMessage());
-            return null;
-        }
     }
 
     @Override
