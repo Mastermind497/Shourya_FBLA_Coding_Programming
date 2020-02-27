@@ -13,7 +13,7 @@ public class StudentData {
     private String lastName;
     private int studentID;
     private short grade;
-    private int communityServiceHours;
+    private double communityServiceHours;
     private String communityServiceCategory;
     private String email;
     private short yearsDone;
@@ -114,12 +114,12 @@ public class StudentData {
         return grade;
     }
 
-    public int getCommunityServiceHours() {
+    public double getCommunityServiceHours() {
         return communityServiceHours;
     }
 
-    public void setCommunityServiceHours(int communityServiceHours) {
-        this.communityServiceHours = communityServiceHours;
+    public void setCommunityServiceHours(double communityServiceHours) {
+        this.communityServiceHours = MySQLMethods.round(communityServiceHours);
     }
 
     public String getCommunityServiceCategory() {
@@ -144,6 +144,14 @@ public class StudentData {
 
     public void setYearsDone(short yearsDone) {
         this.yearsDone = yearsDone;
+    }
+
+    public int getYearsDoneInt() {
+        return yearsDone;
+    }
+
+    public void setYearsDone(int yearsDone) {
+        this.yearsDone = (short) yearsDone;
     }
 
     public boolean isFreshman() {
@@ -207,7 +215,7 @@ public class StudentData {
         this.firstName = studentData.getFirstName();
         this.lastName = studentData.getLastName();
         this.studentID = studentData.getStudentID();
-        this.grade =studentData.getGrade();
+        this.grade = studentData.getGrade();
         this.communityServiceCategory = studentData.getCommunityServiceCategory();
         this.email = studentData.getEmail();
         this.yearsDone = studentData.getYearsDone();

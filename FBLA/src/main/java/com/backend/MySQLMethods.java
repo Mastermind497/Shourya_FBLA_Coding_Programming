@@ -251,6 +251,56 @@ public class MySQLMethods {
     }
 
     /**
+     * This adds events and hours into a students unique table. At the
+     * same time, this updates the hours in the main table
+     *
+     * @param student   The student getting hours
+     * @param eventName The Name of the Event Completed
+     * @param hours     The Length of the Event
+     * @param year      The Year the Event Was Done
+     * @param month     The Month of the Event
+     * @param day       The Day of the Event
+     * @throws Exception This is throws in case the Database is not found
+     */
+    public static void addStudentHours(Student student, String eventName, double hours,
+                                       int year, int month, int day) throws Exception {
+        //Creates a database connection
+        connection = getConnection();
+
+        //Creates a date for MySQL Table
+        Calendar calendar = new Calendar.Builder().setCalendarType("iso8601").setDate(year, month, day).build();
+        java.sql.Date date = new java.sql.Date(calendar.getTime().getTime());
+
+        //Converts hours into two parts: int and decimal
+        String query = " insert into " + makeName(student) + "(eventName, eventHours, date)"
+                + " values (?, ?, ?)";
+
+        //Creates a preparedStatement to insert into mysql command line
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, eventName);
+        preparedStatement.setDouble(2, hours);
+        preparedStatement.setDate(3, date);
+
+        //executes statement
+        preparedStatement.execute();
+
+        //Ends everything
+        connection.close();
+        statement.close();
+
+        //next step, update hours in the main table
+        //gets current main hours:
+        double currentHours = selectTrackerDouble(student.getFirstName(), student.getLastName(),
+                student.getStudentID(), "communityServiceHours");
+        updateTracker(student.getFirstName(), student.getLastName(),
+                student.getStudentID(), "communityServiceHours",
+                Double.toString(round(currentHours + hours)));//rounds Hours to nearest hundredth to account for inaccuracy of doubles
+
+        //now, update lastEdited in main table
+        updateToCurrentDate(student.getFirstName(), student.getLastName(), student.getStudentID());
+    }
+
+    /**
      * This allows someone to get specific integer-type data from the Main Table.
      *
      * @param firstName The Student's first name
@@ -804,6 +854,12 @@ public class MySQLMethods {
 
         String fullName = makeName(firstName, lastName, studentID);
 
+        if (dataType.equals("communityServiceHours")) {
+            //Rounds hours to the nearest hundredth
+            double newDataDouble = round(Double.parseDouble(newData));
+            newData = Double.toString(newDataDouble);
+        }
+
         //Generates a query
         String query = "update tracker set " + dataType + " = " + newData + " where fullName = '" + fullName + "'";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -823,6 +879,10 @@ public class MySQLMethods {
         connection = getConnection();
 
         String fullName = initialStudent.getFullName();
+
+        //Rounds hours to the nearest hundredth
+        double newDataDouble = round(newData.getCommunityServiceHours());
+        newData.setCommunityServiceHours(newDataDouble);
 
         //Updates Last Edited While Name is Known
         updateToCurrentDate(initialStudent.getFirstName(), initialStudent.getLastName(), initialStudent.getStudentID());

@@ -1,7 +1,10 @@
-package com.frontend;
+package com.frontend.Get;
 
 import com.backend.MySQLMethods;
 import com.backend.StudentData;
+import com.frontend.Edit.EditStudentInformation;
+import com.frontend.Home;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -21,38 +24,7 @@ public class GetStudentInformation extends AppLayout {
     public GetStudentInformation() {
         addToNavbar(Home.makeHeader());
 
-        //Layouts to help in orienting
-        VerticalLayout aligner = new VerticalLayout();
-        HorizontalLayout choice = new HorizontalLayout();
-
-        Button viewData = new Button("View Data");
-        viewData.addThemeVariants(ButtonVariant.MATERIAL_OUTLINED);
-        viewData.addClickListener(event ->
-            viewData()
-        );
-
-        Button exportData = new Button("Export Data");
-        exportData.addThemeVariants(ButtonVariant.MATERIAL_OUTLINED);
-        viewData.addClickListener(event ->
-                exportData()
-        );
-
-        choice.add(viewData, exportData);
-        choice.setAlignItems(FlexComponent.Alignment.CENTER);
-        choice.setAlignSelf(FlexComponent.Alignment.CENTER);
-
-        aligner.add(choice);
-        aligner.setAlignItems(FlexComponent.Alignment.CENTER);
-        aligner.setAlignSelf(FlexComponent.Alignment.CENTER);
-
-        setContent(aligner);
-    }
-
-    /**
-     * Runs if user wants to View Data
-     */
-    public void viewData() {
-        //Data is shown on a grid (Up to 100k pieces)
+        //Shows data on a grid (Up to 100k pieces)
         ArrayList<StudentData> data = new ArrayList<>();
         try {
             data = MySQLMethods.selectFullTracker();
@@ -80,7 +52,35 @@ public class GetStudentInformation extends AppLayout {
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        setContent(grid);
+
+        grid.addItemDoubleClickListener(event -> {
+            EditStudentInformation.selected = event.getItem().getStudent();
+            UI.getCurrent().navigate(EditStudentInformation.class);
+        });
+
+        //Layouts to help in orienting
+        VerticalLayout aligner = new VerticalLayout();
+        HorizontalLayout choice = new HorizontalLayout();
+
+        Button exportData = new Button("Export Data");
+        exportData.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        choice.add(exportData);
+        choice.setAlignItems(FlexComponent.Alignment.CENTER);
+        choice.setAlignSelf(FlexComponent.Alignment.CENTER);
+
+        aligner.add(grid, choice);
+        aligner.setAlignItems(FlexComponent.Alignment.CENTER);
+        aligner.setAlignSelf(FlexComponent.Alignment.CENTER);
+
+        setContent(aligner);
+    }
+
+    /**
+     * Runs if user wants to View Data
+     */
+    public void viewData() {
+
     }
 
     /**

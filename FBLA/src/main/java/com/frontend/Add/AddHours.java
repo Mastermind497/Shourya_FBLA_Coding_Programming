@@ -1,9 +1,11 @@
-package com.frontend;
+package com.frontend.Add;
 
 import com.backend.Date;
 import com.backend.Event;
 import com.backend.FileMethods;
 import com.backend.Student;
+import com.frontend.Home;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
@@ -65,7 +67,7 @@ public class AddHours extends AppLayout {
             }
         });
 
-        TextField eventName = new TextField("EventName");
+        TextField eventName = new TextField("Event Name");
         eventName.setPlaceholder("Volunteering at Central Park");
         eventName.setValueChangeMode(ValueChangeMode.EAGER);
 
@@ -131,6 +133,8 @@ public class AddHours extends AppLayout {
                 Notification.show("Your data has been processed!");
             } else Notification.show("There was an error. Please Try Again");
         });
+        //ENTER key also clicks save
+        save.addClickShortcut(Key.ENTER);
 
         reset.addClickListener(e -> {
             // clear fields by setting null

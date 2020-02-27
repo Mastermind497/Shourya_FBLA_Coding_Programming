@@ -1,7 +1,9 @@
-package com.frontend;
+package com.frontend.Add;
 
 import com.backend.FileMethods;
 import com.backend.StudentData;
+import com.frontend.Home;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -214,6 +216,8 @@ public class CreateStudent extends AppLayout {
                 Notification.show("There was an error. Please Try Again");
             }
         });
+        //ENTER Key also activated SAVE
+        save.addClickShortcut(Key.ENTER);
 
         reset.addClickListener(event -> {
             // clear fields by setting null

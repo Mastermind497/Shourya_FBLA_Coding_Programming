@@ -4,6 +4,10 @@
 package com.frontend;
 
 import com.backend.MySQLMethods;
+import com.frontend.Add.AddHours;
+import com.frontend.Add.CreateStudent;
+import com.frontend.Edit.EditStudentInformation;
+import com.frontend.Get.GetStudentInformation;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.contextmenu.MenuItem;
