@@ -1,7 +1,7 @@
 package com.backend;
 
 import java.io.*;
-import java.sql.PreparedStatement;
+import java.util.ArrayList;
 
 public class FileMethods {
     //The Working Directory to make it easier to access
@@ -90,7 +90,27 @@ public class FileMethods {
     }
 
     /**
+     * This method returns an ArrayList of all Students on whom we have data stored. The
+     * file is an alternate way to store data as it is easier to use and faster to access.
+     * However, the main data is all stored in the MySQL Database.
+     *
+     * @return An ArrayList containing all the students on whom we have data
+     * @throws IOException in case the file does not exist.
+     */
+    public static ArrayList<Student> getStudentsAsList() throws IOException {
+        ArrayList<Student> students = new ArrayList<>();
+        BufferedReader read = new BufferedReader(new FileReader(studentPath));
+        for (int i = 0; i < getNumberOfStudents(); i++) {
+            Student temp = new Student();
+            temp.makeStudent(read.readLine());
+            students.add(temp);
+        }
+        return students;
+    }
+
+    /**
      * Removes a student from the list of students
+     *
      * @param student The student that will be removed
      * @return the student removed
      * @throws IOException in case the file is not found

@@ -77,13 +77,6 @@ public class GetStudentInformation extends AppLayout {
     }
 
     /**
-     * Runs if user wants to View Data
-     */
-    public void viewData() {
-
-    }
-
-    /**
      * Runs if user wants to Export Data
      */
     //TODO find a way to export it (PDF + Spreadsheet)

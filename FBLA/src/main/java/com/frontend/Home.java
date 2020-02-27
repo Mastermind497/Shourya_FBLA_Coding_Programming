@@ -7,6 +7,7 @@ import com.backend.MySQLMethods;
 import com.frontend.Add.AddHours;
 import com.frontend.Add.CreateStudent;
 import com.frontend.Edit.EditStudentInformation;
+import com.frontend.Get.GetStudentEvents;
 import com.frontend.Get.GetStudentInformation;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -71,9 +72,9 @@ public class Home extends AppLayout {
         );
 
         SubMenu editDataSubMenu = editData.getSubMenu();
-            editDataSubMenu.addItem("Edit Student Information", event ->
+        editDataSubMenu.addItem("Edit Student Information", event ->
                 UI.getCurrent().navigate(EditStudentInformation.class)
-            );
+        );
         editDataSubMenu.addItem("Edit Student Event Information");
         editDataSubMenu.addItem("Delete Student");
 
@@ -81,7 +82,9 @@ public class Home extends AppLayout {
         viewDataSubMenu.addItem("View Student Information", event ->
                 UI.getCurrent().navigate(GetStudentInformation.class)
         );
-        viewDataSubMenu.addItem("View Student Event History");
+        viewDataSubMenu.addItem("View Student Event History", event ->
+                UI.getCurrent().navigate(GetStudentEvents.class)
+        );
 
         SubMenu genRepSubMenu = genReport.getSubMenu();
         genRepSubMenu.addItem("Generate Individual Report");
