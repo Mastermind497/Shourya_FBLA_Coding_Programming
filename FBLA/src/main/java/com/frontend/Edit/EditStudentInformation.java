@@ -164,7 +164,7 @@ public class EditStudentInformation extends AppLayout {
 
         binder.forField(gradeField)
                 .withValidator(new IntegerRangeValidator(
-                        "Please enter the Current Grade", 9, 12))
+                        "Please enter the Current Grade", 6, 12))
                 .bind(StudentData::getGradeInt, StudentData::setGrade);
 
         binder.forField(communityServiceCategoryField).bind(StudentData::getCommunityServiceCategory, StudentData::setCommunityServiceCategory);
@@ -192,7 +192,11 @@ public class EditStudentInformation extends AppLayout {
                     //Gets today's date
                     java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
-                    MySQLMethods.addStudentHours(selected, "Editing Student Information", hourChange, date.getYear(), date.getMonth(), date.getDay());
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(date);
+
+                    MySQLMethods.addStudentHours(selected, "MANUAL ADJUSTMENT", hourChange, calendar.get(Calendar.YEAR),
+                            calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.DATE));
                 } catch (Exception ex) {
                     Notification.show("Caught An Exception");
                 }

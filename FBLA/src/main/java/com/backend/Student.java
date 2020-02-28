@@ -83,8 +83,7 @@ public class Student {
     public StudentData getStudentData() {
         try {
             return MySQLMethods.selectTrackerAsStudent(this);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Notification.show(e.getMessage());
             return null;
         }

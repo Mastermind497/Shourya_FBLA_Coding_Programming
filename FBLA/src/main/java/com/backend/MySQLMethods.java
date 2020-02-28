@@ -30,12 +30,7 @@ public class MySQLMethods {
     public static void main(String[] args) throws Exception {
         createDatabase();
         createTable();
-        createStudent("Shourya", "Bansal", 224272, (short)10 , "T", "t", (short) 0);
-        System.out.println(selectTrackerDouble("Shourya", "Bansal", 224272, "communityServiceHours"));
-        createStudentTable("Shourya", "Bansal", 224272);
-        addStudentHours("Shourya", "Bansal", 224272, "Fun", 8.65, 2020, 1, 26);
-        System.out.println(selectTrackerDouble("Shourya", "Bansal", 224272, "communityServiceHours"));
-        System.out.println("Test: " + selectTrackerString("Shourya", "Bansal", 224272, "studentID"));
+        System.out.println(selectStudentEventsAsEvent(new Student("Shourya", "Bansal", 224272)));
     }
 
     /**
@@ -57,12 +52,10 @@ public class MySQLMethods {
             connection.close();
 
             //Selects this new database for all queries if it is not already selected
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Database Creation Failed");
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             if (!DB_URL.contains(databaseName)) DB_URL += databaseName;
         }
     }
@@ -764,6 +757,59 @@ public class MySQLMethods {
     }
 
     /**
+     * This allows access to all of a student's events
+     *
+     * @param firstName the student's first name
+     * @param lastName  the student's last name
+     * @param studentID The Student's Student ID Number
+     * @return an array of Strings containing all of the Events and their data
+     * @throws Exception for SQL Errors
+     */
+    public static ArrayList<Event> selectStudentEventsAsEvent(String firstName, String lastName, int studentID) throws Exception {
+        //converts to the studentName format
+        String studentName = makeName(firstName, lastName, studentID);
+
+        //Uses getConnection to create a connection
+        connection = getConnection();
+
+        //SQL Query to find data
+        String query = "select * from " + studentName;
+
+        //Create the java Statement (Runs the Query)
+        statement = connection.createStatement();
+
+        //The Result after executing the query
+        ResultSet resultSet = statement.executeQuery(query);
+
+        //Creates Output Strings
+        ArrayList<Event> output = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Event next = new Event();
+            next.setEventName(resultSet.getString("eventName"));
+            next.setHours(resultSet.getDouble("eventHours"));
+            System.out.println(resultSet.getDate("date").toString());
+            next.setDate(resultSet.getDate("date").toString());
+            output.add(next);
+        }
+        resultSet.close();
+        statement.close();
+
+        return output;
+    }
+
+    /**
+     * This allows access to all of a student's events
+     *
+     * @param student the selected student
+     * @return an array of Strings containing all of the Events and their data
+     * @throws Exception for SQL Errors
+     */
+    public static ArrayList<Event> selectStudentEventsAsEvent(Student student) throws Exception {
+        return selectStudentEventsAsEvent(student.getFirstName(), student.getLastName(), student.getStudentID());
+    }
+
+    /**
      * Selects data on just one event given its eventName
      *
      * @param firstName The student's first name
@@ -874,6 +920,7 @@ public class MySQLMethods {
         //Update last edited
         if (!dataType.equals("lastEdited")) updateToCurrentDate(firstName, lastName, studentID);
     }
+
     public static void updateTracker(Student initialStudent, StudentData newData) throws Exception {
         //gets connection with database
         connection = getConnection();
@@ -999,6 +1046,7 @@ public class MySQLMethods {
 
     /**
      * Formats the name of a student
+     *
      * @param student The Student whose name is being formatted
      * @return the name in the format of firstName_lastName_studentID
      */

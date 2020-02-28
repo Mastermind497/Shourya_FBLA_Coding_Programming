@@ -185,7 +185,7 @@ public class CreateStudent extends AppLayout {
 
         binder.forField(gradeField)
                 .withValidator(new IntegerRangeValidator(
-                        "Please enter the Current Grade", 9, 12))
+                        "Please enter the Current Grade", 6, 12))
                 .bind(StudentData::getGradeInt, StudentData::setGrade);
 
         binder.forField(communityServiceCategoryField).bind(StudentData::getCommunityServiceCategory, StudentData::setCommunityServiceCategory);

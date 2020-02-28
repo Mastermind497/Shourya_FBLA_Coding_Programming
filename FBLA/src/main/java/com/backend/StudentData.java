@@ -8,10 +8,7 @@ import java.sql.Date;
  *
  * @author Shourya Bansal
  */
-public class StudentData {
-    private String firstName;
-    private String lastName;
-    private int studentID;
+public class StudentData extends Student {
     private short grade;
     private double communityServiceHours;
     private String communityServiceCategory;
@@ -36,9 +33,7 @@ public class StudentData {
      */
     public StudentData(String firstName, String lastName, int studentID, short grade,
                        String communityServiceCategory, String email, short yearsDone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.studentID = studentID;
+        super(firstName, lastName, studentID);
         this.grade = grade;
         this.communityServiceCategory = communityServiceCategory;
         this.email = email;
@@ -58,9 +53,7 @@ public class StudentData {
      */
     public StudentData(String firstName, String lastName, int studentID, int grade,
                        String communityServiceCategory, String email, int yearsDone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.studentID = studentID;
+        super(firstName, lastName, studentID);
         this.grade = (short) grade;
         this.communityServiceCategory = communityServiceCategory;
         this.email = email;
@@ -75,27 +68,7 @@ public class StudentData {
     }
 
     public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public int getStudentID() {
-        return studentID;
-    }
-
-    public void setStudentID(int studentID) {
-        this.studentID = studentID;
+        return super.getFirstName();
     }
 
     public short getGrade() {
@@ -146,12 +119,12 @@ public class StudentData {
         this.yearsDone = yearsDone;
     }
 
-    public int getYearsDoneInt() {
-        return yearsDone;
-    }
-
     public void setYearsDone(int yearsDone) {
         this.yearsDone = (short) yearsDone;
+    }
+
+    public int getYearsDoneInt() {
+        return yearsDone;
     }
 
     public boolean isFreshman() {
@@ -207,21 +180,17 @@ public class StudentData {
     }
 
     public void createStudent() {
-        MySQLMethods.createStudent(firstName, lastName, studentID, grade, communityServiceCategory,
-                email, yearsDone);
+        MySQLMethods.createStudent(super.getFirstName(), super.getLastName(), super.getStudentID(),
+                grade, communityServiceCategory, email, yearsDone);
     }
 
     private void setStudentData(StudentData studentData) {
-        this.firstName = studentData.getFirstName();
-        this.lastName = studentData.getLastName();
-        this.studentID = studentData.getStudentID();
+        super.setFirstName(studentData.getFirstName());
+        super.setLastName(studentData.getLastName());
+        super.setStudentID(studentData.getStudentID());
         this.grade = studentData.getGrade();
         this.communityServiceCategory = studentData.getCommunityServiceCategory();
         this.email = studentData.getEmail();
         this.yearsDone = studentData.getYearsDone();
-    }
-
-    public Student getStudent() {
-        return new Student(firstName, lastName, studentID);
     }
 }

@@ -97,15 +97,30 @@ public class FileMethods {
      * @return An ArrayList containing all the students on whom we have data
      * @throws IOException in case the file does not exist.
      */
-    public static ArrayList<Student> getStudentsAsList() throws IOException {
-        ArrayList<Student> students = new ArrayList<>();
-        BufferedReader read = new BufferedReader(new FileReader(studentPath));
-        for (int i = 0; i < getNumberOfStudents(); i++) {
-            Student temp = new Student();
-            temp.makeStudent(read.readLine());
-            students.add(temp);
+    public static ArrayList<Student> getStudentsAsList() {
+        try {
+            ArrayList<Student> students = new ArrayList<>();
+            BufferedReader read = new BufferedReader(new FileReader(studentPath));
+            for (int i = 0; i < getNumberOfStudents(); i++) {
+                Student temp = new Student();
+                temp.makeStudent(read.readLine());
+                students.add(temp);
+            }
+            return students;
+        } catch (IOException e) {
+            return null;
         }
-        return students;
+    }
+
+    public static ArrayList<StudentData> getStudentData() {
+        ArrayList<Student> students = getStudentsAsList();
+        ArrayList<StudentData> studentData = new ArrayList<>();
+
+        for (Student student : students) {
+            studentData.add(student.getStudentData());
+        }
+
+        return studentData;
     }
 
     /**

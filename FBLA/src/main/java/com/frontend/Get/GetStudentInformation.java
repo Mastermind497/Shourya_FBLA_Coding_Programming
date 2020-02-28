@@ -8,12 +8,22 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.crud.BinderCrudEditor;
+import com.vaadin.flow.component.crud.CrudEditor;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
@@ -32,7 +42,18 @@ public class GetStudentInformation extends AppLayout {
             Notification.show(e.getMessage());
         }
 
-        //Creates Grid Data Holder
+//        //Creates Grid Data Holder
+//        Crud<StudentData> crud = new Crud<>(StudentData.class, createStudentEditor());
+//
+//        //Data Provider to Search for Students
+//        StudentDataProvider dataProvider = new StudentDataProvider();
+//
+//        crud.setDataProvider(dataProvider);
+//        crud.addSaveListener(e -> dataProvider.persist(e.getItem()));
+//        crud.addDeleteListener(e -> dataProvider.delete(e.getItem()));
+//
+//        crud.addThemeVariants(CrudVariant.NO_BORDER);
+
         Grid<StudentData> grid = new Grid<>();
         grid.setItems(data);
         grid.addColumn(StudentData::getFirstName).setHeader("First Name");
@@ -74,6 +95,43 @@ public class GetStudentInformation extends AppLayout {
         aligner.setAlignSelf(FlexComponent.Alignment.CENTER);
 
         setContent(aligner);
+    }
+
+    private CrudEditor<StudentData> createStudentEditor() {
+        TextField firstNameField = new TextField("First Name");
+        TextField lastNameField = new TextField("Last Name");
+        IntegerField studentIDField = new IntegerField("Student ID");
+        IntegerField gradeField = new IntegerField("Grade");
+        Select<String> communityServiceCategoryField = new Select<>();
+        communityServiceCategoryField.setItems("CSA Community", "CSA Service", "CSA Achievement");
+        NumberField hours = new NumberField("Hours");
+        EmailField emailField = new EmailField("Email");
+
+        //Stores all search elements
+        FormLayout form = new FormLayout(firstNameField, lastNameField, studentIDField, gradeField,
+                communityServiceCategoryField, hours, emailField);
+
+        Binder<StudentData> binder = new Binder<>();
+
+        binder.forField(firstNameField).bind(StudentData::getFirstName, StudentData::setFirstName);
+
+        binder.forField(lastNameField).bind(StudentData::getLastName, StudentData::setLastName);
+
+        binder.forField(studentIDField)
+                .withValidator(new IntegerRangeValidator(
+                        "Please enter the Student ID", 1, null))
+                .bind(StudentData::getStudentID, StudentData::setStudentID);
+
+        binder.forField(emailField).bind(StudentData::getEmail, StudentData::setEmail);
+
+        binder.forField(gradeField)
+                .withValidator(new IntegerRangeValidator(
+                        "Please enter the Current Grade", 6, 12))
+                .bind(StudentData::getGradeInt, StudentData::setGrade);
+
+        binder.forField(communityServiceCategoryField).bind(StudentData::getCommunityServiceCategory, StudentData::setCommunityServiceCategory);
+
+        return new BinderCrudEditor<>(binder, form);
     }
 
     /**
