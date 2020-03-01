@@ -788,7 +788,6 @@ public class MySQLMethods {
             Event next = new Event();
             next.setEventName(resultSet.getString("eventName"));
             next.setHours(resultSet.getDouble("eventHours"));
-            System.out.println(resultSet.getDate("date").toString());
             next.setDate(resultSet.getDate("date").toString());
             output.add(next);
         }

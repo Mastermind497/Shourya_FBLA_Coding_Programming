@@ -13,17 +13,15 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
 
 @Route("get-student-events")
-@PageTitle("TitleTest")
 public class GetStudentEvents extends AppLayout {
     public static Student selected;
 
@@ -85,7 +83,7 @@ public class GetStudentEvents extends AppLayout {
      * @param chosen The chosen student
      */
     public void viewEvents(Student chosen) throws Exception {
-        Label studentName = new Label(chosen.getFirstName() + " " + chosen.getLastName() + ", " +
+        H1 studentName = new H1(chosen.getFirstName() + " " + chosen.getLastName() + ", " +
                 chosen.getStudentID());
 
         VerticalLayout layout = new VerticalLayout();

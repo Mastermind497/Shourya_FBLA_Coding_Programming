@@ -1,7 +1,5 @@
 package com.backend;
 
-import java.sql.Date;
-
 /**
  * This is a class which helps in running MySQL Methods and takes in all the values needed
  * for the main student
@@ -177,6 +175,14 @@ public class StudentData extends Student {
 
     public void setLastEdited(Date lastEdited) {
         this.lastEdited = lastEdited;
+    }
+
+    public void setLastEdited(java.sql.Date lastEdited) {
+        this.lastEdited.setDate(lastEdited.toString());
+    }
+
+    public void setLastEdited(String lastEdited) {
+        this.lastEdited.setDate(lastEdited);
     }
 
     public void createStudent() {
