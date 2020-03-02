@@ -1,16 +1,15 @@
-package com;
+package com.example;
 
+import com.vaadin.flow.theme.AbstractTheme;
+import com.vaadin.testbench.ScreenshotOnFailureRule;
+import com.vaadin.testbench.TestBench;
+import com.vaadin.testbench.parallel.ParallelTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-
-import com.vaadin.flow.theme.AbstractTheme;
-import com.vaadin.testbench.ScreenshotOnFailureRule;
-import com.vaadin.testbench.TestBench;
-import com.vaadin.testbench.parallel.ParallelTest;
 
 /**
  * Base class for TestBench IntegrationTests on chrome.

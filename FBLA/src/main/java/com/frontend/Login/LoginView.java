@@ -15,7 +15,6 @@ import java.util.Collections;
 @PageTitle("Login | FBLA Genie")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver{
 
-
     LoginForm login = new LoginForm();
 
     public LoginView() {
