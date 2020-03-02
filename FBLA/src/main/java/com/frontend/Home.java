@@ -13,11 +13,9 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
-import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
@@ -92,19 +90,12 @@ public class Home extends AppLayout {
         genRepSubMenu.addItem("Generate Individual Report");
         genRepSubMenu.addItem("Generate Overall Report");
 
-        //Adds Logout
-        Anchor logout = new Anchor("/logout", "Log Out");
-
-        HorizontalLayout header = new HorizontalLayout();
-        header.add(menuBar, logout);
-        header.expand(menuBar);
-
         //Creates a Vertical Layout to store all the above components
         VerticalLayout verticalLayout = new VerticalLayout();
 
         //Adds component to Vertical Layout
         verticalLayout.setSizeFull();
-        verticalLayout.add(logo, header);
+        verticalLayout.add(logo, menuBar);
 
         //Aligns everything to the center
         verticalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
