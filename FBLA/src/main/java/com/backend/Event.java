@@ -1,5 +1,7 @@
 package com.backend;
 
+import java.util.StringTokenizer;
+
 import static com.backend.MySQLMethods.addStudentHours;
 
 public class Event extends Student {
@@ -68,7 +70,10 @@ public class Event extends Student {
     }
 
     public void setDate(String date) {
-        this.date.setDate(date);
+        StringTokenizer st = new StringTokenizer(date, "-");
+        this.date.setYear(Integer.parseInt(st.nextToken()) + 1900);
+        this.date.setMonth(Integer.parseInt(st.nextToken()));
+        this.date.setDay(Integer.parseInt(st.nextToken()));
     }
 
     public Student getStudent() {

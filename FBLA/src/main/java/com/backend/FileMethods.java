@@ -95,20 +95,21 @@ public class FileMethods {
      * However, the main data is all stored in the MySQL Database.
      *
      * @return An ArrayList containing all the students on whom we have data
+     * @throws IOException in case the file does not exist.
      */
     public static ArrayList<Student> getStudentsAsList() {
-        ArrayList<Student> students = new ArrayList<>();
         try {
+            ArrayList<Student> students = new ArrayList<>();
             BufferedReader read = new BufferedReader(new FileReader(studentPath));
             for (int i = 0; i < getNumberOfStudents(); i++) {
                 Student temp = new Student();
                 temp.makeStudent(read.readLine());
                 students.add(temp);
             }
+            return students;
         } catch (IOException e) {
-            //Do Nothing
+            return null;
         }
-        return students;
     }
 
     public static ArrayList<StudentData> getStudentData() {
