@@ -1,8 +1,8 @@
-package com.frontend.Add;
+package com.Frontend.Add;
 
-import com.backend.FileMethods;
-import com.backend.StudentData;
-import com.frontend.Home;
+import com.Backend.FileMethods;
+import com.Backend.StudentData;
+import com.Frontend.Home;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
@@ -27,7 +27,7 @@ import com.vaadin.flow.router.Route;
 
 import java.io.IOException;
 
-import static com.backend.MySQLMethods.selectTrackerString;
+import static com.Backend.MySQLMethods.selectTrackerString;
 
 @Route("create-student")
 public class CreateStudent extends AppLayout {

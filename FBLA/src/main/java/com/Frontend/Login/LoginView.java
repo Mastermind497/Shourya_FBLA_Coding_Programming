@@ -1,4 +1,4 @@
-package com.frontend.Login;
+package com.Frontend.Login;
 
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
@@ -35,11 +35,12 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver{
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         //Checks whether there is a parameter error
-        if(!beforeEnterEvent.getLocation()
-        .getQueryParameters()
-        .getParameters()
-        .getOrDefault("error", Collections.emptyList())
-        .isEmpty()) {
+        if (!beforeEnterEvent.getLocation()
+                .getQueryParameters()
+                .getParameters()
+                .getOrDefault("error", Collections.emptyList())
+                .isEmpty()) {
+
             //makes error visible
             login.setError(true);
         }

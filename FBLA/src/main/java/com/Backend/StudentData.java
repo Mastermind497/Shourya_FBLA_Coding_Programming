@@ -1,4 +1,6 @@
-package com.backend;
+package com.Backend;
+
+import java.util.StringTokenizer;
 
 /**
  * This is a class which helps in running MySQL Methods and takes in all the values needed
@@ -63,6 +65,7 @@ public class StudentData extends Student {
      */
     public StudentData() {
         this.yearsDone = 0;
+        lastEdited = new Date();
     }
 
     public String getFirstName() {
@@ -177,12 +180,16 @@ public class StudentData extends Student {
         this.lastEdited = lastEdited;
     }
 
-    public void setLastEdited(java.sql.Date lastEdited) {
-        this.lastEdited.setDate(lastEdited.toString());
-    }
-
     public void setLastEdited(String lastEdited) {
-        this.lastEdited.setDate(lastEdited);
+        StringTokenizer st = new StringTokenizer(lastEdited, "-");
+        int year = Integer.parseInt(st.nextToken());
+        if (year > 1900) {
+            this.lastEdited.setYear(year);
+        } else {
+            this.lastEdited.setYear(year + 1900);
+        }
+        this.lastEdited.setMonth(Integer.parseInt(st.nextToken()));
+        this.lastEdited.setDay(Integer.parseInt(st.nextToken()));
     }
 
     public void createStudent() {

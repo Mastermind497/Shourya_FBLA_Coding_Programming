@@ -1,21 +1,23 @@
 /*
  * Created by shour on 1/24/2020 at 11:21 AM
  */
-package com.frontend;
+package com.Frontend;
 
-import com.backend.MySQLMethods;
-import com.frontend.Add.AddHours;
-import com.frontend.Add.CreateStudent;
-import com.frontend.Edit.EditStudentInformation;
-import com.frontend.Get.GetStudentEvents;
-import com.frontend.Get.GetStudentInformation;
+import com.Backend.MySQLMethods;
+import com.Frontend.Add.AddHours;
+import com.Frontend.Add.CreateStudent;
+import com.Frontend.Edit.EditStudentInformation;
+import com.Frontend.Get.GetStudentEvents;
+import com.Frontend.Get.GetStudentInformation;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
@@ -90,12 +92,21 @@ public class Home extends AppLayout {
         genRepSubMenu.addItem("Generate Individual Report");
         genRepSubMenu.addItem("Generate Overall Report");
 
+
+        Anchor logout = new Anchor("/logout", "Log Out");
+
+        HorizontalLayout header = new HorizontalLayout(menuBar, logout);
+        header.expand(menuBar);
+
+        header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        header.addClassName("header");
+
         //Creates a Vertical Layout to store all the above components
         VerticalLayout verticalLayout = new VerticalLayout();
 
         //Adds component to Vertical Layout
         verticalLayout.setSizeFull();
-        verticalLayout.add(logo, menuBar);
+        verticalLayout.add(logo, header);
 
         //Aligns everything to the center
         verticalLayout.setAlignItems(FlexComponent.Alignment.CENTER);

@@ -191,7 +191,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.frontend.Application</mainClass>
+                            <mainClass>com.Frontend.Application</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

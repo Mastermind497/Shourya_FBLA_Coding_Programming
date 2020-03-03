@@ -1,6 +1,6 @@
-package com.backend;
+package com.Backend;
 
-import static com.backend.MySQLMethods.addStudentHours;
+import static com.Backend.MySQLMethods.addStudentHours;
 
 public class Event extends Student {
     private String eventName;

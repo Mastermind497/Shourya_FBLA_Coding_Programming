@@ -1,4 +1,4 @@
-package com.backend;
+package com.Backend;
 
 import com.vaadin.flow.component.notification.Notification;
 
@@ -85,6 +85,7 @@ public class Student {
             return MySQLMethods.selectTrackerAsStudent(this);
         } catch (Exception e) {
             Notification.show(e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }

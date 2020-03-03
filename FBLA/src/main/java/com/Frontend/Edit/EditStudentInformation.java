@@ -1,11 +1,11 @@
-package com.frontend.Edit;
+package com.Frontend.Edit;
 
-import com.backend.FileMethods;
-import com.backend.MySQLMethods;
-import com.backend.Student;
-import com.backend.StudentData;
-import com.frontend.Add.CreateStudent;
-import com.frontend.Home;
+import com.Backend.FileMethods;
+import com.Backend.MySQLMethods;
+import com.Backend.Student;
+import com.Backend.StudentData;
+import com.Frontend.Add.CreateStudent;
+import com.Frontend.Home;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -34,8 +34,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import static com.backend.MySQLMethods.selectTrackerDouble;
-import static com.backend.MySQLMethods.updateTracker;
+import static com.Backend.MySQLMethods.selectTrackerDouble;
+import static com.Backend.MySQLMethods.updateTracker;
 
 @Route("edit-student-info")
 public class EditStudentInformation extends AppLayout {
@@ -230,6 +230,7 @@ public class EditStudentInformation extends AppLayout {
                 setContent(chooseStudent());
             } catch (IOException ioe) {
                 Notification.show(ioe.getMessage());
+                ioe.printStackTrace();
             }
         });
 

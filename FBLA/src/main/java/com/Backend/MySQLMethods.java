@@ -1,4 +1,4 @@
-package com.backend;
+package com.Backend;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ public class MySQLMethods {
     //The Driver
     private static final String Driver = "com.mysql.cj.jdbc.Driver";
     private static final String tableName = "tracker";
+    public static final String pwTableName = "passwords";
     //The name of the database and table. It is a public static string because it is the same all the time in any file
     public static String databaseName = "student_data";
     //The location of the database
@@ -97,6 +98,32 @@ public class MySQLMethods {
         //What it does if there is an error
         catch (Exception e) {
             System.out.println("Create Table FAIL");
+            e.printStackTrace();
+        }
+    }
+
+    public static void createPasswordTable() {
+        connection = null;
+        statement = null;
+        try {
+            connection = getConnection();
+            statement = connection.createStatement();
+
+            String query = "CREATE TABLE IF NOT EXISTS " + pwTableName + "("
+                    + "username VARCHAR(255) NOT NULL PRIMARY KEY, "
+                    + "password VARCHAR(255) NOT NULL"
+                    + ")";
+
+            statement.executeUpdate(query);
+
+            try {
+                connection.close();
+                statement.close();
+            } catch (SQLException e) {
+                //Do Nothing
+            }
+        } catch (Exception e) {
+            System.out.println("Password Table Fail");
             e.printStackTrace();
         }
     }
@@ -294,6 +321,120 @@ public class MySQLMethods {
     }
 
     /**
+     * This stores the password in a database. However, to secure them, they use a hashing function
+     * (explained in the documentation) which securely converts the password into an impenetrable
+     * String. It is a one way function, thus stopping anyone from figuring out what the password is.
+     *
+     * @param username       the Username of the user being added
+     * @param hashedPassword the password after hash encryption
+     * @throws Exception This is throws in case the Database is not found
+     */
+    public static void addUserPass(String username, String hashedPassword) throws Exception {
+        //Creates a database connection
+        connection = getConnection();
+
+        //Converts hours into two parts: int and decimal
+        String query = " insert into " + pwTableName + " (username, password)"
+                + " values (?, ?)";
+
+        //Creates a preparedStatement to insert into mysql command line
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, username);
+        preparedStatement.setString(2, hashedPassword);
+
+        //executes statement
+        preparedStatement.execute();
+
+        //Ends everything
+        connection.close();
+        statement.close();
+    }
+
+    /**
+     * Gets the hashed password given a username
+     *
+     * @param username the Username for which a password is being found
+     * @return the hashed password
+     */
+    public static String selectPass(String username) {
+        String output;
+        try {
+            //Creates a connection
+            connection = getConnection();
+
+            //SQL Query to find find data
+            String query = "select password  from " + pwTableName + " where username = '" + username + "'";
+
+            //Create the java Statement (Goes in Query)
+            statement = connection.createStatement();
+
+            //The Result after executing the query
+            ResultSet resultSet = statement.executeQuery(query);
+            resultSet.next();
+
+            //returns the String inside column "data"
+            output = resultSet.getString("password");
+
+            try {
+                //Ends everything
+                connection.close();
+                statement.close();
+                resultSet.close();
+            } catch (Exception e) {
+                //Do Nothing
+            }
+            if (output == null || output.equals("")) {
+                return null;
+            }
+            return output;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * This gets an ArrayList of all users in the table for admin to see
+     *
+     * @return An ArrayList which contains all of the users in the system
+     */
+    public static ArrayList<String> selectUsers() {
+        ArrayList<String> output = new ArrayList<>();
+        try {
+            //Creates a connection
+            connection = getConnection();
+
+            //SQL Query to find find data
+            String query = "select password  from " + pwTableName + " where username = '" + username + "'";
+
+            //Create the java Statement (Goes in Query)
+            statement = connection.createStatement();
+
+            //The Result after executing the query
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                output.add(resultSet.getString(1));
+            }
+
+            try {
+                //Ends everything
+                connection.close();
+                statement.close();
+                resultSet.close();
+            } catch (Exception e) {
+                //Do Nothing
+            }
+            if (output.isEmpty()) {
+                return null;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+
+        return output;
+    }
+
+    /**
      * This allows someone to get specific integer-type data from the Main Table.
      *
      * @param firstName The Student's first name
@@ -374,7 +515,6 @@ public class MySQLMethods {
         } catch (Exception e) {
             return null;
         }
-
     }
 
     /**
@@ -606,7 +746,7 @@ public class MySQLMethods {
         studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
         studentData.setYearsDone(resultSet.getShort("yearsDone"));
         studentData.setEmail(resultSet.getString("email"));
-        studentData.setLastEdited(resultSet.getDate("lastEdited"));
+        studentData.setLastEdited(resultSet.getDate("lastEdited").toString());
 
         //closes resources
         statement.close();
@@ -652,7 +792,7 @@ public class MySQLMethods {
         studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
         studentData.setYearsDone(resultSet.getShort("yearsDone"));
         studentData.setEmail(resultSet.getString("email"));
-        studentData.setLastEdited(resultSet.getDate("lastEdited"));
+        studentData.setLastEdited(resultSet.getDate("lastEdited").toString());
 
         //closes resources
         statement.close();
@@ -698,7 +838,7 @@ public class MySQLMethods {
             studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
             studentData.setYearsDone(resultSet.getShort("yearsDone"));
             studentData.setEmail(resultSet.getString("email"));
-            studentData.setLastEdited(resultSet.getDate("lastEdited"));
+            studentData.setLastEdited(resultSet.getDate("lastEdited").toString());
 
             //Adds the StudentData to the List
             studentDataList.add(studentData);

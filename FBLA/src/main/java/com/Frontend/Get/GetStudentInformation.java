@@ -1,9 +1,9 @@
-package com.frontend.Get;
+package com.Frontend.Get;
 
-import com.backend.MySQLMethods;
-import com.backend.StudentData;
-import com.frontend.Edit.EditStudentInformation;
-import com.frontend.Home;
+import com.Backend.MySQLMethods;
+import com.Backend.StudentData;
+import com.Frontend.Edit.EditStudentInformation;
+import com.Frontend.Home;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
@@ -13,7 +13,6 @@ import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -31,16 +30,12 @@ import java.util.ArrayList;
 //TODO Make this class fully-functional
 @Route("get-student-info")
 public class GetStudentInformation extends AppLayout {
-    public GetStudentInformation() {
+
+    public GetStudentInformation() throws Exception {
         addToNavbar(Home.makeHeader());
 
         //Shows data on a grid (Up to 100k pieces)
-        ArrayList<StudentData> data = new ArrayList<>();
-        try {
-            data = MySQLMethods.selectFullTracker();
-        } catch (Exception e) {
-            Notification.show(e.getMessage());
-        }
+        ArrayList<StudentData> data = MySQLMethods.selectFullTracker();
 
 //        //Creates Grid Data Holder
 //        Crud<StudentData> crud = new Crud<>(StudentData.class, createStudentEditor());

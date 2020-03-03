@@ -1,11 +1,11 @@
-package com.frontend.Get;
+package com.Frontend.Get;
 
-import com.backend.Event;
-import com.backend.FileMethods;
-import com.backend.MySQLMethods;
-import com.backend.Student;
-import com.frontend.Add.CreateStudent;
-import com.frontend.Home;
+import com.Backend.Event;
+import com.Backend.FileMethods;
+import com.Backend.MySQLMethods;
+import com.Backend.Student;
+import com.Frontend.Add.CreateStudent;
+import com.Frontend.Home;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
@@ -71,6 +71,7 @@ public class GetStudentEvents extends AppLayout {
                 viewEvents(selected);
             } catch (Exception e) {
                 Notification.show(e.getMessage());
+                e.printStackTrace();
             }
         });
 
