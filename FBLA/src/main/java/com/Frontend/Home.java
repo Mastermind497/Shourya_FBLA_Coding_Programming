@@ -1,6 +1,3 @@
-/*
- * Created by shour on 1/24/2020 at 11:21 AM
- */
 package com.Frontend;
 
 import com.Backend.MySQLMethods;
@@ -74,17 +71,17 @@ public class Home extends AppLayout {
         );
 
         SubMenu editDataSubMenu = editData.getSubMenu();
-        editDataSubMenu.addItem("Edit Student Information", event ->
-                UI.getCurrent().navigate(EditStudentInformation.class)
-        );
+        editDataSubMenu.addItem("Edit Student Information", event ->{
+                UI.getCurrent().navigate(EditStudentInformation.class);
+                EditStudentInformation.selected = null;
+        });
         editDataSubMenu.addItem("Edit Student Event Information");
-        editDataSubMenu.addItem("Delete Student");
 
         SubMenu viewDataSubMenu = viewData.getSubMenu();
-        viewDataSubMenu.addItem("View Student Information", event ->
+        viewDataSubMenu.addItem("View All Student Information", event ->
                 UI.getCurrent().navigate(GetStudentInformation.class)
         );
-        viewDataSubMenu.addItem("View Student Event History", event ->
+        viewDataSubMenu.addItem("View Individual Student Information", event ->
                 UI.getCurrent().navigate(GetStudentEvents.class)
         );
 
