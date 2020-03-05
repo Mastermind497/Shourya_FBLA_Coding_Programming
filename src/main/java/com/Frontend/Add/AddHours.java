@@ -62,7 +62,7 @@ public class AddHours extends AppLayout {
         ComboBox<Student> studentChoices = new ComboBox<>();
         studentChoices.setItems(students);
         studentChoices.addValueChangeListener(e -> {
-            if (studentChoices.getValue().getCreateNewStudent()) {
+            if (studentChoices.getValue() != null && studentChoices.getValue().getCreateNewStudent()) {
                 UI.getCurrent().navigate(CreateStudent.class);
             }
         });
@@ -76,7 +76,7 @@ public class AddHours extends AppLayout {
         eventHours.setErrorMessage("That is not a Number, Please Enter a Number");
         eventHours.setValueChangeMode(ValueChangeMode.EAGER);
 
-        DatePicker dateOfEvent = new DatePicker();
+        DatePicker dateOfEvent = new DatePicker("Date");
         dateOfEvent.setClearButtonVisible(true);
         dateOfEvent.addValueChangeListener(e -> {
             eventDate.setYear(dateOfEvent.getValue().getYear());

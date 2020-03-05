@@ -1,5 +1,9 @@
 package com.Backend;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+
 import static com.Backend.MySQLMethods.addStudentHours;
 
 public class Event extends Student {
@@ -67,8 +71,32 @@ public class Event extends Student {
         return date;
     }
 
+    public java.sql.Date getDateSQL() {
+        String string_date = this.date.toStringRegular();
+
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-mm-dd");
+        long milliseconds = 0;
+        try {
+            java.util.Date d = f.parse(string_date);
+            milliseconds = d.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new java.sql.Date(milliseconds);
+    }
+
     public void setDate(String date) {
         this.date.setDate(date);
+    }
+
+    public LocalDate getLocalDate() {
+        return LocalDate.of(date.getYear(), date.getMonth(), date.getDay());
+    }
+
+    public void setDate(LocalDate localDate) {
+        date.setYear(localDate.getYear());
+        date.setMonth(localDate.getMonthValue());
+        date.setDay(localDate.getDayOfMonth());
     }
 
     public Student getStudent() {

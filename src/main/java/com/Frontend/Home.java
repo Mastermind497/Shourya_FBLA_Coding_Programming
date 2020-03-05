@@ -3,6 +3,7 @@ package com.Frontend;
 import com.Backend.MySQLMethods;
 import com.Frontend.Add.AddHours;
 import com.Frontend.Add.CreateStudent;
+import com.Frontend.Edit.EditStudentEvents;
 import com.Frontend.Edit.EditStudentInformation;
 import com.Frontend.Get.GetStudentEvents;
 import com.Frontend.Get.GetStudentInformation;
@@ -18,6 +19,25 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
+
+/* FIXME
+    * Add Title to Each Page
+    * Implement Graduation Year
+    * Make Community Service Category a Radio Button
+    * Student Name Label in Add Hours
+    * Add (Hours) to length of event
+    * Make "RESET" Red
+    * Add Name Label to All Dropdowns
+    * Calculate Grade level by Grad year
+    * Edit Student Event
+    * Add Delete Button within Edit
+    * Make Years Done Automatically Calculated
+    * Edit Buttons Automatically Reset
+    * View All + View Individual
+    * Add Login Security
+    * Fix Forget Password
+    * Add Student Hours swaps month and days
+ */
 
 /**
  * Home is the home view for the App.
@@ -72,10 +92,14 @@ public class Home extends AppLayout {
 
         SubMenu editDataSubMenu = editData.getSubMenu();
         editDataSubMenu.addItem("Edit Student Information", event ->{
-                UI.getCurrent().navigate(EditStudentInformation.class);
-                EditStudentInformation.selected = null;
+            EditStudentInformation.selected = null;
+            UI.getCurrent().navigate(EditStudentInformation.class);
         });
-        editDataSubMenu.addItem("Edit Student Event Information");
+        editDataSubMenu.addItem("Edit Student Event Information", event -> {
+            EditStudentEvents.selected = null;
+            EditStudentEvents.oldEvent = null;
+            UI.getCurrent().navigate(EditStudentEvents.class);
+        });
 
         SubMenu viewDataSubMenu = viewData.getSubMenu();
         viewDataSubMenu.addItem("View All Student Information", event ->

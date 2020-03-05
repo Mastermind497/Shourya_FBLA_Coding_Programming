@@ -150,10 +150,9 @@ public class MySQLMethods {
 
             //Uses Statement to Create MySQL Table in database
             String table = "CREATE TABLE IF NOT EXISTS " + studentName + " ("
-                    + "id INT AUTO_INCREMENT PRIMARY KEY,"
-                    + "eventName VARCHAR(2555),"
+                    + "eventName VARCHAR(255) PRIMARY KEY,"
                     + "eventHours DOUBLE NOT NULL,"
-                    + "date DATE"
+                    + "eventDate DATE"
                     + ")";
             statement.executeUpdate(table);
 
@@ -244,7 +243,7 @@ public class MySQLMethods {
         java.sql.Date date = new java.sql.Date(calendar.getTime().getTime());
 
         //Converts hours into two parts: int and decimal
-        String query = " insert into " + makeName(firstName, lastName, studentID) + " (eventName, eventHours, date)"
+        String query = " insert into " + makeName(firstName, lastName, studentID) + " (eventName, eventHours, eventDate)"
                 + " values (?, ?, ?)";
 
         //Creates a preparedStatement to insert into mysql command line
@@ -292,7 +291,7 @@ public class MySQLMethods {
         java.sql.Date date = new java.sql.Date(calendar.getTime().getTime());
 
         //Converts hours into two parts: int and decimal
-        String query = " insert into " + makeName(student) + "(eventName, eventHours, date)"
+        String query = " insert into " + makeName(student) + "(eventName, eventHours, eventDate)"
                 + " values (?, ?, ?)";
 
         //Creates a preparedStatement to insert into mysql command line
@@ -885,7 +884,7 @@ public class MySQLMethods {
             int id = resultSet.getInt("id");
             String eventName = resultSet.getString("eventName");
             double eventHours = resultSet.getDouble("eventHours");
-            String date = resultSet.getDate("date").toString();
+            String date = resultSet.getDate("eventDate").toString();
             output[count] = String.format("Event ID: %s, Event Name: %s, Event Hours: %s, Date of Event: %s",
                     id, eventName, eventHours, date);
             count++;
@@ -928,7 +927,7 @@ public class MySQLMethods {
             Event next = new Event();
             next.setEventName(resultSet.getString("eventName"));
             next.setHours(resultSet.getDouble("eventHours"));
-            next.setDate(resultSet.getDate("date").toString());
+            next.setDate(resultSet.getDate("eventDate").toString());
             output.add(next);
         }
         resultSet.close();
@@ -978,7 +977,7 @@ public class MySQLMethods {
         resultSet.next();
         int id = resultSet.getInt("id");
         double eventHours = resultSet.getDouble("eventHours");
-        String date = resultSet.getDate("date").toString();
+        String date = resultSet.getDate("eventDate").toString();
         String output = String.format("Event ID: %s, Event Name: %s, Event Hours: %s, Date of Event: %s",
                 id, eventName, eventHours, date);
         resultSet.close();
@@ -1136,6 +1135,36 @@ public class MySQLMethods {
         }
 
         updateToCurrentDate(firstName, lastName, studentID);
+    }
+
+    public static void updateEvent(Student student, Event oldEvent, Event newEvent) {
+        //Gets connection to database
+        try {
+            connection = getConnection();
+            String tableName = makeName(student);
+
+            String query =
+                    "UPDATE " + tableName + " SET eventName = ?, eventHours = ?, eventDate = ? " +
+                            "WHERE eventName = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, newEvent.getEventName());
+            preparedStatement.setDouble(2, newEvent.getHours());
+            preparedStatement.setDate(3, newEvent.getDateSQL());
+            preparedStatement.setString(4, oldEvent.getEventName());
+            preparedStatement.executeUpdate();
+
+            //closes resources
+            preparedStatement.close();
+            connection.close();
+
+            updateToCurrentDate(student.getFirstName(), student.getLastName(), student.getStudentID());
+            System.out.println("Executed Event Update");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Update Event Failed");
+        }
     }
 
     /**

@@ -18,7 +18,9 @@ public class Date {
     }
 
     public Date() {
-
+        this.year = 0;
+        this.month = 1;
+        this.day = 1;
     }
 
     public int getYear() {
@@ -95,5 +97,23 @@ public class Date {
     @Override
     public String toString() {
         return day + " " + getMonthString() + ", " + year;
+    }
+
+    public String toStringRegular() {
+        String year = "" + this.year;
+
+        String month = "";
+        if (this.month < 10) {
+            month += "0";
+        }
+        month += this.month;
+
+        String day = "";
+        if (this.day < 10) {
+            day += "0";
+        }
+        day += this.day;
+
+        return year + "-" + month + "-" + day;
     }
 }

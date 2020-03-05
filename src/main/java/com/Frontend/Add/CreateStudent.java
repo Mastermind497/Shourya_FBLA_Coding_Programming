@@ -71,9 +71,11 @@ public class CreateStudent extends AppLayout {
         gradeField.setPlaceholder("10");
         gradeField.setValueChangeMode(ValueChangeMode.EAGER);
 
-        //Dropdown Menu
+        //Button Group
+
         Select<String> communityServiceCategoryField = new Select<>();
-        communityServiceCategoryField.setItems("CSA Community", "CSA Service", "CSA Achievement");
+        communityServiceCategoryField.setItems("CSA Community (50 Hours)", "CSA Service (200 Hours",
+                "CSA Achievement (500 Hours)");
         communityServiceCategoryField.setPlaceholder("Community Service Category");
 
         EmailField emailField = new EmailField("Email");
