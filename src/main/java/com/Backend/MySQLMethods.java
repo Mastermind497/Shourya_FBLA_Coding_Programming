@@ -886,6 +886,33 @@ public class MySQLMethods {
         return students;
     }
 
+    public static int numOfStudents() {
+        int numOfStudents = 0;
+        try {
+            connection = getConnection();
+
+            String query = "select COUNT(*) from " + tableName;
+
+            statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            resultSet.next();
+
+            numOfStudents = resultSet.getInt(1);
+
+            connection.close();
+            statement.close();
+            resultSet.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Get Students Failed");
+        }
+
+        return numOfStudents;
+    }
+
     /**
      * This allows access to all of a student's events
      *
