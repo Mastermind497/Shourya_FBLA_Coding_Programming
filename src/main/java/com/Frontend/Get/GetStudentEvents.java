@@ -1,9 +1,6 @@
 package com.Frontend.Get;
 
-import com.Backend.Event;
-import com.Backend.FileMethods;
-import com.Backend.MySQLMethods;
-import com.Backend.Student;
+import com.Backend.*;
 import com.Frontend.Add.CreateStudent;
 import com.Frontend.Home;
 import com.vaadin.flow.component.UI;
@@ -13,7 +10,6 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -84,29 +80,54 @@ public class GetStudentEvents extends AppLayout {
      * @param chosen The chosen student
      */
     public void viewEvents(Student chosen) throws Exception {
-        H1 studentName = new H1(chosen.getFirstName() + " " + chosen.getLastName() + ", " +
-                chosen.getStudentID());
+        ArrayList<StudentData> studentData = new ArrayList<>();
+        studentData.add(MySQLMethods.selectTrackerAsStudent(chosen));
+
+        Grid<StudentData> grid = new Grid<>();
+        grid.setItems(studentData);
+        grid.addColumn(StudentData::getFirstName).setHeader("First Name");
+        grid.addColumn(StudentData::getLastName).setHeader("Last Name");
+        grid.addColumn(StudentData::getStudentID).setHeader("Student ID");
+        grid.addColumn(StudentData::getGrade).setHeader("Grade");
+        grid.addColumn(StudentData::getCommunityServiceHours).setHeader("CS Hours");
+        grid.addColumn(StudentData::getCommunityServiceCategory).setHeader("CS Category");
+        grid.addColumn(StudentData::getEmail).setHeader("Email");
+        grid.addColumn(StudentData::getYearsDone).setHeader("Years Done");
+        grid.addColumn(StudentData::getLastEdited).setHeader("Last Edited");
+
+        grid.setHeightByRows(true);
+
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
+                GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+
+        //Makes them AutoWidth, which fixes width for data length
+        for (Grid.Column<StudentData> al : grid.getColumns()) {
+            al.setAutoWidth(true);
+        }
 
         VerticalLayout layout = new VerticalLayout();
 
         ArrayList<Event> eventList = MySQLMethods.selectStudentEventsAsEvent(chosen);
 
 
-        Grid<Event> grid = new Grid<>();
-        grid.setItems(eventList);
-        grid.addColumn(Event::getEventName).setHeader("Event Name");
-        grid.addColumn(Event::getHours).setHeader("Hours of Event");
-        grid.addColumn(Event::getDate).setHeader("Date of Event");
+        Grid<Event> events = new Grid<>();
+        events.setItems(eventList);
+        events.addColumn(Event::getEventName).setHeader("Event Name");
+        events.addColumn(Event::getHours).setHeader("Hours of Event");
+        events.addColumn(Event::getDate).setHeader("Date of Event");
 
         //Makes them AutoWidth, which fixes width for data length
-        for (Grid.Column<Event> al : grid.getColumns()) {
+        for (Grid.Column<Event> al : events.getColumns()) {
             al.setAutoWidth(true);
         }
 
-        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
+        events.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
 
-        layout.add(studentName, grid);
+        layout.add(grid, events);
+        layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        layout.setAlignItems(FlexComponent.Alignment.CENTER);
+
         setContent(layout);
     }
 }

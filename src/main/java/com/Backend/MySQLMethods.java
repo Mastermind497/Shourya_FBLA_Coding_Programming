@@ -851,6 +851,41 @@ public class MySQLMethods {
         return studentDataList;
     }
 
+    public static ArrayList<Student> getStudents() {
+        ArrayList<Student> students = new ArrayList<>();
+
+        try {
+            connection = getConnection();
+
+            String query = "select * from " + tableName;
+
+            statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                Student student = new Student();
+
+                //Adds the Data to the StudentData Object
+                student.setFirstName(resultSet.getString("firstName"));
+                student.setLastName(resultSet.getString("lastName"));
+                student.setStudentID(resultSet.getInt("studentID"));
+
+                students.add(student);
+            }
+
+            connection.close();
+            statement.close();
+            resultSet.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Get Students Failed");
+        }
+
+        return students;
+    }
+
     /**
      * This allows access to all of a student's events
      *
