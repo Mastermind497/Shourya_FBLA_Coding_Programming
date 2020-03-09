@@ -13,6 +13,7 @@ import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -49,7 +50,7 @@ public class GetStudentInformation extends AppLayout {
 //
 //        crud.addThemeVariants(CrudVariant.NO_BORDER);
 
-        Grid<StudentData> grid = new Grid<>();
+        GridPro<StudentData> grid = new GridPro<>();
         grid.setItems(data);
         grid.addColumn(StudentData::getFirstName).setHeader("First Name");
         grid.addColumn(StudentData::getLastName).setHeader("Last Name");

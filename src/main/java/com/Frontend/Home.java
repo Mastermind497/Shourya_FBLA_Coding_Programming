@@ -7,6 +7,7 @@ import com.Frontend.Edit.EditStudentEvents;
 import com.Frontend.Edit.EditStudentInformation;
 import com.Frontend.Get.GetStudentEvents;
 import com.Frontend.Get.GetStudentInformation;
+import com.Frontend.Reports.GenerateIndividualReport;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.contextmenu.MenuItem;
@@ -110,7 +111,8 @@ public class Home extends AppLayout {
         );
 
         SubMenu genRepSubMenu = genReport.getSubMenu();
-        genRepSubMenu.addItem("Generate Individual Report");
+        genRepSubMenu.addItem("Generate Individual Report", e ->
+                UI.getCurrent().navigate(GenerateIndividualReport.class));
         genRepSubMenu.addItem("Generate Overall Report");
 
 

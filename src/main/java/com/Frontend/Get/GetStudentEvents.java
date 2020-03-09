@@ -10,6 +10,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -83,7 +84,7 @@ public class GetStudentEvents extends AppLayout {
         ArrayList<StudentData> studentData = new ArrayList<>();
         studentData.add(MySQLMethods.selectTrackerAsStudent(chosen));
 
-        Grid<StudentData> grid = new Grid<>();
+        GridPro<StudentData> grid = new GridPro<>();
         grid.setItems(studentData);
         grid.addColumn(StudentData::getFirstName).setHeader("First Name");
         grid.addColumn(StudentData::getLastName).setHeader("Last Name");

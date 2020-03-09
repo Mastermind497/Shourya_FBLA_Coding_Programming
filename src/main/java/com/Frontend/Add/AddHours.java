@@ -78,11 +78,9 @@ public class AddHours extends AppLayout {
 
         DatePicker dateOfEvent = new DatePicker("Date");
         dateOfEvent.setClearButtonVisible(true);
-        dateOfEvent.addValueChangeListener(e -> {
-            eventDate.setYear(dateOfEvent.getValue().getYear());
-            eventDate.setMonth(dateOfEvent.getValue().getMonthValue());
-            eventDate.setDay(dateOfEvent.getValue().getDayOfMonth());
-        });
+        dateOfEvent.addValueChangeListener(e ->
+            eventDate.setDate(dateOfEvent.getValue())
+        );
         dateOfEvent.setMax(LocalDate.now());
 
         //Makes all components required

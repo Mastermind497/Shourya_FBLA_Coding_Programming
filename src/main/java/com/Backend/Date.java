@@ -1,5 +1,6 @@
 package com.Backend;
 
+import java.time.LocalDate;
 import java.util.StringTokenizer;
 
 /**
@@ -88,6 +89,12 @@ public class Date {
         }
         this.setMonth(Integer.parseInt(st.nextToken()));
         this.setDay(Integer.parseInt(st.nextToken()));
+    }
+
+    public void setDate(LocalDate date) {
+        this.year = date.getYear();
+        this.month = date.getMonthValue();
+        this.day = date.getDayOfMonth();
     }
 
     public String getMonthString() {
