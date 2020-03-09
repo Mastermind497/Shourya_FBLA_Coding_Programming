@@ -4,7 +4,7 @@ import com.vaadin.flow.component.notification.Notification;
 
 import java.util.StringTokenizer;
 
-public class Student {
+public class Student{
     private String firstName;
     private String lastName;
     private int studentID;

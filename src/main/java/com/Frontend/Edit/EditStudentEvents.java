@@ -112,12 +112,9 @@ public class EditStudentEvents extends AppLayout {
         //Adds Create New Student Option
         ComboBox<Event> eventChoices = new ComboBox<>();
         eventChoices.setItems(events);
-        eventChoices.addValueChangeListener(e -> {
-            if (eventChoices.getValue().getCreateNewStudent()) {
-                UI.getCurrent().navigate(CreateStudent.class);
-            }
-            oldEvent = eventChoices.getValue();
-        });
+        eventChoices.addValueChangeListener(e ->
+            oldEvent = eventChoices.getValue()
+        );
         eventChoices.setRequiredIndicatorVisible(true);
 
         Button edit = new Button("Edit This Event");

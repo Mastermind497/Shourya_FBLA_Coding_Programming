@@ -3,10 +3,11 @@ package com.Backend;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Comparator;
 
 import static com.Backend.MySQLMethods.addStudentHours;
 
-public class Event extends Student {
+public class Event extends Student implements Comparable<Event>, Comparator<Event> {
     private String eventName;
     private double hours;
     private Date date;
@@ -123,5 +124,15 @@ public class Event extends Student {
     @Override
     public String toString() {
         return String.format("Name: %s, Hours: %s, Date: %s", eventName, hours, date);
+    }
+
+    @Override
+    public int compareTo(Event o) {
+        return this.date.compareTo(o.getDate());
+    }
+
+    @Override
+    public int compare(Event o1, Event o2) {
+        return o1.getDate().compareTo(o2.getDate());
     }
 }

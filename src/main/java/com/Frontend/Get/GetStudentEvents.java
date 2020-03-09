@@ -17,6 +17,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Route("get-student-events")
 public class GetStudentEvents extends AppLayout {
@@ -81,7 +83,7 @@ public class GetStudentEvents extends AppLayout {
      * @param chosen The chosen student
      */
     public void viewEvents(Student chosen) throws Exception {
-        ArrayList<StudentData> studentData = new ArrayList<>();
+        List<StudentData> studentData = new ArrayList<>();
         studentData.add(MySQLMethods.selectTrackerAsStudent(chosen));
 
         GridPro<StudentData> grid = new GridPro<>();
@@ -109,7 +111,8 @@ public class GetStudentEvents extends AppLayout {
         VerticalLayout layout = new VerticalLayout();
 
         ArrayList<Event> eventList = MySQLMethods.selectStudentEventsAsEvent(chosen);
-
+        Collections.sort(eventList);
+        System.out.println(eventList);
 
         Grid<Event> events = new Grid<>();
         events.setItems(eventList);

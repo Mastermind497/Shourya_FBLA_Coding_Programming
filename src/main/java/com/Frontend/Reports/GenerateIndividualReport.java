@@ -3,7 +3,9 @@ package com.Frontend.Reports;
 import com.Backend.Date;
 import com.Backend.MySQLMethods;
 import com.Backend.Student;
+import com.Backend.StudentData;
 import com.Frontend.Home;
+import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -115,6 +117,15 @@ public class GenerateIndividualReport extends AppLayout {
         actions.setAlignItems(FlexComponent.Alignment.CENTER);
         actions.setAlignSelf(FlexComponent.Alignment.CENTER);
 
+        save.addClickListener(e ->
+            report(selectedStudent, startingDate)
+        );
+
+        reset.addClickListener(e -> {
+            studentSelect.setValue(null);
+            startDate.setValue(null);
+        });
+
         mainLayout.add(form, actions);
         mainLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         mainLayout.setAlignSelf(FlexComponent.Alignment.CENTER);
@@ -122,8 +133,17 @@ public class GenerateIndividualReport extends AppLayout {
         setContent(mainLayout);
     }
 
-    public void report() {
 
+    public void report(Student student, Date beginDate) {
+        //Dropdown menu for all data
+        Accordion dataViewer = new Accordion();
+
+        StudentData dataOfStudent = student.getStudentData();
+
+        VerticalLayout basicInformation = new VerticalLayout();
+            basicInformation.add(
+
+            );
     }
 
 }

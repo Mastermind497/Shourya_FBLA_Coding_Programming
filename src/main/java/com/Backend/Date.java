@@ -1,13 +1,14 @@
 package com.Backend;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.StringTokenizer;
 
 /**
  * Creates a date class to store the date. This would allow easy
  * storage and manipulation of the date
  */
-public class Date {
+public class Date implements Comparator<Date>, Comparable<Date> {
     private int year;
     private int month;
     private int day;
@@ -87,7 +88,7 @@ public class Date {
         } else {
             this.setYear(year + 1900);
         }
-        this.setMonth(Integer.parseInt(st.nextToken()));
+        this.setMonth(Integer.parseInt(st.nextToken()) - 1);
         this.setDay(Integer.parseInt(st.nextToken()));
     }
 
@@ -122,5 +123,35 @@ public class Date {
         day += this.day;
 
         return year + "-" + month + "-" + day;
+    }
+
+    @Override
+    public int compareTo(Date o) {
+        if (this.year != o.getYear()) {
+            return this.year - o.getYear();
+        }
+        else {
+            if (this.month != o.getMonth()) {
+                return this.month - o.getMonth();
+            }
+            else {
+                return this.day - o.getDay();
+            }
+        }
+    }
+
+    @Override
+    public int compare(Date o1, Date o2) {
+        if (o1.getYear() != o2.getYear()) {
+            return o1.getYear() - o2.getYear();
+        }
+        else {
+            if (o1.getMonth() != o2.getMonth()) {
+                return o1.getMonth() - o2.getMonth();
+            }
+            else {
+                return o1.getMonth() - o2.getDay();
+            }
+        }
     }
 }
