@@ -4,21 +4,30 @@ import com.Backend.Date;
 import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Backend.StudentData;
+import com.Frontend.Charts;
 import com.Frontend.Home;
-import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.board.Board;
+import com.vaadin.flow.component.board.Row;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Route("individual-reports")
@@ -102,6 +111,7 @@ public class GenerateIndividualReport extends AppLayout {
         startDate.setClearButtonVisible(true);
         startDate.addValueChangeListener(e -> startingDate.setDate(startDate.getValue()));
         startDate.setEnabled(false);
+        startDate.setMax(LocalDate.now());
 
         //Adds components to form
         form.add(studentSelect, 3);
@@ -133,17 +143,82 @@ public class GenerateIndividualReport extends AppLayout {
         setContent(mainLayout);
     }
 
-
-    public void report(Student student, Date beginDate) {
+    /**
+     * Generates the report view after the form input in the beginning. It uses the student chosen in the form
+     * and the date picked (if any) to create a report.
+     * @param student The student whose report is being generated
+     * @param beginDate The beginning date of the data generation
+     */
+    public void report(Student student, @OptionalParameter Date beginDate) {
+        VerticalLayout main = new VerticalLayout();
+        main.setPadding(true);
+        main.setMargin(true);
+        
         //Dropdown menu for all data
-        Accordion dataViewer = new Accordion();
+        Board dataBoard = new Board();
 
         StudentData dataOfStudent = student.getStudentData();
 
-        VerticalLayout basicInformation = new VerticalLayout();
-            basicInformation.add(
+        H2 overviewHeading = new H2("Overview");
+            Div firstName = setText("First Name", dataOfStudent.getFirstName());
+            Div lastName = setText("Last Name" , dataOfStudent.getLastName());
+            Div studentID = setText("Student ID", Integer.toString(dataOfStudent.getStudentID()));
+            Div email = setText("Email", dataOfStudent.getEmail());
+            Div grade = setText("Grade", Short.toString(dataOfStudent.getGrade()));
 
-            );
+            Div communityServiceCategoryGoal = setText("Community Service Category Goal",
+                    dataOfStudent.getCommunityServiceCategory());
+            Div communityServiceCategoryCurrent = setText("Current Community Service Category",
+                    dataOfStudent.getCurrentCommunityServiceCategory());
+            Div communityServiceHours = setText("Community Service Hours",
+                    Double.toString(dataOfStudent.getCommunityServiceHours()));
+
+            Div lastEdited = setText("Last Edited", dataOfStudent.getLastEdited().toString());
+
+            //Heading to describe section
+            dataBoard.addRow(overviewHeading);
+
+            //First Row: Basic Overview
+            dataBoard.addRow(firstName, lastName, studentID, grade);
+
+            //Second Row: Supporting Information
+            Row supportingInfo = dataBoard.addRow(email, communityServiceHours);
+
+            //Add a space between the second and third rows
+            Div spacer = new Div();
+            spacer.add(new H3(" "));
+            dataBoard.addRow(spacer);
+
+            //Third Row: Gives Brief Overview of hours
+            dataBoard.addRow(communityServiceCategoryCurrent, communityServiceCategoryGoal, lastEdited);
+
+        H2 hourAnalysis = new H2("Hours in Depth");
+            //Creates a Solid Gauge for each of the Different Awards
+            Chart communityChart = Charts.solidGauge(0, /*dataOfStudent.getCommunityServiceHours()*/ 50, 50, "Hours");
+
+        //Row 1: Heading for Hour Analysis
+        dataBoard.addRow(hourAnalysis);
+        //Row 2: Charts depicting process through hours
+        dataBoard.addRow(communityChart);
+
+        main.add(dataBoard);
+
+        setContent(main);
+    }
+
+    /**
+     * This method returns a the pre-formatted data of a student. This simplifies the job significantly when
+     * writing multiple pieces of data
+     * @param header The heading text of the piece of data
+     * @param text The piece of data
+     * @return A Div containing the formatted Student Data
+     */
+    private Div setText(String header, String text) {
+        Div div = new Div();
+        div.add(new H6(header + ":"));
+        div.add(text);
+
+        return div;
     }
 
 }
