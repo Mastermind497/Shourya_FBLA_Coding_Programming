@@ -16,10 +16,7 @@ import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -175,31 +172,42 @@ public class GenerateIndividualReport extends AppLayout {
 
             Div lastEdited = setText("Last Edited", dataOfStudent.getLastEdited().toString());
 
-            //Heading to describe section
-            dataBoard.addRow(overviewHeading);
+        //Heading to describe section
+        dataBoard.addRow(overviewHeading);
 
-            //First Row: Basic Overview
-            dataBoard.addRow(firstName, lastName, studentID, grade);
+        //First Row: Basic Overview
+        dataBoard.addRow(firstName, lastName, studentID, grade);
 
-            //Second Row: Supporting Information
-            Row supportingInfo = dataBoard.addRow(email, communityServiceHours);
+        //Second Row: Supporting Information
+        Row supportingInfo = dataBoard.addRow(email, communityServiceHours);
 
-            //Add a space between the second and third rows
-            Div spacer = new Div();
-            spacer.add(new H3(" "));
-            dataBoard.addRow(spacer);
+        //Add a space between the second and third rows
+        dataBoard.addRow(new H3(" "));
 
-            //Third Row: Gives Brief Overview of hours
-            dataBoard.addRow(communityServiceCategoryCurrent, communityServiceCategoryGoal, lastEdited);
+        //Third Row: Gives Brief Overview of hours
+        dataBoard.addRow(communityServiceCategoryCurrent, communityServiceCategoryGoal, lastEdited);
 
         H2 hourAnalysis = new H2("Hours in Depth");
-            //Creates a Solid Gauge for each of the Different Awards
-            Chart communityChart = Charts.solidGauge(0, /*dataOfStudent.getCommunityServiceHours()*/ 50, 50, "Hours");
-
+        //Creates a Solid Gauge for each of the Different Awards
+        VerticalLayout communityChartLayout = new VerticalLayout();
+        Chart communityChart = Charts.solidGauge(0, /*dataOfStudent.getCommunityServiceHours()*/ 60, 50, "Hours");
+        H5 communityTitle = new H5("CSA Community");
+        communityChartLayout.add(communityTitle, communityChart);
+        communityChartLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+        VerticalLayout serviceChartLayout = new VerticalLayout();
+        Chart serviceChart = Charts.solidGauge(0, dataOfStudent.getCommunityServiceHours(), 200, "Hours");
+        H5 serviceTitle = new H5("CSA Service");
+        serviceChartLayout.add(serviceTitle, serviceChart);
+        serviceChartLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+        VerticalLayout achievementChartLayout = new VerticalLayout();
+        Chart achievementChart = Charts.solidGauge(0, dataOfStudent.getCommunityServiceHours(), 500, "Hours");
+        H5 achievementTitle = new H5("CSA Achievement");
+        achievementChartLayout.add(achievementTitle, achievementChart);
+        achievementChartLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         //Row 1: Heading for Hour Analysis
         dataBoard.addRow(hourAnalysis);
         //Row 2: Charts depicting process through hours
-        dataBoard.addRow(communityChart);
+        dataBoard.addRow(communityChartLayout, serviceChartLayout, achievementChartLayout);
 
         main.add(dataBoard);
 

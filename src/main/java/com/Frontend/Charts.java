@@ -30,8 +30,9 @@ public class Charts {
         yAxis.setMinorTickInterval("null");
         yAxis.getTitle().setY(-50);
         yAxis.getLabels().setY(16);
-        yAxis.setMin(min);
-        yAxis.setMax(max);
+        yAxis.setExtremes(min, max, true);
+        yAxis.setMaxPadding(0);
+
 
         PlotOptionsSolidgauge plotOptionsSolidgauge = new PlotOptionsSolidgauge();
 
