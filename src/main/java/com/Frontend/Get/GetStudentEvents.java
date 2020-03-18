@@ -1,6 +1,9 @@
 package com.Frontend.Get;
 
-import com.Backend.*;
+import com.Backend.Event;
+import com.Backend.MySQLMethods;
+import com.Backend.Student;
+import com.Backend.StudentData;
 import com.Frontend.Add.CreateStudent;
 import com.Frontend.Home;
 import com.vaadin.flow.component.UI;
@@ -42,7 +45,7 @@ public class GetStudentEvents extends AppLayout {
 
         //Choosing Student to view Events
         //Make Labels for Different Input Fields
-        ArrayList<Student> students = FileMethods.getStudentsAsList();
+        ArrayList<Student> students = MySQLMethods.getStudents();
         //Adds Create New Student Option
         students.add(new Student(true));
         ComboBox<Student> studentChoices = new ComboBox<>();

@@ -2,7 +2,7 @@ package com.Frontend.Add;
 
 import com.Backend.Date;
 import com.Backend.Event;
-import com.Backend.FileMethods;
+import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Frontend.Home;
 import com.vaadin.flow.component.Key;
@@ -27,13 +27,12 @@ import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 @Route("add-hours")
 public class AddHours extends AppLayout {
     static Date eventDate = new Date();
 
-    public AddHours() throws Exception {
+    public AddHours() {
         //Adds Navigation
         addToNavbar(Home.makeHeader());
 
@@ -56,7 +55,7 @@ public class AddHours extends AppLayout {
 
 
         //Makes Labels for Different Input Fields
-        ArrayList<Student> students = new ArrayList<>(Arrays.asList(FileMethods.getStudents()));
+        ArrayList<Student> students = MySQLMethods.getStudents();
         //Adds Create New Student Option
         students.add(new Student(true));
         ComboBox<Student> studentChoices = new ComboBox<>();

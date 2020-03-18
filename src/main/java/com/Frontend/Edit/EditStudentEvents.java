@@ -1,6 +1,8 @@
 package com.Frontend.Edit;
 
-import com.Backend.*;
+import com.Backend.Event;
+import com.Backend.MySQLMethods;
+import com.Backend.Student;
 import com.Frontend.Add.CreateStudent;
 import com.Frontend.Home;
 import com.vaadin.flow.component.Key;
@@ -24,10 +26,8 @@ import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 @Route("edit-student-events")
 public class EditStudentEvents extends AppLayout {
@@ -54,14 +54,8 @@ public class EditStudentEvents extends AppLayout {
 
         //Choosing Student to Edit
         //Make Labels for Different Input Fields
-        ArrayList<Student> students = new ArrayList<>();
-        try {
-            students = new ArrayList<>(Arrays.asList(FileMethods.getStudents()));
-        }
-        catch (IOException ioe) {
-            Notification.show(ioe.getMessage());
-            ioe.printStackTrace();
-        }
+        ArrayList<Student> students = MySQLMethods.getStudents();
+
         //Adds Create New Student Option
         students.add(new Student(true));
         ComboBox<Student> studentChoices = new ComboBox<>();

@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class StudentDataProvider extends AbstractBackEndDataProvider<StudentData, CrudFilter> {
-    final ArrayList<StudentData> studentData = FileMethods.getStudentData();
+    final ArrayList<StudentData> studentData = MySQLMethods.getStudentData();
     private Consumer<Long> sizeChangeListener;
 
     public static Predicate<StudentData> predicate(CrudFilter filter) {

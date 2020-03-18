@@ -1,6 +1,5 @@
 package com.Frontend.Edit;
 
-import com.Backend.FileMethods;
 import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Backend.StudentData;
@@ -31,7 +30,6 @@ import com.vaadin.flow.router.Route;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 
 import static com.Backend.MySQLMethods.selectTrackerDouble;
@@ -206,12 +204,6 @@ public class EditStudentInformation extends AppLayout {
                     Notification.show("Error Occurred, Please Try Again \n" + ex.getMessage());
                     ex.printStackTrace();
                 }
-                try {
-                    FileMethods.removeStudent(studentSelected);
-                    FileMethods.addToStudent(student.getStudent());
-                } catch (IOException IOExceptionE) {
-                    Notification.show("Student couldn't be added to File");
-                }
                 binder.readBean(null);
                 Notification.show("Your data has been processed!");
                 selected = null;
@@ -226,12 +218,7 @@ public class EditStudentInformation extends AppLayout {
             // clear fields by setting null
             binder.readBean(null);
             selected = null;
-            try {
-                setContent(chooseStudent());
-            } catch (IOException ioe) {
-                Notification.show(ioe.getMessage());
-                ioe.printStackTrace();
-            }
+            setContent(chooseStudent());
         });
 
         VerticalLayout container = new VerticalLayout(full, actions);
@@ -241,13 +228,13 @@ public class EditStudentInformation extends AppLayout {
         return container;
     }
 
-    public VerticalLayout chooseStudent() throws IOException {
+    public VerticalLayout chooseStudent() {
         //Grouping in a Vertical Column
         VerticalLayout selector = new VerticalLayout();
 
         //Choosing Student to Edit
         //Make Labels for Different Input Fields
-        ArrayList<Student> students = new ArrayList<>(Arrays.asList(FileMethods.getStudents()));
+        ArrayList<Student> students = MySQLMethods.getStudents();
         //Adds Create New Student Option
         students.add(new Student(true));
         ComboBox<Student> studentChoices = new ComboBox<>();

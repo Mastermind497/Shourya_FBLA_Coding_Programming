@@ -1,6 +1,5 @@
 package com.Frontend.Add;
 
-import com.Backend.FileMethods;
 import com.Backend.StudentData;
 import com.Frontend.Home;
 import com.vaadin.flow.component.Key;
@@ -24,8 +23,6 @@ import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
-
-import java.io.IOException;
 
 import static com.Backend.MySQLMethods.selectTrackerString;
 
@@ -203,11 +200,6 @@ public class CreateStudent extends AppLayout {
                 if (selectTrackerString(student.getFirstName(), student.getLastName(), student.getStudentID(), "firstName") == null) {
                     student.setYearsDone((short) count);
                     student.createStudent();
-                    try {
-                        FileMethods.addToStudent(student.getFirstName(), student.getLastName(), student.getStudentID());
-                    } catch (IOException e) {
-                        Notification.show("Student couldn't be added to File");
-                    }
                     Notification.show("Your data is being processed");
                     binder.readBean(null);
                     Notification.show("Your data has been processed!");

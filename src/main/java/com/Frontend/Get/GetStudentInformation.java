@@ -2,9 +2,7 @@ package com.Frontend.Get;
 
 import com.Backend.MySQLMethods;
 import com.Backend.StudentData;
-import com.Frontend.Edit.EditStudentInformation;
 import com.Frontend.Home;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -25,6 +23,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.router.Route;
+import org.github.legioth.buttonrenderer.ButtonRendererBuilder;
 
 import java.util.ArrayList;
 
@@ -50,17 +49,41 @@ public class GetStudentInformation extends AppLayout {
 //
 //        crud.addThemeVariants(CrudVariant.NO_BORDER);
 
+        //Creates a Grid with Inline editing and Sorting
         GridPro<StudentData> grid = new GridPro<>();
         grid.setItems(data);
-        grid.addColumn(StudentData::getFirstName).setHeader("First Name");
-        grid.addColumn(StudentData::getLastName).setHeader("Last Name");
-        grid.addColumn(StudentData::getStudentID).setHeader("Student ID");
-        grid.addColumn(StudentData::getGrade).setHeader("Grade");
-        grid.addColumn(StudentData::getCommunityServiceHours).setHeader("CS Hours");
-        grid.addColumn(StudentData::getCommunityServiceCategory).setHeader("CS Category");
-        grid.addColumn(StudentData::getEmail).setHeader("Email");
-        grid.addColumn(StudentData::getYearsDone).setHeader("Years Done");
+        grid.addEditColumn(StudentData::getFirstName, "name")
+                .text(StudentData::setFirstName)
+                .setHeader("First Name");
+
+        grid.addEditColumn(StudentData::getLastName, "name")
+                .text(StudentData::setLastName)
+                .setHeader("Last Name");
+        grid.addEditColumn(StudentData::getStudentID, "idNumber")
+                .text(StudentData::setStudentID)
+                .setHeader("Student ID");
+        grid.addEditColumn(StudentData::getGrade, "grade", "integer")
+                .text(StudentData::setGrade)
+                .setHeader("Grade");
+        grid.addEditColumn(StudentData::getCommunityServiceHours, "hours", "double")
+                .text(StudentData::setCommunityServiceHours)
+                .setHeader("CS Hours");
+        grid.addEditColumn(StudentData::getCommunityServiceCategory, "category")
+                .text(StudentData::setCommunityServiceCategory)
+                .setHeader("CS Category");
+        grid.addEditColumn(StudentData::getEmail)
+                .text(StudentData::setEmail)
+                .setHeader("Email");
+        grid.addEditColumn(StudentData::getYearsDone, "years", "integer")
+                .text(StudentData::setYearsDone)
+                .setHeader("Years Done");
         grid.addColumn(StudentData::getLastEdited).setHeader("Last Edited");
+        grid.addColumn(
+                new ButtonRendererBuilder<StudentData>(item -> System.out.println(item.getDeleteIcon().name()))
+                        .withIconPrefix(item -> item.getDeleteIcon().create())
+                        .withStyle(item -> "--lumo-border-radius: " + 10 + "px")
+                        .build())
+                .setHeader("Delete");
 
         //Makes them AutoWidth, which fixes width for data length
         for (Grid.Column<StudentData> al : grid.getColumns()) {
@@ -69,11 +92,6 @@ public class GetStudentInformation extends AppLayout {
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-
-        grid.addItemDoubleClickListener(event -> {
-            EditStudentInformation.selected = event.getItem().getStudent();
-            UI.getCurrent().navigate(EditStudentInformation.class);
-        });
 
         //Layouts to help in orienting
         VerticalLayout aligner = new VerticalLayout();

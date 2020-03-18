@@ -441,33 +441,37 @@ public class MySQLMethods {
      * @param studentID The Student's Student ID Number
      * @param data      the data field being accessed
      * @return an integer containing the data
-     * @throws Exception for SQL Errors
      */
-    public static int selectTrackerInt(String firstName, String lastName, int studentID, String data) throws Exception {
-        String studentName = makeName(firstName, lastName, studentID);
+    public static int selectTrackerInt(String firstName, String lastName, int studentID, String data) {
+        try {
+            String studentName = makeName(firstName, lastName, studentID);
 
-        //Uses getConnection to create a connection with the database
-        connection = getConnection();
+            //Uses getConnection to create a connection with the database
+            connection = getConnection();
 
-        //SQL Query to find find data
-        String query = "select " + data + " from " + tableName + " where fullName = '" + studentName + "'";
+            //SQL Query to find find data
+            String query = "select " + data + " from " + tableName + " where fullName = '" + studentName + "'";
 
-        //Create the java Statement (Goes in Query)
-        statement = connection.createStatement();
+            //Create the java Statement (Goes in Query)
+            statement = connection.createStatement();
 
-        //The Result after executing the query
-        ResultSet resultSet = statement.executeQuery(query);
-        resultSet.next();
+            //The Result after executing the query
+            ResultSet resultSet = statement.executeQuery(query);
+            resultSet.next();
 
-        //returns the String inside column "data"
-        int output = resultSet.getInt(data);
+            //returns the String inside column "data"
+            int output = resultSet.getInt(data);
 
-        //Ends everything
-        connection.close();
-        statement.close();
-        resultSet.close();
+            //Ends everything
+            connection.close();
+            statement.close();
+            resultSet.close();
 
-        return output;
+            return output;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     /**
@@ -561,33 +565,37 @@ public class MySQLMethods {
      * @param studentID The Student's Student ID Number
      * @param data      the data field being accessed
      * @return a short containing the data
-     * @throws Exception for SQL Errors
      */
-    public static short selectTrackerShort(String firstName, String lastName, int studentID, String data) throws Exception {
+    public static short selectTrackerShort(String firstName, String lastName, int studentID, String data) {
         String studentName = makeName(firstName, lastName, studentID);
 
-        //Uses method getConnection() to create a connection to the database
-        connection = getConnection();
+        try {
+            //Uses method getConnection() to create a connection to the database
+            connection = getConnection();
 
-        //SQL Query to find find data
-        String query = "select " + data + " from " + tableName + " where fullName = '" + studentName + "'";
+            //SQL Query to find find data
+            String query = "select " + data + " from " + tableName + " where fullName = '" + studentName + "'";
 
-        //Create the java Statement (Goes in Query)
-        statement = connection.createStatement();
+            //Create the java Statement (Goes in Query)
+            statement = connection.createStatement();
 
-        //The Result after executing the query
-        ResultSet resultSet = statement.executeQuery(query);
+            //The Result after executing the query
+            ResultSet resultSet = statement.executeQuery(query);
 
-        //returns the String inside column "data"
-        resultSet.next();
-        short output = resultSet.getShort(data);
+            //returns the String inside column "data"
+            resultSet.next();
+            short output = resultSet.getShort(data);
 
-        //Ends everything
-        connection.close();
-        statement.close();
-        resultSet.close();
+            //Ends everything
+            connection.close();
+            statement.close();
+            resultSet.close();
 
-        return output;
+            return output;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     /**
@@ -877,13 +885,45 @@ public class MySQLMethods {
             connection.close();
             statement.close();
             resultSet.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Get Students Failed");
         }
 
         return students;
+    }
+
+    public static ArrayList<StudentData> getStudentData() {
+        ArrayList<StudentData> studentData = new ArrayList<>();
+
+        try {
+            connection = getConnection();
+
+            String query = "select * from " + tableName;
+
+            statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                Student student = new Student();
+                //Adds the Data to the StudentData Object
+                student.setFirstName(resultSet.getString("firstName"));
+                student.setLastName(resultSet.getString("lastName"));
+                student.setStudentID(resultSet.getInt("studentID"));
+
+                studentData.add(student.getStudentData());
+            }
+
+            connection.close();
+            statement.close();
+            resultSet.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Get Students Failed");
+        }
+
+        return studentData;
     }
 
     public static int numOfStudents() {
@@ -990,7 +1030,6 @@ public class MySQLMethods {
             next.setEventName(resultSet.getString("eventName"));
             next.setHours(resultSet.getDouble("eventHours"));
             next.setDate(resultSet.getDate("eventDate").toString());
-            System.out.println(resultSet.getDate("eventDate").toString());
             output.add(next);
         }
         resultSet.close();
@@ -1108,7 +1147,7 @@ public class MySQLMethods {
         }
 
         //Generates a query
-        String query = "update tracker set " + dataType + " = " + newData + " where fullName = '" + fullName + "'";
+        String query = "update tracker set " + dataType + " = '" + newData + "' where fullName = '" + fullName + "'";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
 
         //executes query
@@ -1120,6 +1159,92 @@ public class MySQLMethods {
 
         //Update last edited
         if (!dataType.equals("lastEdited")) updateToCurrentDate(firstName, lastName, studentID);
+    }
+
+    public static void updateFirstName(String firstName, String lastName, int studentID, String newFirstName) {
+        try {
+            connection = getConnection();
+            String fullName = makeName(firstName, lastName, studentID);
+            String newFullName = makeName(newFirstName, lastName, studentID);
+            //First, change full name
+            String query = "update tracker set fullName = '" + newFullName + "' where fullName = '" + fullName + "'";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+            //Now, Change Individual Name Component
+            String individualQuery = "UPDATE tracker SET firstName = '" + newFirstName + "' where fullName = '" + newFullName + "'";
+            PreparedStatement individualPreparedStatement = connection.prepareStatement(individualQuery);
+            individualPreparedStatement.executeUpdate();
+            individualPreparedStatement.close();
+
+            //Finally, update table name to match
+            String nextQuery = "RENAME TABLE " + fullName + " TO " + newFullName;
+            PreparedStatement preparedStatementNext = connection.prepareStatement(nextQuery);
+            preparedStatementNext.executeUpdate();
+            preparedStatementNext.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateLastName(String firstName, String lastName, int studentID, String newLastName) {
+        try {
+            connection = getConnection();
+            String fullName = makeName(firstName, lastName, studentID);
+            String newFullName = makeName(firstName, newLastName, studentID);
+
+            //First, change full name
+            String query = "update tracker set fullName = '" + newFullName + "' where fullName = '" + fullName + "'";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+            //Now, Change Individual Name Component
+            String individualQuery = "UPDATE tracker SET lastName = '" + newLastName + "' where fullName = '" + newFullName + "'";
+            PreparedStatement individualPreparedStatement = connection.prepareStatement(individualQuery);
+            individualPreparedStatement.executeUpdate();
+            individualPreparedStatement.close();
+
+            //Finally, change the table name to match
+            String nextQuery = "RENAME TABLE " + fullName + " TO " + newFullName;
+            PreparedStatement preparedStatementNext = connection.prepareStatement(nextQuery);
+            preparedStatementNext.executeUpdate();
+            preparedStatementNext.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateStudentID(String firstName, String lastName, int studentID, int newStudentID) {
+        try {
+            connection = getConnection();
+            String fullName = makeName(firstName, lastName, studentID);
+            String newFullName = makeName(firstName, lastName, newStudentID);
+
+            //First, change full name
+            String query = "UPDATE tracker SET fullName = '" + newFullName + "' WHERE fullName = '" + fullName + "'";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+            //Now, Change Individual Student ID
+            String individualQuery = "UPDATE tracker SET studentID = '" + newStudentID + "' where fullName = '" + newFullName + "'";
+            PreparedStatement individualPreparedStatement = connection.prepareStatement(individualQuery);
+            individualPreparedStatement.executeUpdate();
+            individualPreparedStatement.close();
+
+            //Finally, update table name to match
+            String nextQuery = "RENAME TABLE " + fullName + " TO " + newFullName;
+            PreparedStatement preparedStatementNext = connection.prepareStatement(nextQuery);
+            preparedStatementNext.executeUpdate();
+            preparedStatementNext.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void updateTracker(Student initialStudent, StudentData newData) throws Exception {
