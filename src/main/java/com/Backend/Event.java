@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.StringTokenizer;
 
 import static com.Backend.MySQLMethods.addStudentHours;
 
@@ -38,6 +39,10 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
 
     public void setHours(double hours) {
         this.hours = hours;
+    }
+
+    public void setHours(String hours) {
+        setHours(Double.parseDouble(hours));
     }
 
     public int getYear() {
@@ -87,7 +92,15 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     }
 
     public void setDate(String date) {
-        this.date.setDate(date);
+        if (date.contains(" ")) {
+            StringTokenizer st = new StringTokenizer(date);
+            int day = Integer.parseInt(st.nextToken());
+            String monthString = st.nextToken();
+            monthString = monthString.substring(0, monthString.length() - 1);
+            int month = Date.getMonth(monthString);
+            int year = Integer.parseInt(st.nextToken());
+            this.date.setDate(LocalDate.of(year, month, day));
+        } else this.date.setDate(date);
     }
 
     public LocalDate getLocalDate() {

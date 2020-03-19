@@ -1,6 +1,7 @@
 package com.Frontend.Get;
 
 import com.Backend.MySQLMethods;
+import com.Backend.Student;
 import com.Backend.StudentData;
 import com.Frontend.Home;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -12,6 +13,7 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.gridpro.GridPro;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -23,19 +25,18 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.router.Route;
-import org.github.legioth.buttonrenderer.ButtonRendererBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 //TODO Make this class fully-functional
 @Route("get-student-info")
 public class GetStudentInformation extends AppLayout {
 
-    public GetStudentInformation() throws Exception {
-        addToNavbar(Home.makeHeader());
+    Button close = new Button("Close", buttonClickEvent -> setContent(mainTable()));
 
-        //Shows data on a grid (Up to 100k pieces)
-        ArrayList<StudentData> data = MySQLMethods.selectFullTracker();
+    public GetStudentInformation() {
+        addToNavbar(Home.makeHeader());
 
 //        //Creates Grid Data Holder
 //        Crud<StudentData> crud = new Crud<>(StudentData.class, createStudentEditor());
@@ -49,13 +50,19 @@ public class GetStudentInformation extends AppLayout {
 //
 //        crud.addThemeVariants(CrudVariant.NO_BORDER);
 
+        mainTable();
+    }
+
+    public VerticalLayout mainTable() {
+        //Shows data on a grid (Up to 100k pieces)
+        ArrayList<StudentData> data = MySQLMethods.selectFullTracker();
+
         //Creates a Grid with Inline editing and Sorting
         GridPro<StudentData> grid = new GridPro<>();
         grid.setItems(data);
         grid.addEditColumn(StudentData::getFirstName, "name")
                 .text(StudentData::setFirstName)
                 .setHeader("First Name");
-
         grid.addEditColumn(StudentData::getLastName, "name")
                 .text(StudentData::setLastName)
                 .setHeader("Last Name");
@@ -68,8 +75,9 @@ public class GetStudentInformation extends AppLayout {
         grid.addEditColumn(StudentData::getCommunityServiceHours, "hours", "double")
                 .text(StudentData::setCommunityServiceHours)
                 .setHeader("CS Hours");
+        ArrayList<String> categoryOptions = new ArrayList<>(Arrays.asList("CSA Community (50 Hours)", "CSA Service (200 Hours", "CSA Achievement (500 Hours)"));
         grid.addEditColumn(StudentData::getCommunityServiceCategory, "category")
-                .text(StudentData::setCommunityServiceCategory)
+                .select(StudentData::setCommunityServiceCategory, categoryOptions)
                 .setHeader("CS Category");
         grid.addEditColumn(StudentData::getEmail)
                 .text(StudentData::setEmail)
@@ -78,12 +86,7 @@ public class GetStudentInformation extends AppLayout {
                 .text(StudentData::setYearsDone)
                 .setHeader("Years Done");
         grid.addColumn(StudentData::getLastEdited).setHeader("Last Edited");
-        grid.addColumn(
-                new ButtonRendererBuilder<StudentData>(item -> System.out.println(item.getDeleteIcon().name()))
-                        .withIconPrefix(item -> item.getDeleteIcon().create())
-                        .withStyle(item -> "--lumo-border-radius: " + 10 + "px")
-                        .build())
-                .setHeader("Delete");
+        grid.addComponentColumn(item -> expandButton(grid, item)).setHeader("Expand");
 
         //Makes them AutoWidth, which fixes width for data length
         for (Grid.Column<StudentData> al : grid.getColumns()) {
@@ -92,6 +95,16 @@ public class GetStudentInformation extends AppLayout {
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+
+        grid.addItemClickListener(click -> {
+            Student selected = click.getItem().getStudent();
+            Notification fullData = new Notification();
+            Button close = new Button("Close");
+            fullData.add(close, GetStudentEvents.viewEvents(selected));
+            fullData.setPosition(Notification.Position.MIDDLE);
+            fullData.open();
+            close.addClickListener(onClick -> fullData.close());
+        });
 
         //Layouts to help in orienting
         VerticalLayout aligner = new VerticalLayout();
@@ -109,6 +122,7 @@ public class GetStudentInformation extends AppLayout {
         aligner.setAlignSelf(FlexComponent.Alignment.CENTER);
 
         setContent(aligner);
+        return aligner;
     }
 
     private CrudEditor<StudentData> createStudentEditor() {
@@ -146,6 +160,22 @@ public class GetStudentInformation extends AppLayout {
         binder.forField(communityServiceCategoryField).bind(StudentData::getCommunityServiceCategory, StudentData::setCommunityServiceCategory);
 
         return new BinderCrudEditor<>(binder, form);
+    }
+
+    public Button deleteButton(Grid<StudentData> grid, Student student) {
+        return new Button();
+    }
+
+    public Button expandButton(Grid<StudentData> grid, StudentData student) {
+        @SuppressWarnings("unchecked")
+        Button button = new Button("Expand", buttonClickEvent -> {
+//            ListDataProvider<StudentData> dataProvider = (ListDataProvider<StudentData>) grid
+//                    .getDataProvider();
+            VerticalLayout fullData = new VerticalLayout(close, GetStudentEvents.viewEvents(student));
+            fullData.setAlignItems(FlexComponent.Alignment.CENTER);
+            setContent(fullData);
+        });
+        return button;
     }
 
     /**

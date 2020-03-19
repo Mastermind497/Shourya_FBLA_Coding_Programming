@@ -95,7 +95,7 @@ public class Student{
         if (!createNewStudent) {
             return firstName + " " + lastName + ", " + studentID;
         } else {
-            return "CREATE NEW STUDENT";
+            return "Create New Student";
         }
     }
 }

@@ -25,8 +25,6 @@ import com.vaadin.flow.server.PWA;
     * Add Title to Each Page
     * Implement Graduation Year
     * Make Community Service Category a Radio Button
-    * Student Name Label in Add Hours
-    * Add (Hours) to length of event
     * Make "RESET" Red
     * Add Name Label to All Dropdowns
     * Calculate Grade level by Grad year
@@ -35,7 +33,6 @@ import com.vaadin.flow.server.PWA;
     * Make Years Done Automatically Calculated
     * Edit Buttons Automatically Reset
     * View All + View Individual
-    * Add Login Security
     * Fix Forget Password
     * Add Student Hours swaps month and days
  */

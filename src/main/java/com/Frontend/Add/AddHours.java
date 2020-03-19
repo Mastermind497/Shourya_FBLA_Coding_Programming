@@ -58,7 +58,7 @@ public class AddHours extends AppLayout {
         ArrayList<Student> students = MySQLMethods.getStudents();
         //Adds Create New Student Option
         students.add(new Student(true));
-        ComboBox<Student> studentChoices = new ComboBox<>();
+        ComboBox<Student> studentChoices = new ComboBox<>("Student Name");
         studentChoices.setItems(students);
         studentChoices.addValueChangeListener(e -> {
             if (studentChoices.getValue() != null && studentChoices.getValue().getCreateNewStudent()) {
@@ -70,7 +70,7 @@ public class AddHours extends AppLayout {
         eventName.setPlaceholder("Volunteering at Central Park");
         eventName.setValueChangeMode(ValueChangeMode.EAGER);
 
-        NumberField eventHours = new NumberField("Length of Event");
+        NumberField eventHours = new NumberField("Length of Event (Hours)");
         eventHours.setPlaceholder("2.5");
         eventHours.setErrorMessage("That is not a Number, Please Enter a Number");
         eventHours.setValueChangeMode(ValueChangeMode.EAGER);

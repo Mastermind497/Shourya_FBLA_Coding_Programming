@@ -17,17 +17,23 @@ import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Route("get-student-events")
 public class GetStudentEvents extends AppLayout {
     public static Student selected;
 
-    public GetStudentEvents() throws Exception {
+    /**
+     * This used to be the original method for editing data before inline editing. After
+     * that was discovered, this method has been deprecated and not used anymore. it is just here
+     * to show progress made.
+     *
+     * @deprecated
+     */
+    @Deprecated
+    public GetStudentEvents() {
         addToNavbar(Home.makeHeader());
 
         //allows redirection from View Student Grid
@@ -81,25 +87,43 @@ public class GetStudentEvents extends AppLayout {
     }
 
     /**
-     * Views events and hours done by the chosen student
+     * Views events and hours done by the chosen student. Now, this method is linked to the
      *
      * @param chosen The chosen student
+     * @link GetStudentInformation.java class and can be accessed by single-clicking any student.
      */
-    public void viewEvents(Student chosen) throws Exception {
+    public static VerticalLayout viewEvents(Student chosen) {
         List<StudentData> studentData = new ArrayList<>();
         studentData.add(MySQLMethods.selectTrackerAsStudent(chosen));
 
         GridPro<StudentData> grid = new GridPro<>();
         grid.setItems(studentData);
-        grid.addColumn(StudentData::getFirstName).setHeader("First Name");
-        grid.addColumn(StudentData::getLastName).setHeader("Last Name");
-        grid.addColumn(StudentData::getStudentID).setHeader("Student ID");
-        grid.addColumn(StudentData::getGrade).setHeader("Grade");
-        grid.addColumn(StudentData::getCommunityServiceHours).setHeader("CS Hours");
-        grid.addColumn(StudentData::getCommunityServiceCategory).setHeader("CS Category");
-        grid.addColumn(StudentData::getEmail).setHeader("Email");
-        grid.addColumn(StudentData::getYearsDone).setHeader("Years Done");
-        grid.addColumn(StudentData::getLastEdited).setHeader("Last Edited");
+        grid.addEditColumn(StudentData::getFirstName, "First Name", "String")
+                .text(StudentData::setFirstName)
+                .setHeader("First Name");
+        grid.addEditColumn(StudentData::getLastName, "Last Name", "String")
+                .text(StudentData::setLastName)
+                .setHeader("Last Name");
+        grid.addEditColumn(StudentData::getStudentID, "Student ID", "Integer")
+                .text(StudentData::setStudentID)
+                .setHeader("Student ID");
+        grid.addEditColumn(StudentData::getGrade, "Grade", "Short")
+                .text(StudentData::setGrade)
+                .setHeader("Grade");
+        grid.addEditColumn(StudentData::getCommunityServiceHours, "Hours", "Double")
+                .text(StudentData::setCommunityServiceHours)
+                .setHeader("CS Hours");
+        grid.addEditColumn(StudentData::getCommunityServiceCategory, "Category", "String")
+                .text(StudentData::setCommunityServiceCategory)
+                .setHeader("CS Category");
+        grid.addEditColumn(StudentData::getEmail, "Email", "String")
+                .text(StudentData::setEmail)
+                .setHeader("Email");
+        grid.addEditColumn(StudentData::getYearsDone, "Years Done", "Short")
+                .text(StudentData::setYearsDone)
+                .setHeader("Years Done");
+        grid.addColumn(StudentData::getLastEdited, "Last Edited", "Date")
+                .setHeader("Last Edited");
 
         grid.setHeightByRows(true);
 
@@ -115,13 +139,18 @@ public class GetStudentEvents extends AppLayout {
 
         ArrayList<Event> eventList = MySQLMethods.selectStudentEventsAsEvent(chosen);
         Collections.sort(eventList);
-        System.out.println(eventList);
 
-        Grid<Event> events = new Grid<>();
+        GridPro<Event> events = new GridPro<>();
         events.setItems(eventList);
-        events.addColumn(Event::getEventName).setHeader("Event Name");
-        events.addColumn(Event::getHours).setHeader("Hours of Event");
-        events.addColumn(Event::getDate).setHeader("Date of Event");
+        events.addEditColumn(Event::getEventName, "Name", "String")
+                .text(Event::setEventName)
+                .setHeader("Event Name");
+        events.addEditColumn(Event::getHours, "Hours", "Double")
+                .text(Event::setHours)
+                .setHeader("Hours of Event");
+        events.addEditColumn(Event::getDate)
+                .text(Event::setDate)
+                .setHeader("Date of Event");
 
         //Makes them AutoWidth, which fixes width for data length
         for (Grid.Column<Event> al : events.getColumns()) {
@@ -135,6 +164,6 @@ public class GetStudentEvents extends AppLayout {
         layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
 
-        setContent(layout);
+        return layout;
     }
 }

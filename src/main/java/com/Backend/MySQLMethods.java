@@ -723,118 +723,26 @@ public class MySQLMethods {
      * @param lastName  The Student's Last Name
      * @param studentID The Student's ID
      * @return A StudentData Object with all of the Student's Information
-     * @throws Exception In case column names don't exist or connection to database fails
      */
-    public static StudentData selectTrackerAsStudent(String firstName, String lastName, int studentID) throws Exception {
-        //converts name to studentName following convention format
-        String studentName = makeName(firstName, lastName, studentID);
+    public static StudentData selectTrackerAsStudent(String firstName, String lastName, int studentID) {
+        try {
+            //converts name to studentName following convention format
+            String studentName = makeName(firstName, lastName, studentID);
 
-        StudentData studentData = new StudentData();
-
-        //creates a connection
-        connection = getConnection();
-
-        //SQL Query to find find data
-        String query = "select * from " + tableName + " where fullName = '" + studentName + "'";
-
-        //Create the java Statement (Goes in Query)
-        Statement statement = connection.createStatement();
-
-        //The Result after executing the query
-        ResultSet resultSet = statement.executeQuery(query);
-        resultSet.next();
-
-        //Adds the Data to the StudentData Object
-        studentData.setFirstName(resultSet.getString("firstName"));
-        studentData.setLastName(resultSet.getString("lastName"));
-        studentData.setStudentID(resultSet.getInt("studentID"));
-        studentData.setGrade(resultSet.getShort("Grade"));
-        studentData.setCommunityServiceHours(resultSet.getInt("communityServiceHours"));
-        studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
-        studentData.setYearsDone(resultSet.getShort("yearsDone"));
-        studentData.setEmail(resultSet.getString("email"));
-        studentData.setLastEdited(resultSet.getDate("lastEdited").toString());
-
-        //closes resources
-        statement.close();
-        resultSet.close();
-        connection.close();
-
-        return studentData;
-    }
-
-    /**
-     * This method gets the data of a student with the information listed, but returns it all in its
-     * special class as a StudentData object.
-     *
-     * @param student The Student who is being queried
-     * @return A StudentData Object with all of the Student's Information
-     * @throws Exception In case column names don't exist or connection to database fails
-     */
-    public static StudentData selectTrackerAsStudent(Student student) throws Exception {
-        //converts name to studentName following convention format
-        String studentName = makeName(student.getFirstName(), student.getLastName(), student.getStudentID());
-
-        StudentData studentData = new StudentData();
-
-        //creates a connection
-        connection = getConnection();
-
-        //SQL Query to find find data
-        String query = "select * from " + tableName + " where fullName = '" + studentName + "'";
-
-        //Create the java Statement (Goes in Query)
-        Statement statement = connection.createStatement();
-
-        //The Result after executing the query
-        ResultSet resultSet = statement.executeQuery(query);
-        resultSet.next();
-
-        //Adds the Data to the StudentData Object
-        studentData.setFirstName(resultSet.getString("firstName"));
-        studentData.setLastName(resultSet.getString("lastName"));
-        studentData.setStudentID(resultSet.getInt("studentID"));
-        studentData.setGrade(resultSet.getShort("Grade"));
-        studentData.setCommunityServiceHours(resultSet.getInt("communityServiceHours"));
-        studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
-        studentData.setYearsDone(resultSet.getShort("yearsDone"));
-        studentData.setEmail(resultSet.getString("email"));
-        studentData.setLastEdited(resultSet.getDate("lastEdited").toString());
-
-        //closes resources
-        statement.close();
-        resultSet.close();
-        connection.close();
-
-        return studentData;
-    }
-
-    /**
-     * Creates an ArrayList which holds the data of all Student's whose data is stored.
-     * This makes it much faster to view data of every student.
-     *
-     * @return An ArrayList storing all Student Data
-     * @throws Exception For Column Names and Failing Connections
-     */
-    public static ArrayList<StudentData> selectFullTracker() throws Exception {
-        //The ArrayList
-        ArrayList<StudentData> studentDataList = new ArrayList<>();
-        //creates a connection
-        connection = getConnection();
-
-        //SQL Query to find find data
-        String query = "select * from " + tableName;
-
-        //Create the java Statement (Goes in Query)
-        Statement statement = connection.createStatement();
-
-        //The Result after executing the query
-        ResultSet resultSet = statement.executeQuery(query);
-
-        //While there is more data, it keeps running
-        while (resultSet.next()) {
-            //Creates a StudentData Object
             StudentData studentData = new StudentData();
+
+            //creates a connection
+            connection = getConnection();
+
+            //SQL Query to find find data
+            String query = "select * from " + tableName + " where fullName = '" + studentName + "'";
+
+            //Create the java Statement (Goes in Query)
+            Statement statement = connection.createStatement();
+
+            //The Result after executing the query
+            ResultSet resultSet = statement.executeQuery(query);
+            resultSet.next();
 
             //Adds the Data to the StudentData Object
             studentData.setFirstName(resultSet.getString("firstName"));
@@ -847,16 +755,120 @@ public class MySQLMethods {
             studentData.setEmail(resultSet.getString("email"));
             studentData.setLastEdited(resultSet.getDate("lastEdited").toString());
 
-            //Adds the StudentData to the List
-            studentDataList.add(studentData);
+            //closes resources
+            statement.close();
+            resultSet.close();
+            connection.close();
+
+            return studentData;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new StudentData();
         }
+    }
 
-        //closes resources
-        statement.close();
-        resultSet.close();
-        connection.close();
+    /**
+     * This method gets the data of a student with the information listed, but returns it all in its
+     * special class as a StudentData object.
+     *
+     * @param student The Student who is being queried
+     * @return A StudentData Object with all of the Student's Information
+     */
+    public static StudentData selectTrackerAsStudent(Student student) {
+        try {
+            //converts name to studentName following convention format
+            String studentName = makeName(student.getFirstName(), student.getLastName(), student.getStudentID());
 
-        return studentDataList;
+            StudentData studentData = new StudentData();
+
+            //creates a connection
+            connection = getConnection();
+
+            //SQL Query to find find data
+            String query = "select * from " + tableName + " where fullName = '" + studentName + "'";
+
+            //Create the java Statement (Goes in Query)
+            Statement statement = connection.createStatement();
+
+            //The Result after executing the query
+            ResultSet resultSet = statement.executeQuery(query);
+            resultSet.next();
+
+            //Adds the Data to the StudentData Object
+            studentData.setFirstName(resultSet.getString("firstName"));
+            studentData.setLastName(resultSet.getString("lastName"));
+            studentData.setStudentID(resultSet.getInt("studentID"));
+            studentData.setGrade(resultSet.getShort("Grade"));
+            studentData.setCommunityServiceHours(resultSet.getInt("communityServiceHours"));
+            studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
+            studentData.setYearsDone(resultSet.getShort("yearsDone"));
+            studentData.setEmail(resultSet.getString("email"));
+            studentData.setLastEdited(resultSet.getDate("lastEdited").toString());
+
+            //closes resources
+            statement.close();
+            resultSet.close();
+            connection.close();
+
+            return studentData;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new StudentData();
+        }
+    }
+
+    /**
+     * Creates an ArrayList which holds the data of all Student's whose data is stored.
+     * This makes it much faster to view data of every student.
+     *
+     * @return An ArrayList storing all Student Data
+     */
+    public static ArrayList<StudentData> selectFullTracker() {
+        try {
+            //The ArrayList
+            ArrayList<StudentData> studentDataList = new ArrayList<>();
+            //creates a connection
+            connection = getConnection();
+
+            //SQL Query to find find data
+            String query = "select * from " + tableName;
+
+            //Create the java Statement (Goes in Query)
+            Statement statement = connection.createStatement();
+
+            //The Result after executing the query
+            ResultSet resultSet = statement.executeQuery(query);
+
+            //While there is more data, it keeps running
+            while (resultSet.next()) {
+                //Creates a StudentData Object
+                StudentData studentData = new StudentData();
+
+                //Adds the Data to the StudentData Object
+                studentData.setFirstName(resultSet.getString("firstName"));
+                studentData.setLastName(resultSet.getString("lastName"));
+                studentData.setStudentID(resultSet.getInt("studentID"));
+                studentData.setGrade(resultSet.getShort("Grade"));
+                studentData.setCommunityServiceHours(resultSet.getInt("communityServiceHours"));
+                studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
+                studentData.setYearsDone(resultSet.getShort("yearsDone"));
+                studentData.setEmail(resultSet.getString("email"));
+                studentData.setLastEdited(resultSet.getDate("lastEdited").toString());
+
+                //Adds the StudentData to the List
+                studentDataList.add(studentData);
+            }
+
+            //closes resources
+            statement.close();
+            resultSet.close();
+            connection.close();
+
+            return studentDataList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
     public static ArrayList<Student> getStudents() {
@@ -1004,38 +1016,42 @@ public class MySQLMethods {
      * @param lastName  the student's last name
      * @param studentID The Student's Student ID Number
      * @return an array of Strings containing all of the Events and their data
-     * @throws Exception for SQL Errors
      */
-    public static ArrayList<Event> selectStudentEventsAsEvent(String firstName, String lastName, int studentID) throws Exception {
-        //converts to the studentName format
-        String studentName = makeName(firstName, lastName, studentID);
+    public static ArrayList<Event> selectStudentEventsAsEvent(String firstName, String lastName, int studentID) {
+        try {
+            //converts to the studentName format
+            String studentName = makeName(firstName, lastName, studentID);
 
-        //Uses getConnection to create a connection
-        connection = getConnection();
+            //Uses getConnection to create a connection
+            connection = getConnection();
 
-        //SQL Query to find data
-        String query = "select * from " + studentName;
+            //SQL Query to find data
+            String query = "select * from " + studentName;
 
-        //Create the java Statement (Runs the Query)
-        statement = connection.createStatement();
+            //Create the java Statement (Runs the Query)
+            statement = connection.createStatement();
 
-        //The Result after executing the query
-        ResultSet resultSet = statement.executeQuery(query);
+            //The Result after executing the query
+            ResultSet resultSet = statement.executeQuery(query);
 
-        //Creates Output Strings
-        ArrayList<Event> output = new ArrayList<>();
+            //Creates Output Strings
+            ArrayList<Event> output = new ArrayList<>();
 
-        while (resultSet.next()) {
-            Event next = new Event();
-            next.setEventName(resultSet.getString("eventName"));
-            next.setHours(resultSet.getDouble("eventHours"));
-            next.setDate(resultSet.getDate("eventDate").toString());
-            output.add(next);
+            while (resultSet.next()) {
+                Event next = new Event();
+                next.setEventName(resultSet.getString("eventName"));
+                next.setHours(resultSet.getDouble("eventHours"));
+                next.setDate(resultSet.getDate("eventDate").toString());
+                output.add(next);
+            }
+            resultSet.close();
+            statement.close();
+
+            return output;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
-        resultSet.close();
-        statement.close();
-
-        return output;
     }
 
     /**
@@ -1043,9 +1059,8 @@ public class MySQLMethods {
      *
      * @param student the selected student
      * @return an array of Strings containing all of the Events and their data
-     * @throws Exception for SQL Errors
      */
-    public static ArrayList<Event> selectStudentEventsAsEvent(Student student) throws Exception {
+    public static ArrayList<Event> selectStudentEventsAsEvent(Student student) {
         return selectStudentEventsAsEvent(student.getFirstName(), student.getLastName(), student.getStudentID());
     }
 
