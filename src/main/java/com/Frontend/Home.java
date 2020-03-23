@@ -5,7 +5,6 @@ import com.Frontend.Add.AddHours;
 import com.Frontend.Add.CreateStudent;
 import com.Frontend.Edit.EditStudentEvents;
 import com.Frontend.Edit.EditStudentInformation;
-import com.Frontend.Get.GetStudentEvents;
 import com.Frontend.Get.GetStudentInformation;
 import com.Frontend.Reports.GenerateIndividualReport;
 import com.vaadin.flow.component.UI;
@@ -75,7 +74,8 @@ public class Home extends AppLayout {
         );
         MenuItem addData = menuBar.addItem("Add Data");
         MenuItem editData = menuBar.addItem("Edit Data");
-        MenuItem viewData = menuBar.addItem("View Data");
+        MenuItem viewData = menuBar.addItem("View Data", event ->
+                UI.getCurrent().navigate(GetStudentInformation.class));
         MenuItem genReport = menuBar.addItem("Reports");
         MenuItem documentation = menuBar.addItem("Documentation");
 
@@ -98,14 +98,6 @@ public class Home extends AppLayout {
             EditStudentEvents.oldEvent = null;
             UI.getCurrent().navigate(EditStudentEvents.class);
         });
-
-        SubMenu viewDataSubMenu = viewData.getSubMenu();
-        viewDataSubMenu.addItem("View All Student Information", event ->
-                UI.getCurrent().navigate(GetStudentInformation.class)
-        );
-        viewDataSubMenu.addItem("View Individual Student Information", event ->
-                UI.getCurrent().navigate(GetStudentEvents.class)
-        );
 
         SubMenu genRepSubMenu = genReport.getSubMenu();
         genRepSubMenu.addItem("Generate Individual Report", e ->

@@ -1,7 +1,5 @@
 package com.Backend;
 
-import com.vaadin.flow.component.icon.VaadinIcon;
-
 import javax.validation.constraints.NotNull;
 import java.util.StringTokenizer;
 
@@ -318,9 +316,5 @@ public class StudentData extends Student {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public VaadinIcon getDeleteIcon() {
-        return VaadinIcon.ARCHIVE;
     }
 }

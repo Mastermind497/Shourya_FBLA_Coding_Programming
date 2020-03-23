@@ -19,8 +19,8 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 public class GetStudentEvents extends AppLayout {
     public static Student selected;
@@ -93,37 +93,38 @@ public class GetStudentEvents extends AppLayout {
      * @link GetStudentInformation.java class and can be accessed by single-clicking any student.
      */
     public static VerticalLayout viewEvents(Student chosen) {
-        List<StudentData> studentData = new ArrayList<>();
+        ArrayList<StudentData> studentData = new ArrayList<>();
         studentData.add(MySQLMethods.selectTrackerAsStudent(chosen));
 
+        //Creates a Grid with Inline editing and Sorting
         GridPro<StudentData> grid = new GridPro<>();
         grid.setItems(studentData);
-        grid.addEditColumn(StudentData::getFirstName, "First Name", "String")
+        grid.addEditColumn(StudentData::getFirstName, "name")
                 .text(StudentData::setFirstName)
                 .setHeader("First Name");
-        grid.addEditColumn(StudentData::getLastName, "Last Name", "String")
+        grid.addEditColumn(StudentData::getLastName, "name")
                 .text(StudentData::setLastName)
                 .setHeader("Last Name");
-        grid.addEditColumn(StudentData::getStudentID, "Student ID", "Integer")
+        grid.addEditColumn(StudentData::getStudentID, "idNumber")
                 .text(StudentData::setStudentID)
                 .setHeader("Student ID");
-        grid.addEditColumn(StudentData::getGrade, "Grade", "Short")
+        grid.addEditColumn(StudentData::getGrade, "grade", "integer")
                 .text(StudentData::setGrade)
                 .setHeader("Grade");
-        grid.addEditColumn(StudentData::getCommunityServiceHours, "Hours", "Double")
+        grid.addEditColumn(StudentData::getCommunityServiceHours, "hours", "double")
                 .text(StudentData::setCommunityServiceHours)
                 .setHeader("CS Hours");
-        grid.addEditColumn(StudentData::getCommunityServiceCategory, "Category", "String")
-                .text(StudentData::setCommunityServiceCategory)
+        ArrayList<String> categoryOptions = new ArrayList<>(Arrays.asList("CSA Community (50 Hours)", "CSA Service (200 Hours)", "CSA Achievement (500 Hours)"));
+        grid.addEditColumn(StudentData::getCommunityServiceCategory, "category")
+                .select(StudentData::setCommunityServiceCategory, categoryOptions)
                 .setHeader("CS Category");
-        grid.addEditColumn(StudentData::getEmail, "Email", "String")
+        grid.addEditColumn(StudentData::getEmail)
                 .text(StudentData::setEmail)
                 .setHeader("Email");
-        grid.addEditColumn(StudentData::getYearsDone, "Years Done", "Short")
+        grid.addEditColumn(StudentData::getYearsDone, "years", "integer")
                 .text(StudentData::setYearsDone)
                 .setHeader("Years Done");
-        grid.addColumn(StudentData::getLastEdited, "Last Edited", "Date")
-                .setHeader("Last Edited");
+        grid.addColumn(StudentData::getLastEdited, "date", "lastedited").setHeader("Last Edited");
 
         grid.setHeightByRows(true);
 
@@ -139,6 +140,7 @@ public class GetStudentEvents extends AppLayout {
 
         ArrayList<Event> eventList = MySQLMethods.selectStudentEventsAsEvent(chosen);
         Collections.sort(eventList);
+        System.out.println(eventList);
 
         GridPro<Event> events = new GridPro<>();
         events.setItems(eventList);
@@ -159,6 +161,8 @@ public class GetStudentEvents extends AppLayout {
 
         events.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+
+        events.setHeightByRows(true);
 
         layout.add(grid, events);
         layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);

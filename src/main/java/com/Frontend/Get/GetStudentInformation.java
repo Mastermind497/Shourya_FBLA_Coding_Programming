@@ -4,6 +4,7 @@ import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Backend.StudentData;
 import com.Frontend.Home;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -33,7 +34,7 @@ import java.util.Arrays;
 @Route("get-student-info")
 public class GetStudentInformation extends AppLayout {
 
-    Button close = new Button("Close", buttonClickEvent -> setContent(mainTable()));
+    Button close = new Button("Close", buttonClickEvent -> UI.getCurrent().getPage().reload());
 
     public GetStudentInformation() {
         addToNavbar(Home.makeHeader());
@@ -75,7 +76,7 @@ public class GetStudentInformation extends AppLayout {
         grid.addEditColumn(StudentData::getCommunityServiceHours, "hours", "double")
                 .text(StudentData::setCommunityServiceHours)
                 .setHeader("CS Hours");
-        ArrayList<String> categoryOptions = new ArrayList<>(Arrays.asList("CSA Community (50 Hours)", "CSA Service (200 Hours", "CSA Achievement (500 Hours)"));
+        ArrayList<String> categoryOptions = new ArrayList<>(Arrays.asList("CSA Community (50 Hours)", "CSA Service (200 Hours)", "CSA Achievement (500 Hours)"));
         grid.addEditColumn(StudentData::getCommunityServiceCategory, "category")
                 .select(StudentData::setCommunityServiceCategory, categoryOptions)
                 .setHeader("CS Category");
@@ -85,8 +86,8 @@ public class GetStudentInformation extends AppLayout {
         grid.addEditColumn(StudentData::getYearsDone, "years", "integer")
                 .text(StudentData::setYearsDone)
                 .setHeader("Years Done");
-        grid.addColumn(StudentData::getLastEdited).setHeader("Last Edited");
-        grid.addComponentColumn(item -> expandButton(grid, item)).setHeader("Expand");
+        grid.addColumn(StudentData::getLastEdited, "date", "lastedited").setHeader("Last Edited");
+        grid.addComponentColumn(this::expandButton).setHeader("Expand");
 
         //Makes them AutoWidth, which fixes width for data length
         for (Grid.Column<StudentData> al : grid.getColumns()) {
@@ -96,15 +97,18 @@ public class GetStudentInformation extends AppLayout {
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
 
-        grid.addItemClickListener(click -> {
-            Student selected = click.getItem().getStudent();
-            Notification fullData = new Notification();
-            Button close = new Button("Close");
-            fullData.add(close, GetStudentEvents.viewEvents(selected));
-            fullData.setPosition(Notification.Position.MIDDLE);
-            fullData.open();
-            close.addClickListener(onClick -> fullData.close());
-        });
+//        grid.addItemDoubleClickListener(click -> {
+//            Student selected = click.getItem().getStudent();
+//            Notification fullData = new Notification();
+//            Button close = new Button("Close");
+//            VerticalLayout layout = new VerticalLayout(close, GetStudentEvents.viewEvents(selected));
+//            layout.setAlignItems(FlexComponent.Alignment.CENTER);
+//            layout.setWidth("73em");
+//            fullData.add(layout);
+//            fullData.setPosition(Notification.Position.MIDDLE);
+//            fullData.open();
+//            close.addClickListener(onClick -> fullData.close());
+//        });
 
         //Layouts to help in orienting
         VerticalLayout aligner = new VerticalLayout();
@@ -166,14 +170,25 @@ public class GetStudentInformation extends AppLayout {
         return new Button();
     }
 
-    public Button expandButton(Grid<StudentData> grid, StudentData student) {
+    public Button expandButton(StudentData student) {
         @SuppressWarnings("unchecked")
         Button button = new Button("Expand", buttonClickEvent -> {
 //            ListDataProvider<StudentData> dataProvider = (ListDataProvider<StudentData>) grid
 //                    .getDataProvider();
-            VerticalLayout fullData = new VerticalLayout(close, GetStudentEvents.viewEvents(student));
-            fullData.setAlignItems(FlexComponent.Alignment.CENTER);
-            setContent(fullData);
+//            VerticalLayout fullData = new VerticalLayout(close, GetStudentEvents.viewEvents(student));
+//            fullData.setAlignItems(FlexComponent.Alignment.CENTER);
+//            setContent(fullData);
+            Notification fullData = new Notification();
+            Button close = new Button("Close");
+            VerticalLayout layout = new VerticalLayout(close, GetStudentEvents.viewEvents(student.getStudent()));
+            layout.setAlignItems(FlexComponent.Alignment.CENTER);
+            layout.setWidth("73em");
+            layout.setHeight("30em");
+            fullData.add(layout);
+            fullData.setPosition(Notification.Position.MIDDLE);
+            fullData.open();
+            close.addClickListener(onClick -> fullData.close());
+
         });
         return button;
     }

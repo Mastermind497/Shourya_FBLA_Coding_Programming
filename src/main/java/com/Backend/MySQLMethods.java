@@ -150,7 +150,8 @@ public class MySQLMethods {
 
             //Uses Statement to Create MySQL Table in database
             String table = "CREATE TABLE IF NOT EXISTS " + studentName + " ("
-                    + "eventName VARCHAR(255) PRIMARY KEY,"
+                    + "id INT AUTO_INCREMENT PRIMARY KEY,"
+                    + "eventName VARCHAR(255),"
                     + "eventHours DOUBLE NOT NULL,"
                     + "eventDate DATE"
                     + ")";
@@ -309,11 +310,13 @@ public class MySQLMethods {
 
         //next step, update hours in the main table
         //gets current main hours:
-        double currentHours = selectTrackerDouble(student.getFirstName(), student.getLastName(),
-                student.getStudentID(), "communityServiceHours");
-        updateTracker(student.getFirstName(), student.getLastName(),
-                student.getStudentID(), "communityServiceHours",
-                Double.toString(round(currentHours + hours)));//rounds Hours to nearest hundredth to account for inaccuracy of doubles
+        if (!eventName.equals("MANUAL ADJUSTMENT")) {
+            double currentHours = selectTrackerDouble(student.getFirstName(), student.getLastName(),
+                    student.getStudentID(), "communityServiceHours");
+            updateTracker(student.getFirstName(), student.getLastName(),
+                    student.getStudentID(), "communityServiceHours",
+                    Double.toString(round(currentHours + hours)));//rounds Hours to nearest hundredth to account for inaccuracy of doubles
+        }
 
         //now, update lastEdited in main table
         updateToCurrentDate(student.getFirstName(), student.getLastName(), student.getStudentID());
@@ -530,31 +533,40 @@ public class MySQLMethods {
      * @return A double containing the data
      * @throws Exception for SQL Errors
      */
-    public static double selectTrackerDouble(String firstName, String lastName, int studentID, String data) throws Exception {
-        String fullName = makeName(firstName, lastName, studentID);
+    public static double selectTrackerDouble(String firstName, String lastName, int studentID, String data) {
+        try {
+            String fullName = makeName(firstName, lastName, studentID);
 
-        //Uses getConnection to create a connection with the database
-        connection = getConnection();
+            //Uses getConnection to create a connection with the database
+            connection = getConnection();
 
-        //SQL Query to find find data
-        String query = "SELECT " + data + " FROM " + tableName + " WHERE fullName = '" + fullName + "'";
+            //SQL Query to find find data
+            String query = "SELECT " + data + " FROM " + tableName + " WHERE fullName = '" + fullName + "'";
 
-        //Create the java Statement (Goes in Query)
-        statement = connection.createStatement();
+            //Create the java Statement (Goes in Query)
+            statement = connection.createStatement();
 
-        //The Result after executing the query
-        ResultSet resultSet = statement.executeQuery(query);
+            //The Result after executing the query
+            ResultSet resultSet = statement.executeQuery(query);
 
-        //returns the String inside column "data"
-        resultSet.next();
-        double output = resultSet.getDouble(data);
+            //returns the String inside column "data"
+            resultSet.next();
+            double output = resultSet.getDouble(data);
 
-        //Ends everything
-        connection.close();
-        statement.close();
-        resultSet.close();
+            //Ends everything
+            connection.close();
+            statement.close();
+            resultSet.close();
 
-        return output;
+            return output;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0.0;
+        }
+    }
+
+    public static double selectTrackerDouble(Student student, String data) {
+        return selectTrackerDouble(student.getFirstName(), student.getLastName(), student.getStudentID(), data);
     }
 
     /**
@@ -1022,6 +1034,8 @@ public class MySQLMethods {
             //converts to the studentName format
             String studentName = makeName(firstName, lastName, studentID);
 
+            Student student = new Student(firstName, lastName, studentID);
+
             //Uses getConnection to create a connection
             connection = getConnection();
 
@@ -1041,7 +1055,10 @@ public class MySQLMethods {
                 Event next = new Event();
                 next.setEventName(resultSet.getString("eventName"));
                 next.setHours(resultSet.getDouble("eventHours"));
-                next.setDate(resultSet.getDate("eventDate").toString());
+                java.sql.Date date = resultSet.getDate("eventDate");
+                System.out.println(date);
+                next.setDate(date);
+                next.setStudent(student);
                 output.add(next);
             }
             resultSet.close();
@@ -1159,6 +1176,26 @@ public class MySQLMethods {
             //Rounds hours to the nearest hundredth
             double newDataDouble = round(Double.parseDouble(newData));
             newData = Double.toString(newDataDouble);
+
+            try {
+                Student selected = new Student(firstName, lastName, studentID);
+
+                double currentHours = selectTrackerDouble(
+                        selected.getFirstName(), selected.getLastName(), selected.getStudentID(), "communityServiceHours");
+
+                double hourChange = newDataDouble - currentHours;
+
+                //Gets today's date
+                java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+
+                MySQLMethods.addStudentHours(selected, "MANUAL ADJUSTMENT", hourChange, calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.DATE));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
 
         //Generates a query
@@ -1308,36 +1345,40 @@ public class MySQLMethods {
      * @param eventName the name of the event being changed
      * @throws Exception for SQL Errors
      */
-    public static void updateEvent(String firstName, String lastName, int studentID, String dataType, String newData, String eventName) throws Exception {
-        //gets connection with database
-        connection = getConnection();
+    public static void updateEvent(String firstName, String lastName, int studentID, String dataType, String newData, String eventName) {
+        try {
+            //gets connection with database
+            connection = getConnection();
 
-        String tableName = makeName(firstName, lastName, studentID);
+            String tableName = makeName(firstName, lastName, studentID);
 
-        //only used if the data field is hours
-        double initialHours = 0;
-        if (dataType.equals("eventHours")) {
-            initialHours = selectEventHours(firstName, lastName, studentID, eventName);
+            //only used if the data field is hours
+            double initialHours = 0;
+            if (dataType.equals("eventHours")) {
+                initialHours = selectEventHours(firstName, lastName, studentID, eventName);
+            }
+
+            //Generates a query
+            String query = "update " + tableName + " set " + dataType + " = " + newData + " where eventName = '" + eventName + "'";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            //executes query
+            preparedStatement.executeUpdate();
+
+            //close resources
+            preparedStatement.close();
+            connection.close();
+
+            if (dataType.equals("eventHours")) {
+                double currentHours = selectTrackerDouble(firstName, lastName, studentID, "communityServiceHours");
+                updateTracker(firstName, lastName, studentID, "communityServiceHours",
+                        Double.toString(round(currentHours + Double.parseDouble(newData) - initialHours)));//rounds Hours to nearest hundredth to account for inaccuracy of doubles
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            updateToCurrentDate(firstName, lastName, studentID);
         }
-
-        //Generates a query
-        String query = "update " + tableName + " set " + dataType + " = " + newData + " where eventName = '" + eventName + "'";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-
-        //executes query
-        preparedStatement.executeUpdate();
-
-        //close resources
-        preparedStatement.close();
-        connection.close();
-
-        if (dataType.equals("eventHours")) {
-            double currentHours = selectTrackerDouble(firstName, lastName, studentID, "communityServiceHours");
-            updateTracker(firstName, lastName, studentID, "communityServiceHours",
-                    Double.toString(round(currentHours + Double.parseDouble(newData) - initialHours)));//rounds Hours to nearest hundredth to account for inaccuracy of doubles
-        }
-
-        updateToCurrentDate(firstName, lastName, studentID);
     }
 
     public static void updateEvent(Student student, Event oldEvent, Event newEvent) {
@@ -1348,13 +1389,16 @@ public class MySQLMethods {
 
             String query =
                     "UPDATE " + tableName + " SET eventName = ?, eventHours = ?, eventDate = ? " +
-                            "WHERE eventName = ?";
+                            "WHERE eventName = ? AND eventHours = ? AND eventDate = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, newEvent.getEventName());
             preparedStatement.setDouble(2, newEvent.getHours());
-            preparedStatement.setDate(3, newEvent.getDateSQL());
+            preparedStatement.setDate(6, oldEvent.getDateSQL());
             preparedStatement.setString(4, oldEvent.getEventName());
+            preparedStatement.setDouble(5, oldEvent.getHours());
+            preparedStatement.setDate(3, newEvent.getDateSQL());
+            System.out.println(preparedStatement.toString());
             preparedStatement.executeUpdate();
 
             //closes resources
@@ -1363,6 +1407,17 @@ public class MySQLMethods {
 
             updateToCurrentDate(student.getFirstName(), student.getLastName(), student.getStudentID());
             System.out.println("Executed Event Update");
+
+            //Fix main table total
+            StudentData data = student.getStudentData();
+            double newEventHours = newEvent.getHours() - oldEvent.getHours();
+            double finalHours = data.getCommunityServiceHours() + newEventHours;
+            data.setCommunityServiceHours(finalHours);
+            updateTracker(student, data);
+//            String mainQuery = "UPDATE tracker SET eventHours = ? WHERE fullName = ?";
+//            PreparedStatement mainPreparedStatement = connection.prepareStatement(query);
+//            mainPreparedStatement.setDouble(1, finalHours);
+//            mainPreparedStatement.setString(2, tableName);
         }
         catch (Exception e) {
             e.printStackTrace();

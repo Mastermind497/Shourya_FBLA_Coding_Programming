@@ -21,6 +21,13 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
         date = new Date(year, month, day);
     }
 
+    public Event(Student student, String eventName, double hours, Date date) {
+        super.setStudent(student);
+        this.eventName = eventName;
+        this.hours = hours;
+        this.date = date;
+    }
+
     public Event() {
         date = new Date();
     }
@@ -30,7 +37,10 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     }
 
     public void setEventName(String eventName) {
+        Event oldEvent = new Event(super.getStudent(), this.eventName, this.hours, this.date);
+        boolean needToUpdateSQL = this.eventName != null;
         this.eventName = eventName;
+        if (needToUpdateSQL) updateEvent(oldEvent, this);
     }
 
     public double getHours() {
@@ -38,7 +48,10 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     }
 
     public void setHours(double hours) {
+        Event oldEvent = new Event(super.getStudent(), this.eventName, this.hours, this.date);
+        boolean needToUpdateSQL = this.hours != 0;
         this.hours = hours;
+        if (needToUpdateSQL) updateEvent(oldEvent, this);
     }
 
     public void setHours(String hours) {
@@ -50,7 +63,7 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     }
 
     public void setYear(int year) {
-        date.setYear(year);
+        setDate(date.getDay(), date.getMonth(), year);
     }
 
     public int getMonth() {
@@ -58,7 +71,7 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     }
 
     public void setMonth(int month) {
-        date.setMonth(month);
+        setDate(date.getDay(), month, date.getYear());
     }
 
     public int getDay() {
@@ -66,11 +79,16 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     }
 
     public void setDay(int day) {
-        date.setDay(day);
+        setDate(day, date.getMonth(), date.getYear());
     }
 
     public void setDate(int year, int month, int day) {
+        Event oldEvent = new Event(super.getStudent(), this.eventName, this.hours, this.date);
+        System.out.println(oldEvent);
+        boolean needToUpdateSQL = (date != null);
         date = new Date(year, month, day);
+        System.out.println(this);
+        if (needToUpdateSQL) updateEvent(oldEvent, this);
     }
 
     public Date getDate() {
@@ -79,20 +97,27 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
 
     public java.sql.Date getDateSQL() {
         String string_date = this.date.toStringRegular();
+        System.out.println(string_date);
 
-        SimpleDateFormat f = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
         long milliseconds = 0;
         try {
             java.util.Date d = f.parse(string_date);
+            System.out.println(d);
             milliseconds = d.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        System.out.println(new java.sql.Date(milliseconds));
         return new java.sql.Date(milliseconds);
     }
 
     public void setDate(String date) {
-        if (date.contains(" ")) {
+        Event oldEvent = new Event(super.getStudent(), this.eventName, this.hours,
+                new Date(this.date.getYear(), this.date.getMonth(), this.date.getDay()));
+        if (date.contains("-")) {
+            this.date.setDate(date);
+        } else if (date.contains(" ")) {
             StringTokenizer st = new StringTokenizer(date);
             int day = Integer.parseInt(st.nextToken());
             String monthString = st.nextToken();
@@ -100,7 +125,12 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
             int month = Date.getMonth(monthString);
             int year = Integer.parseInt(st.nextToken());
             this.date.setDate(LocalDate.of(year, month, day));
-        } else this.date.setDate(date);
+            this.date.setDay(day);
+            this.date.setMonth(month);
+            this.date.setYear(year);
+            System.out.println(this);
+            updateEvent(oldEvent, this);
+        } else System.out.println("No Condition Met, Date Change Failed");
     }
 
     public LocalDate getLocalDate() {
@@ -108,9 +138,16 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     }
 
     public void setDate(LocalDate localDate) {
+        Event oldEvent = new Event(super.getStudent(), this.eventName, this.hours, this.date);
+        boolean needToUpdateSQL = this.date != null;
         date.setYear(localDate.getYear());
         date.setMonth(localDate.getMonthValue());
         date.setDay(localDate.getDayOfMonth());
+        if (needToUpdateSQL) updateEvent(oldEvent, this);
+    }
+
+    public void setDate(java.sql.Date date) {
+        setDate(date.toString());
     }
 
     public Student getStudent() {
@@ -147,5 +184,9 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     @Override
     public int compare(Event o1, Event o2) {
         return o1.getDate().compareTo(o2.getDate());
+    }
+
+    public void updateEvent(Event oldEvent, Event newEvent) {
+        MySQLMethods.updateEvent(super.getStudent(), oldEvent, newEvent);
     }
 }
