@@ -84,10 +84,8 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
 
     public void setDate(int year, int month, int day) {
         Event oldEvent = new Event(super.getStudent(), this.eventName, this.hours, this.date);
-        System.out.println(oldEvent);
         boolean needToUpdateSQL = (date != null);
         date = new Date(year, month, day);
-        System.out.println(this);
         if (needToUpdateSQL) updateEvent(oldEvent, this);
     }
 
@@ -97,18 +95,15 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
 
     public java.sql.Date getDateSQL() {
         String string_date = this.date.toStringRegular();
-        System.out.println(string_date);
 
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
         long milliseconds = 0;
         try {
             java.util.Date d = f.parse(string_date);
-            System.out.println(d);
             milliseconds = d.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.println(new java.sql.Date(milliseconds));
         return new java.sql.Date(milliseconds);
     }
 
@@ -128,7 +123,6 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
             this.date.setDay(day);
             this.date.setMonth(month);
             this.date.setYear(year);
-            System.out.println(this);
             updateEvent(oldEvent, this);
         } else System.out.println("No Condition Met, Date Change Failed");
     }
@@ -165,7 +159,8 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     public void addEvent() {
         try {
             addStudentHours(super.getFirstName(), super.getLastName(), super.getStudentID(), eventName, hours,
-                    date.getYear(), date.getMonth(), date.getDay());
+                    date.getYear(), date.getMonth() - 1 //The date feature in Vaadin returns one month too large
+                    , date.getDay());
         } catch (Exception e) {
             e.printStackTrace();
         }

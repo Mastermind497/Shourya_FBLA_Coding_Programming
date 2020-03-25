@@ -45,47 +45,6 @@ public class GetStudentEvents extends AppLayout {
         }
     }
 
-    public VerticalLayout selectStudent() {
-        //Grouping in a Vertical Column
-        VerticalLayout selector = new VerticalLayout();
-
-        //Choosing Student to view Events
-        //Make Labels for Different Input Fields
-        ArrayList<Student> students = MySQLMethods.getStudents();
-        //Adds Create New Student Option
-        students.add(new Student(true));
-        ComboBox<Student> studentChoices = new ComboBox<>();
-        studentChoices.setItems(students);
-        studentChoices.addValueChangeListener(e -> {
-            if (studentChoices.getValue().getCreateNewStudent()) {
-                UI.getCurrent().navigate(CreateStudent.class);
-            }
-            selected = studentChoices.getValue();
-        });
-        studentChoices.setRequiredIndicatorVisible(true);
-
-        Button choose = new Button("View This Student's Event History");
-        choose.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        selector.add(studentChoices, choose);
-        selector.setAlignItems(FlexComponent.Alignment.CENTER);
-        selector.setAlignSelf(FlexComponent.Alignment.CENTER);
-
-        setContent(selector);
-
-        //If Button is Clicked
-        choose.addClickListener(event -> {
-            try {
-                viewEvents(selected);
-            } catch (Exception e) {
-                Notification.show(e.getMessage());
-                e.printStackTrace();
-            }
-        });
-
-        return selector;
-    }
-
     /**
      * Views events and hours done by the chosen student. Now, this method is linked to the
      *
@@ -94,7 +53,7 @@ public class GetStudentEvents extends AppLayout {
      */
     public static VerticalLayout viewEvents(Student chosen) {
         ArrayList<StudentData> studentData = new ArrayList<>();
-        studentData.add(MySQLMethods.selectTrackerAsStudent(chosen));
+        studentData.add(chosen.getStudentData());
 
         //Creates a Grid with Inline editing and Sorting
         GridPro<StudentData> grid = new GridPro<>();
@@ -169,5 +128,47 @@ public class GetStudentEvents extends AppLayout {
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
 
         return layout;
+    }
+
+    public VerticalLayout selectStudent() {
+        //Grouping in a Vertical Column
+        VerticalLayout selector = new VerticalLayout();
+
+        //Choosing Student to view Events
+        //Make Labels for Different Input Fields
+        ArrayList<Student> students = MySQLMethods.getStudents();
+        //Adds Create New Student Option
+        students.add(new Student(true));
+        ComboBox<Student> studentChoices = new ComboBox<>();
+        studentChoices.setItems(students);
+        studentChoices.addValueChangeListener(e -> {
+            if (studentChoices.getValue().getCreateNewStudent()) {
+                UI.getCurrent().navigate(CreateStudent.class);
+            }
+            selected = studentChoices.getValue();
+        });
+        studentChoices.setRequiredIndicatorVisible(true);
+
+        Button choose = new Button("View This Student's Event History");
+        choose.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        selector.add(studentChoices, choose);
+        selector.setAlignItems(FlexComponent.Alignment.CENTER);
+        selector.setAlignSelf(FlexComponent.Alignment.CENTER);
+
+        setContent(selector);
+
+        //If Button is Clicked
+        choose.addClickListener(event -> {
+            try {
+                viewEvents(selected);
+            } catch (Exception e) {
+                Notification.show(e.getMessage());
+                e.printStackTrace();
+            }
+        });
+
+
+        return selector;
     }
 }

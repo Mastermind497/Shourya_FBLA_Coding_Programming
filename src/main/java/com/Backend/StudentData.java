@@ -20,6 +20,7 @@ public class StudentData extends Student {
     private boolean junior;
     private boolean senior;
     private Date lastEdited;
+    private boolean fromSelect = false;
 
     /**
      * A Constructor for a Student if all the values are already known.
@@ -39,6 +40,11 @@ public class StudentData extends Student {
         this.communityServiceCategory = communityServiceCategory;
         this.email = email;
         this.yearsDone = yearsDone;
+    }
+
+    public StudentData(boolean fromSelect) {
+        this();
+        this.fromSelect = fromSelect;
     }
 
     /**
@@ -78,7 +84,7 @@ public class StudentData extends Student {
     }
 
     public void setGrade(short grade) {
-        if (this.grade == 0) {
+        if (this.grade == 0 || fromSelect) {
             this.grade = grade;
         } else {
             short finalGrade;
@@ -108,7 +114,8 @@ public class StudentData extends Student {
     }
 
     public void setCommunityServiceHours(double communityServiceHours) {
-        updateQuery("communityServiceHours", Double.toString(communityServiceHours));
+        if (!fromSelect)
+            updateQuery("communityServiceHours", Double.toString(MySQLMethods.round(communityServiceHours)));
         this.communityServiceHours = MySQLMethods.round(communityServiceHours);
     }
 

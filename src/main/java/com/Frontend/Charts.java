@@ -1,10 +1,12 @@
 package com.Frontend;
 
+import com.Backend.Percent;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.*;
 
 public class Charts {
-    public static Chart solidGauge(int min, double current, int max, String label) {
+    public static Chart solidGauge(double current, double max) {
+        Percent percent = new Percent(current, max);
         Chart chart = new Chart(ChartType.SOLIDGAUGE);
 
         Configuration configuration = chart.getConfiguration();
@@ -25,12 +27,12 @@ public class Charts {
 
         YAxis yAxis = configuration.getyAxis();
         yAxis.setTickAmount(2);
-        yAxis.setTitle(label);
+        yAxis.setTitle("Percent Completion");
         //No small ticks
         yAxis.setMinorTickInterval("null");
         yAxis.getTitle().setY(-50);
         yAxis.getLabels().setY(16);
-        yAxis.setExtremes(min, max, true);
+        yAxis.setExtremes(0, 100, true);
         yAxis.setMaxPadding(0);
 
 
@@ -42,16 +44,16 @@ public class Charts {
 
         configuration.setPlotOptions(plotOptionsSolidgauge);
 
-        DataSeries series = new DataSeries(label);
+        DataSeries series = new DataSeries("Percent");
 
         DataSeriesItem item = new DataSeriesItem();
-        item.setY(current);
+        item.setY(percent.getPercent());
         item.setColorIndex(2);
-        item.setClassName(label);
+        item.setClassName("Percent");
         DataLabels dataLabelsSeries = new DataLabels();
         dataLabelsSeries.setFormat("<div style=\"text-align:center\"><span style=\"font-size:25px;"
                 + "color:black' + '\">{y}</span><br/>"
-                + "<span style=\"font-size:12px;color:silver\">" + label + "</span></div>");
+                + "<span style=\"font-size:12px;color:silver\">" + "Percent" + "</span></div>");
 
         item.setDataLabels(dataLabelsSeries);
 

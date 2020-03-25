@@ -8,23 +8,15 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.crud.BinderCrudEditor;
-import com.vaadin.flow.component.crud.CrudEditor;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.gridpro.GridPro;
+import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.textfield.EmailField;
-import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.NumberField;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.validator.IntegerRangeValidator;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
@@ -32,13 +24,13 @@ import java.util.Arrays;
 
 //TODO Make this class fully-functional
 @Route("get-student-info")
+@PageTitle("View and Edit Information | FBLA Genie")
 public class GetStudentInformation extends AppLayout {
 
     Button close = new Button("Close", buttonClickEvent -> UI.getCurrent().getPage().reload());
 
     public GetStudentInformation() {
         addToNavbar(Home.makeHeader());
-
 //        //Creates Grid Data Holder
 //        Crud<StudentData> crud = new Crud<>(StudentData.class, createStudentEditor());
 //
@@ -129,43 +121,6 @@ public class GetStudentInformation extends AppLayout {
         return aligner;
     }
 
-    private CrudEditor<StudentData> createStudentEditor() {
-        TextField firstNameField = new TextField("First Name");
-        TextField lastNameField = new TextField("Last Name");
-        IntegerField studentIDField = new IntegerField("Student ID");
-        IntegerField gradeField = new IntegerField("Grade");
-        Select<String> communityServiceCategoryField = new Select<>();
-        communityServiceCategoryField.setItems("CSA Community", "CSA Service", "CSA Achievement");
-        NumberField hours = new NumberField("Hours");
-        EmailField emailField = new EmailField("Email");
-
-        //Stores all search elements
-        FormLayout form = new FormLayout(firstNameField, lastNameField, studentIDField, gradeField,
-                communityServiceCategoryField, hours, emailField);
-
-        Binder<StudentData> binder = new Binder<>();
-
-        binder.forField(firstNameField).bind(StudentData::getFirstName, StudentData::setFirstName);
-
-        binder.forField(lastNameField).bind(StudentData::getLastName, StudentData::setLastName);
-
-        binder.forField(studentIDField)
-                .withValidator(new IntegerRangeValidator(
-                        "Please enter the Student ID", 1, null))
-                .bind(StudentData::getStudentID, StudentData::setStudentID);
-
-        binder.forField(emailField).bind(StudentData::getEmail, StudentData::setEmail);
-
-        binder.forField(gradeField)
-                .withValidator(new IntegerRangeValidator(
-                        "Please enter the Current Grade", 6, 12))
-                .bind(StudentData::getGradeInt, StudentData::setGrade);
-
-        binder.forField(communityServiceCategoryField).bind(StudentData::getCommunityServiceCategory, StudentData::setCommunityServiceCategory);
-
-        return new BinderCrudEditor<>(binder, form);
-    }
-
     public Button deleteButton(Grid<StudentData> grid, Student student) {
         return new Button();
     }
@@ -178,9 +133,15 @@ public class GetStudentInformation extends AppLayout {
 //            VerticalLayout fullData = new VerticalLayout(close, GetStudentEvents.viewEvents(student));
 //            fullData.setAlignItems(FlexComponent.Alignment.CENTER);
 //            setContent(fullData);
+            System.out.println("Notification");
             Notification fullData = new Notification();
             Button close = new Button("Close");
-            VerticalLayout layout = new VerticalLayout(close, GetStudentEvents.viewEvents(student.getStudent()));
+            VerticalLayout layout = new VerticalLayout(close);
+            VerticalLayout studentInfo = GetStudentEvents.viewEvents(student.getStudent());
+            studentInfo.setMaxHeight("25em");
+            //spacer for close button
+            layout.add(new H6(" "));
+            layout.add(studentInfo);
             layout.setAlignItems(FlexComponent.Alignment.CENTER);
             layout.setWidth("73em");
             layout.setHeight("30em");
@@ -188,7 +149,7 @@ public class GetStudentInformation extends AppLayout {
             fullData.setPosition(Notification.Position.MIDDLE);
             fullData.open();
             close.addClickListener(onClick -> fullData.close());
-
+            System.out.println("End Notification");
         });
         return button;
     }

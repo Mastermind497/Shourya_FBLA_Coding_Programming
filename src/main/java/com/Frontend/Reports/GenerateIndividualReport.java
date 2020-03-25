@@ -8,7 +8,6 @@ import com.Frontend.Charts;
 import com.Frontend.Home;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.board.Board;
-import com.vaadin.flow.component.board.Row;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.charts.Chart;
@@ -22,12 +21,14 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.OptionalParameter;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Route("individual-reports")
+@PageTitle("Generate Reports | FBLA Genie")
 public class GenerateIndividualReport extends AppLayout {
     Student selectedStudent = new Student();
 
@@ -179,7 +180,7 @@ public class GenerateIndividualReport extends AppLayout {
         dataBoard.addRow(firstName, lastName, studentID, grade);
 
         //Second Row: Supporting Information
-        Row supportingInfo = dataBoard.addRow(email, communityServiceHours);
+        dataBoard.addRow(email, communityServiceHours);
 
         //Add a space between the second and third rows
         dataBoard.addRow(new H3(" "));
@@ -190,17 +191,17 @@ public class GenerateIndividualReport extends AppLayout {
         H2 hourAnalysis = new H2("Hours in Depth");
         //Creates a Solid Gauge for each of the Different Awards
         VerticalLayout communityChartLayout = new VerticalLayout();
-        Chart communityChart = Charts.solidGauge(0, /*dataOfStudent.getCommunityServiceHours()*/ 60, 50, "Hours");
+        Chart communityChart = Charts.solidGauge(dataOfStudent.getCommunityServiceHours(), 50);
         H5 communityTitle = new H5("CSA Community");
         communityChartLayout.add(communityTitle, communityChart);
         communityChartLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         VerticalLayout serviceChartLayout = new VerticalLayout();
-        Chart serviceChart = Charts.solidGauge(0, dataOfStudent.getCommunityServiceHours(), 200, "Hours");
+        Chart serviceChart = Charts.solidGauge(dataOfStudent.getCommunityServiceHours(), 200);
         H5 serviceTitle = new H5("CSA Service");
         serviceChartLayout.add(serviceTitle, serviceChart);
         serviceChartLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         VerticalLayout achievementChartLayout = new VerticalLayout();
-        Chart achievementChart = Charts.solidGauge(0, dataOfStudent.getCommunityServiceHours(), 500, "Hours");
+        Chart achievementChart = Charts.solidGauge(dataOfStudent.getCommunityServiceHours(), 500);
         H5 achievementTitle = new H5("CSA Achievement");
         achievementChartLayout.add(achievementTitle, achievementChart);
         achievementChartLayout.setAlignItems(FlexComponent.Alignment.CENTER);

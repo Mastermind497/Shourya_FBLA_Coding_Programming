@@ -22,11 +22,13 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import static com.Backend.MySQLMethods.selectTrackerString;
 
 @Route("create-student")
+@PageTitle("Create a Student | FBLA Genie")
 public class CreateStudent extends AppLayout {
     private static int count = 0;
 
@@ -196,7 +198,9 @@ public class CreateStudent extends AppLayout {
 
         //add listeners for the buttons
         save.addClickListener(event -> {
-            if (binder.writeBeanIfValid(student)) {
+            if (count < 1) {
+                Notification.show("Years Done Can not be Less Than 1");
+            } else if (binder.writeBeanIfValid(student)) {
                 if (selectTrackerString(student.getFirstName(), student.getLastName(), student.getStudentID(), "firstName") == null) {
                     student.setYearsDone((short) count);
                     student.createStudent();

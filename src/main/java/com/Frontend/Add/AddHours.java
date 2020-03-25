@@ -23,12 +23,14 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.DoubleRangeValidator;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Route("add-hours")
+@PageTitle("Add Student Hours | FBLA Genie")
 public class AddHours extends AppLayout {
     static Date eventDate = new Date();
 
