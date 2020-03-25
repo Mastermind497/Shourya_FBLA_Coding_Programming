@@ -10,13 +10,12 @@ public class Charts {
         Chart chart = new Chart(ChartType.SOLIDGAUGE);
 
         Configuration configuration = chart.getConfiguration();
-
         Pane pane = configuration.getPane();
         pane.setCenter(new String[]{"50%", "50%"});
 
         //Change depending on how the gauge should be (more open or closed)
-        pane.setStartAngle(-95);
-        pane.setEndAngle(95);
+        pane.setStartAngle(-90);
+        pane.setEndAngle(90);
 
         //Creates an arced background for the Gauge
         Background paneBackground = new Background();

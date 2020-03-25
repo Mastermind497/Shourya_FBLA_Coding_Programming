@@ -11,13 +11,12 @@ public class Percent {
     }
 
     public Percent(double current, double max) {
-        double percent = current / max;
-        this.percent = BigDecimal.valueOf(round(percent));
+        double percentage = current / max;
+        this.percent = BigDecimal.valueOf(round(percentage * 100));
     }
 
     public static double round(double toBeRounded) {
-        toBeRounded *= 100;
-        int inProgress = (int) toBeRounded;
+        int inProgress = (int) (toBeRounded * 100);
         return inProgress / 100.0;
     }
 

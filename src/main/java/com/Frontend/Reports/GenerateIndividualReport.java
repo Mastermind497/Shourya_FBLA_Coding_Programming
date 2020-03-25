@@ -210,6 +210,13 @@ public class GenerateIndividualReport extends AppLayout {
         //Row 2: Charts depicting process through hours
         dataBoard.addRow(communityChartLayout, serviceChartLayout, achievementChartLayout);
 
+        H2 eventDetails = new H2("Event Details");
+        //FIXME
+        // * Add Event Table (Not Grid Pro, Just Grid)
+        // * Add Charts to show time through the events (over the week/month)
+        // * Add Functionality for select time frames
+        // * Add Blob Chart for Everyone or something?
+
         main.add(dataBoard);
 
         setContent(main);
