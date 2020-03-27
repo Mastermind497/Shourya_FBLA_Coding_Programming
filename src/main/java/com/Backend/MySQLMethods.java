@@ -47,7 +47,7 @@ public class MySQLMethods {
             //Runs a statement on MySQL to create a database
             statement = connection.createStatement();
             statement.executeUpdate("CREATE DATABASE IF NOT EXISTS " + databaseName);
-            System.out.println("Executed Query");
+            System.out.println("Database Created");
             //Closes Variables to avoid errors
             statement.close();
             connection.close();
@@ -1300,9 +1300,6 @@ public class MySQLMethods {
     }
 
     public static void updateTracker(Student initialStudent, StudentData newData) throws Exception {
-        //gets connection with database
-        connection = getConnection();
-
         String fullName = initialStudent.getFullName();
 
         //Rounds hours to the nearest hundredth
@@ -1324,7 +1321,7 @@ public class MySQLMethods {
                 "yearsDone = '" + newData.getYearsDone() + "', " +
                 "fullName = '" + makeName(newData.getFirstName(), newData.getLastName(), newData.getStudentID()) +
                 "' where fullName = '" + fullName + "'";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
 
         //executes query
         preparedStatement.executeUpdate();
@@ -1409,7 +1406,9 @@ public class MySQLMethods {
             //Fix main table total
             StudentData data = student.getStudentData();
             double newEventHours = newEvent.getHours() - oldEvent.getHours();
+            System.out.println(newEventHours);
             double finalHours = data.getCommunityServiceHours() + newEventHours;
+            System.out.println(finalHours);
             data.setCommunityServiceHours(finalHours);
             updateTracker(student, data);
 //            String mainQuery = "UPDATE tracker SET eventHours = ? WHERE fullName = ?";

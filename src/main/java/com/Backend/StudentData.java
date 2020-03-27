@@ -119,6 +119,15 @@ public class StudentData extends Student {
         this.communityServiceHours = MySQLMethods.round(communityServiceHours);
     }
 
+    public void setCommunityServiceHoursFromSelect(double communityServiceHours) {
+        updateQuery("communityServiceHours", Double.toString(MySQLMethods.round(communityServiceHours)));
+        this.communityServiceHours = MySQLMethods.round(communityServiceHours);
+    }
+
+    public void setCommunityServiceHoursFromSelect(String communityServiceHours) {
+        setCommunityServiceHoursFromSelect(Double.parseDouble(communityServiceHours));
+    }
+
     public void setCommunityServiceHours(String communityServiceHours) {
         setCommunityServiceHours(Double.parseDouble(communityServiceHours));
     }

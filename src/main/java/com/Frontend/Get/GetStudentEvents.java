@@ -71,7 +71,7 @@ public class GetStudentEvents extends AppLayout {
                 .text(StudentData::setGrade)
                 .setHeader("Grade");
         grid.addEditColumn(StudentData::getCommunityServiceHours, "hours", "double")
-                .text(StudentData::setCommunityServiceHours)
+                .text(StudentData::setCommunityServiceHoursFromSelect)
                 .setHeader("CS Hours");
         ArrayList<String> categoryOptions = new ArrayList<>(Arrays.asList("CSA Community (50 Hours)", "CSA Service (200 Hours)", "CSA Achievement (500 Hours)"));
         grid.addEditColumn(StudentData::getCommunityServiceCategory, "category")

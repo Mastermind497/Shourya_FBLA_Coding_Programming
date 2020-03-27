@@ -28,6 +28,7 @@ import java.util.Arrays;
 public class GetStudentInformation extends AppLayout {
 
     Button close = new Button("Close", buttonClickEvent -> UI.getCurrent().getPage().reload());
+    GridPro<StudentData> grid;
 
     public GetStudentInformation() {
         addToNavbar(Home.makeHeader());
@@ -51,7 +52,7 @@ public class GetStudentInformation extends AppLayout {
         ArrayList<StudentData> data = MySQLMethods.selectFullTracker();
 
         //Creates a Grid with Inline editing and Sorting
-        GridPro<StudentData> grid = new GridPro<>();
+        grid = new GridPro<>();
         grid.setItems(data);
         grid.addEditColumn(StudentData::getFirstName, "name")
                 .text(StudentData::setFirstName)
@@ -66,7 +67,7 @@ public class GetStudentInformation extends AppLayout {
                 .text(StudentData::setGrade)
                 .setHeader("Grade");
         grid.addEditColumn(StudentData::getCommunityServiceHours, "hours", "double")
-                .text(StudentData::setCommunityServiceHours)
+                .text(StudentData::setCommunityServiceHoursFromSelect)
                 .setHeader("CS Hours");
         ArrayList<String> categoryOptions = new ArrayList<>(Arrays.asList("CSA Community (50 Hours)", "CSA Service (200 Hours)", "CSA Achievement (500 Hours)"));
         grid.addEditColumn(StudentData::getCommunityServiceCategory, "category")
@@ -148,7 +149,10 @@ public class GetStudentInformation extends AppLayout {
             fullData.add(layout);
             fullData.setPosition(Notification.Position.MIDDLE);
             fullData.open();
-            close.addClickListener(onClick -> fullData.close());
+            close.addClickListener(onClick -> {
+                fullData.close();
+                grid.setItems(MySQLMethods.selectFullTracker());
+            });
             System.out.println("End Notification");
         });
         return button;
