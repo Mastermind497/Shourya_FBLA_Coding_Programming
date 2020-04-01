@@ -24,9 +24,7 @@ public class Date implements Comparator<Date>, Comparable<Date> {
     }
 
     public Date() {
-        this.year = 0;
-        this.month = 1;
-        this.day = 1;
+        setDate(LocalDate.now());
     }
 
     public Date(boolean noDate) {
