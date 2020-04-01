@@ -125,15 +125,13 @@ public class GetStudentEvents extends AppLayout {
         events.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
 
-        events.setHeightByRows(true);
-
-        layout.add(grid);
         layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
 
         ArrayList<Component> newArr = new ArrayList<>();
         newArr.add(events);
         newArr.add(layout);
+        newArr.add(grid);
 
         return newArr;
     }

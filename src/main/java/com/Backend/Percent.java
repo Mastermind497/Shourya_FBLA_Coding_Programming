@@ -16,8 +16,7 @@ public class Percent {
     }
 
     public static double round(double toBeRounded) {
-        int inProgress = (int) (toBeRounded * 100);
-        return inProgress / 100.0;
+        return (int) (toBeRounded + 0.5);
     }
 
     public double getPercent() {

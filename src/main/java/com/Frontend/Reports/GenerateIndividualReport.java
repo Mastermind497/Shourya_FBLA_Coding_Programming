@@ -19,7 +19,6 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -97,7 +96,7 @@ public class GenerateIndividualReport extends AppLayout {
                 chooseCharts.setValue(true);
                 chooseCharts.addValueChangeListener(e -> charts = chooseCharts.getValue());
 
-        options.add(selectAll, chooseEvents, chooseCSAVisibility,  chooseCharts);
+        options.add(selectAll, chooseEvents, chooseCSAVisibility, chooseCharts);
         //The options can't be edited until a student is selected
         options.setEnabled(false);
         options.setPadding(false);
@@ -106,7 +105,10 @@ public class GenerateIndividualReport extends AppLayout {
 
         startDate = new DatePicker("Get Events Starting From:");
         startDate.setClearButtonVisible(true);
-        startDate.addValueChangeListener(e -> startingDate.setDate(startDate.getValue()));
+        startDate.addValueChangeListener(e -> {
+            startingDate = new Date();
+            startingDate.setDate(startDate.getValue());
+        });
         startDate.setEnabled(false);
         startDate.setMax(LocalDate.now());
 
@@ -125,7 +127,7 @@ public class GenerateIndividualReport extends AppLayout {
         actions.setAlignSelf(FlexComponent.Alignment.CENTER);
 
         save.addClickListener(e ->
-            report(selectedStudent, startingDate)
+                report(selectedStudent)
         );
 
         reset.addClickListener(e -> {
@@ -143,14 +145,14 @@ public class GenerateIndividualReport extends AppLayout {
     /**
      * Generates the report view after the form input in the beginning. It uses the student chosen in the form
      * and the date picked (if any) to create a report.
+     *
      * @param student The student whose report is being generated
-     * @param beginDate The beginning date of the data generation
      */
-    public void report(Student student, @OptionalParameter Date beginDate) {
+    public void report(Student student) {
         VerticalLayout main = new VerticalLayout();
         main.setPadding(true);
         main.setMargin(true);
-        
+
         //Dropdown menu for all data
         Board dataBoard = new Board();
 
@@ -187,7 +189,7 @@ public class GenerateIndividualReport extends AppLayout {
         //Third Row: Gives Brief Overview of hours
         dataBoard.addRow(communityServiceCategoryCurrent, communityServiceCategoryGoal, lastEdited);
 
-        H2 hourAnalysis = new H2("Way to Go");
+        H2 hourAnalysis = new H2("Progress Gauge");
         //Creates a Solid Gauge for each of the Different Awards
         VerticalLayout communityChartLayout = new VerticalLayout();
         Chart communityChart = Charts.solidGauge(dataOfStudent.getCommunityServiceHours(), 50, 2);
@@ -234,8 +236,9 @@ public class GenerateIndividualReport extends AppLayout {
         eventGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
 
-        dataBoard.add(eventGrid);
+        eventGrid.setMultiSort(true);
 
+        dataBoard.add(eventGrid);
 
         //FIXME
         // * Add Charts to show time through the events (over the week/month)

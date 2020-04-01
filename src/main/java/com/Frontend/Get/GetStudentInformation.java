@@ -95,6 +95,8 @@ public class GetStudentInformation extends AppLayout {
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
 
+        grid.setMultiSort(true);
+
 //        grid.addItemDoubleClickListener(click -> {
 //            Student selected = click.getItem().getStudent();
 //            Notification fullData = new Notification();
@@ -130,30 +132,38 @@ public class GetStudentInformation extends AppLayout {
     public Button deleteButton(Student student) {
         ConfirmDialog dialog = new ConfirmDialog("Confirm Delete",
                 String.format("Are you sure you want to delete %s? This action cannot be undone", student.getFirstName() + " " + student.getLastName()),
-                "Delete", onDelete -> student.delete(), "Cancel", this::onClose);
+                "Delete", onDelete -> {
+            student.delete();
+            grid.setItems(MySQLMethods.selectFullTracker());
+        },
+                "Cancel", this::onClose);
         dialog.setConfirmButtonTheme("error primary");
         @SuppressWarnings("unchecked")
-        Button button = new Button(VaadinIcon.TRASH.create(), buttonClickEvent -> {
-            System.out.println("Delete Warning");
-            dialog.open();
-        });
+        Button button = new Button(VaadinIcon.TRASH.create(), buttonClickEvent ->
+                dialog.open()
+        );
         button.addThemeVariants(ButtonVariant.LUMO_ERROR);
         return button;
     }
 
-    public Button deleteButton(Event event, Grid<Event> grid) {
+    public Button deleteButton(Event event, Grid<Event> grid, Notification notification, Grid<StudentData> studentGrid) {
         ConfirmDialog dialog = new ConfirmDialog("Confirm Delete",
                 String.format("Are you sure you want to delete %s, which happened on %s? This action cannot be undone",
                         event.getEventName(), event.getDate().toString()),
                 "Delete", onDelete -> {
             event.delete();
-            grid.setItems(MySQLMethods.selectStudentEventsAsEvent(event.getStudent()));
+            grid.setItems(MySQLMethods.selectStudentEventsAsEvent(event));
+            studentGrid.setItems(MySQLMethods.selectTrackerAsStudent(event));
+            notification.open();
         },
-                "Cancel", this::onClose);
+                "Cancel", onClose -> {
+            onClose.getSource().close();
+            notification.open();
+        });
         dialog.setConfirmButtonTheme("error primary");
         @SuppressWarnings("unchecked")
         Button button = new Button(VaadinIcon.TRASH.create(), buttonClickEvent -> {
-            System.out.println("Delete Warning");
+            notification.close();
             dialog.open();
         });
         button.addThemeVariants(ButtonVariant.LUMO_ERROR);
@@ -179,11 +189,15 @@ public class GetStudentInformation extends AppLayout {
             Button close = new Button("Close");
             VerticalLayout layout = new VerticalLayout(close);
             ArrayList<Component> arr = GetStudentEvents.viewEvents(student.getStudent());
+            Grid<StudentData> studentGrid = (Grid<StudentData>) arr.get(2);
             Grid<Event> events = (Grid<Event>) arr.get(0);
-            events.addComponentColumn(event -> deleteButton(event, events)).setHeader("Delete");
+            events.addComponentColumn(event -> deleteButton(event, events, fullData, studentGrid)).setHeader("Delete");
+            events.setMultiSort(true);
+            events.setMaxHeight("20em");
             VerticalLayout studentInfo = (VerticalLayout) arr.get(1);
-            studentInfo.add(events);
+            studentInfo.add(studentGrid, events);
             studentInfo.setMaxHeight("25em");
+
             //spacer for close button
             layout.add(new H6(" "));
             layout.add(studentInfo);
@@ -199,6 +213,7 @@ public class GetStudentInformation extends AppLayout {
             });
             System.out.println("End Notification");
         });
+        button.addThemeVariants();
         button.setIcon(VaadinIcon.EXPAND_FULL.create());
         return button;
     }

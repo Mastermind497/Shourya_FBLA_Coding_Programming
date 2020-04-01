@@ -1484,9 +1484,9 @@ public class MySQLMethods {
             statement.close();
 
             //Drops table with Student Events
-            query = "DROP TABLE ?";
+            connection = getConnection();
+            query = "DROP TABLE " + fullName;
             statement = connection.prepareStatement(query);
-            statement.setString(1, fullName);
             statement.executeUpdate();
             statement.close();
 
@@ -1510,12 +1510,11 @@ public class MySQLMethods {
             connection = getConnection();
 
             //Deletes Event from Student
-            String query = "DELETE FROM ? WHERE eventName = ? AND eventHours = ? AND eventDate = ?";
+            String query = "DELETE FROM " + fullName + " WHERE eventName = ? AND eventHours = ? AND eventDate = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, fullName);
-            statement.setString(2, event.getEventName());
-            statement.setDouble(3, event.getHours());
-            statement.setDate(4, event.getDateSQL());
+            statement.setString(1, event.getEventName());
+            statement.setDouble(2, event.getHours());
+            statement.setDate(3, event.getDateSQL());
             statement.executeUpdate();
             statement.close();
 
@@ -1523,6 +1522,7 @@ public class MySQLMethods {
             double currentHours = event.getStudentData().getCommunityServiceHours();
             double newHours = round(currentHours - event.getHours());
             query = "UPDATE tracker SET communityServiceHours = ? WHERE fullName = ?";
+            connection = getConnection();
             statement = connection.prepareStatement(query);
             statement.setDouble(1, newHours);
             statement.setString(2, fullName);
@@ -1532,7 +1532,7 @@ public class MySQLMethods {
             connection.close();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Couldn't Delete Student");
+            System.out.println("Couldn't Delete Event");
         }
     }
 
