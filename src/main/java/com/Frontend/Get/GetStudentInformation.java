@@ -1,17 +1,21 @@
 package com.Frontend.Get;
 
+import com.Backend.Event;
 import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Backend.StudentData;
 import com.Frontend.Home;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -81,6 +85,7 @@ public class GetStudentInformation extends AppLayout {
                 .setHeader("Years Done");
         grid.addColumn(StudentData::getLastEdited, "date", "lastedited").setHeader("Last Edited");
         grid.addComponentColumn(this::expandButton).setHeader("Expand");
+        grid.addComponentColumn(this::deleteButton).setHeader("Delete");
 
         //Makes them AutoWidth, which fixes width for data length
         for (Grid.Column<StudentData> al : grid.getColumns()) {
@@ -122,8 +127,43 @@ public class GetStudentInformation extends AppLayout {
         return aligner;
     }
 
-    public Button deleteButton(Grid<StudentData> grid, Student student) {
-        return new Button();
+    public Button deleteButton(Student student) {
+        ConfirmDialog dialog = new ConfirmDialog("Confirm Delete",
+                String.format("Are you sure you want to delete %s? This action cannot be undone", student.getFirstName() + " " + student.getLastName()),
+                "Delete", onDelete -> student.delete(), "Cancel", this::onClose);
+        dialog.setConfirmButtonTheme("error primary");
+        @SuppressWarnings("unchecked")
+        Button button = new Button(VaadinIcon.TRASH.create(), buttonClickEvent -> {
+            System.out.println("Delete Warning");
+            dialog.open();
+        });
+        button.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        return button;
+    }
+
+    public Button deleteButton(Event event, Grid<Event> grid) {
+        ConfirmDialog dialog = new ConfirmDialog("Confirm Delete",
+                String.format("Are you sure you want to delete %s, which happened on %s? This action cannot be undone",
+                        event.getEventName(), event.getDate().toString()),
+                "Delete", onDelete -> {
+            event.delete();
+            grid.setItems(MySQLMethods.selectStudentEventsAsEvent(event.getStudent()));
+        },
+                "Cancel", this::onClose);
+        dialog.setConfirmButtonTheme("error primary");
+        @SuppressWarnings("unchecked")
+        Button button = new Button(VaadinIcon.TRASH.create(), buttonClickEvent -> {
+            System.out.println("Delete Warning");
+            dialog.open();
+        });
+        button.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        return button;
+    }
+
+    //Closes the DialogBox
+    private void onClose(ConfirmDialog.CancelEvent cancelEvent) {
+        cancelEvent.getSource().close();
+        grid.setItems(MySQLMethods.selectFullTracker());
     }
 
     public Button expandButton(StudentData student) {
@@ -138,7 +178,11 @@ public class GetStudentInformation extends AppLayout {
             Notification fullData = new Notification();
             Button close = new Button("Close");
             VerticalLayout layout = new VerticalLayout(close);
-            VerticalLayout studentInfo = GetStudentEvents.viewEvents(student.getStudent());
+            ArrayList<Component> arr = GetStudentEvents.viewEvents(student.getStudent());
+            Grid<Event> events = (Grid<Event>) arr.get(0);
+            events.addComponentColumn(event -> deleteButton(event, events)).setHeader("Delete");
+            VerticalLayout studentInfo = (VerticalLayout) arr.get(1);
+            studentInfo.add(events);
             studentInfo.setMaxHeight("25em");
             //spacer for close button
             layout.add(new H6(" "));
@@ -155,6 +199,7 @@ public class GetStudentInformation extends AppLayout {
             });
             System.out.println("End Notification");
         });
+        button.setIcon(VaadinIcon.EXPAND_FULL.create());
         return button;
     }
 

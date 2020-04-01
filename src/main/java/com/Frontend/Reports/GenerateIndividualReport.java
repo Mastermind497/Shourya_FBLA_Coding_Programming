@@ -1,9 +1,6 @@
 package com.Frontend.Reports;
 
-import com.Backend.Date;
-import com.Backend.MySQLMethods;
-import com.Backend.Student;
-import com.Backend.StudentData;
+import com.Backend.*;
 import com.Frontend.Charts;
 import com.Frontend.Home;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -15,6 +12,8 @@ import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -37,7 +36,7 @@ public class GenerateIndividualReport extends AppLayout {
     static DatePicker startDate = new DatePicker();
 
     //The Starting Date of the Report
-    Date startingDate = new Date();
+    Date startingDate = new Date(true);
 
     //Checkbox Values for the Generation Step
     boolean events = false;
@@ -188,20 +187,20 @@ public class GenerateIndividualReport extends AppLayout {
         //Third Row: Gives Brief Overview of hours
         dataBoard.addRow(communityServiceCategoryCurrent, communityServiceCategoryGoal, lastEdited);
 
-        H2 hourAnalysis = new H2("Hours in Depth");
+        H2 hourAnalysis = new H2("Way to Go");
         //Creates a Solid Gauge for each of the Different Awards
         VerticalLayout communityChartLayout = new VerticalLayout();
-        Chart communityChart = Charts.solidGauge(dataOfStudent.getCommunityServiceHours(), 50);
+        Chart communityChart = Charts.solidGauge(dataOfStudent.getCommunityServiceHours(), 50, 2);
         H5 communityTitle = new H5("CSA Community");
         communityChartLayout.add(communityTitle, communityChart);
         communityChartLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         VerticalLayout serviceChartLayout = new VerticalLayout();
-        Chart serviceChart = Charts.solidGauge(dataOfStudent.getCommunityServiceHours(), 200);
+        Chart serviceChart = Charts.solidGauge(dataOfStudent.getCommunityServiceHours(), 200, 3);
         H5 serviceTitle = new H5("CSA Service");
         serviceChartLayout.add(serviceTitle, serviceChart);
         serviceChartLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         VerticalLayout achievementChartLayout = new VerticalLayout();
-        Chart achievementChart = Charts.solidGauge(dataOfStudent.getCommunityServiceHours(), 500);
+        Chart achievementChart = Charts.solidGauge(dataOfStudent.getCommunityServiceHours(), 500, 1);
         H5 achievementTitle = new H5("CSA Achievement");
         achievementChartLayout.add(achievementTitle, achievementChart);
         achievementChartLayout.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -211,8 +210,34 @@ public class GenerateIndividualReport extends AppLayout {
         dataBoard.addRow(communityChartLayout, serviceChartLayout, achievementChartLayout);
 
         H2 eventDetails = new H2("Event Details");
+        dataBoard.addRow(eventDetails);
+        Grid<Event> eventGrid = new Grid<>();
+        ArrayList<Event> eventsList;
+
+        //Sees if any date was selected. If not, it returns the full Data Analysis
+        if (startingDate.fakeDate()) {
+            eventsList = MySQLMethods.selectStudentEventsAsEvent(student);
+        } else {
+            eventsList = MySQLMethods.selectStudentEventsInRange(student, startingDate);
+        }
+        eventGrid.setItems(eventsList);
+        eventGrid.addColumn(Event::getEventName, "Name", "EventName").setHeader("Event Name");
+        eventGrid.addColumn(Event::getHours, "double", "hours").setHeader("Event Hours");
+        eventGrid.addColumn(Event::getDate, "Date").setHeader("Event Date");
+
+        //Adjusts Column Sizes Automatically based on data inside
+        for (Grid.Column<Event> al : eventGrid.getColumns()) {
+            al.setAutoWidth(true);
+        }
+
+        eventGrid.setHeightByRows(true);
+        eventGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
+                GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+
+        dataBoard.add(eventGrid);
+
+
         //FIXME
-        // * Add Event Table (Not Grid Pro, Just Grid)
         // * Add Charts to show time through the events (over the week/month)
         // * Add Functionality for select time frames
         // * Add Blob Chart for Everyone or something?

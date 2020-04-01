@@ -5,7 +5,7 @@ import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.*;
 
 public class Charts {
-    public static Chart solidGauge(double current, double max) {
+    public static Chart solidGauge(double current, double max, int colorIndex) {
         Percent percent = new Percent(current, max);
         Chart chart = new Chart(ChartType.SOLIDGAUGE);
 
@@ -47,7 +47,7 @@ public class Charts {
 
         DataSeriesItem item = new DataSeriesItem();
         item.setY(percent.getPercent());
-        item.setColorIndex(2);
+        item.setColorIndex(colorIndex);
         item.setClassName("Percent");
         DataLabels dataLabelsSeries = new DataLabels();
         dataLabelsSeries.setFormat("<div style=\"text-align:center\"><span style=\"font-size:25px;"
@@ -62,4 +62,8 @@ public class Charts {
 
         return chart;
     }
+
+//    public static Chart lineGraph() {
+//
+//    }
 }

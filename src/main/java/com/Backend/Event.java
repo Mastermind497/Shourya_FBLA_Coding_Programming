@@ -167,6 +167,11 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     }
 
     @Override
+    public void delete() {
+        MySQLMethods.delete(this);
+    }
+
+    @Override
     public String toString() {
         return String.format("Name: %s, Hours: %s, Date: %s", eventName, hours, date);
     }

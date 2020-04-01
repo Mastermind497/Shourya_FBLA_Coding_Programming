@@ -1085,6 +1085,49 @@ public class MySQLMethods {
     }
 
     /**
+     * This is mainly used in reports, where we want to get dates in a certain range. Thus,
+     * this method gets a start date and adds a limitation on what to select from the student table.
+     *
+     * @param student   The Student whose events we need
+     * @param startDate The Start Date of the Events
+     * @return An ArrayList containing the events being used
+     */
+    public static ArrayList<Event> selectStudentEventsInRange(Student student, Date startDate) {
+        ArrayList<Event> output = new ArrayList<>();
+        try {
+            String fullName = makeName(student);
+
+            connection = getConnection();
+
+            //Creates a query
+            String query = "SELECT * FROM " + fullName + " WHERE eventDate >= ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, startDate.getDateSQL());
+            ResultSet results = preparedStatement.executeQuery();
+
+            //Creates Output Strings
+            while (resultSet.next()) {
+                Event next = new Event();
+                next.setEventName(resultSet.getString("eventName"));
+                next.setHours(resultSet.getDouble("eventHours"));
+                java.sql.Date date = resultSet.getDate("eventDate");
+                next.setDate(date);
+                next.setStudent(student);
+                output.add(next);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Couldn't Get Student Events in Range");
+        }
+
+        return output;
+    }
+
+    /**
      * Selects data on just one event given its eventName
      *
      * @param firstName The student's first name
@@ -1415,10 +1458,81 @@ public class MySQLMethods {
 //            PreparedStatement mainPreparedStatement = connection.prepareStatement(query);
 //            mainPreparedStatement.setDouble(1, finalHours);
 //            mainPreparedStatement.setString(2, tableName);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Update Event Failed");
+        }
+    }
+
+    /**
+     * This method deletes a student and his or her respective data table
+     *
+     * @param student The Deleted Student
+     */
+    public static void delete(Student student) {
+        //Name of student being deleted in usable form
+        String fullName = makeName(student);
+
+        try {
+            connection = getConnection();
+
+            //Deletes Student from tracker
+            String query = "DELETE FROM tracker WHERE fullName = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, fullName);
+            statement.executeUpdate();
+            statement.close();
+
+            //Drops table with Student Events
+            query = "DROP TABLE ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, fullName);
+            statement.executeUpdate();
+            statement.close();
+
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Couldn't Delete Student");
+        }
+    }
+
+    /**
+     * Deletes an Event
+     *
+     * @param event the Event
+     */
+    public static void delete(Event event) {
+        //Name of student being deleted in usable form
+        String fullName = makeName(event.getStudent());
+
+        try {
+            connection = getConnection();
+
+            //Deletes Event from Student
+            String query = "DELETE FROM ? WHERE eventName = ? AND eventHours = ? AND eventDate = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, fullName);
+            statement.setString(2, event.getEventName());
+            statement.setDouble(3, event.getHours());
+            statement.setDate(4, event.getDateSQL());
+            statement.executeUpdate();
+            statement.close();
+
+            //Updates Total Student Hours with new amount
+            double currentHours = event.getStudentData().getCommunityServiceHours();
+            double newHours = round(currentHours - event.getHours());
+            query = "UPDATE tracker SET communityServiceHours = ? WHERE fullName = ?";
+            statement = connection.prepareStatement(query);
+            statement.setDouble(1, newHours);
+            statement.setString(2, fullName);
+            statement.executeUpdate();
+            statement.close();
+
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Couldn't Delete Student");
         }
     }
 

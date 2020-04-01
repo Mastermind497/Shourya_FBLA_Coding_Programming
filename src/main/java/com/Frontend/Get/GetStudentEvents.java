@@ -6,6 +6,7 @@ import com.Backend.Student;
 import com.Backend.StudentData;
 import com.Frontend.Add.CreateStudent;
 import com.Frontend.Home;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
@@ -51,7 +52,7 @@ public class GetStudentEvents extends AppLayout {
      * @param chosen The chosen student
      * @link GetStudentInformation.java class and can be accessed by single-clicking any student.
      */
-    public static VerticalLayout viewEvents(Student chosen) {
+    public static ArrayList<Component> viewEvents(Student chosen) {
         ArrayList<StudentData> studentData = new ArrayList<>();
         studentData.add(chosen.getStudentData());
 
@@ -107,7 +108,10 @@ public class GetStudentEvents extends AppLayout {
                 .text(Event::setEventName)
                 .setHeader("Event Name");
         events.addEditColumn(Event::getHours, "Hours", "Double")
-                .text(Event::setHours)
+                .text((event, hours) -> {
+                    event.setHours(hours);
+                    grid.setItems(chosen.getStudentData());
+                })
                 .setHeader("Hours of Event");
         events.addEditColumn(Event::getDate)
                 .text(Event::setDate)
@@ -123,11 +127,15 @@ public class GetStudentEvents extends AppLayout {
 
         events.setHeightByRows(true);
 
-        layout.add(grid, events);
+        layout.add(grid);
         layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
 
-        return layout;
+        ArrayList<Component> newArr = new ArrayList<>();
+        newArr.add(events);
+        newArr.add(layout);
+
+        return newArr;
     }
 
     public VerticalLayout selectStudent() {

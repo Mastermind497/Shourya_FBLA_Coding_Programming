@@ -1,5 +1,7 @@
 package com.Backend;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.StringTokenizer;
@@ -13,6 +15,8 @@ public class Date implements Comparator<Date>, Comparable<Date> {
     private int month;
     private int day;
 
+    private boolean noDate = false;
+
     public Date(int year, int month, int day) {
         this.year = year;
         this.month = month;
@@ -23,6 +27,20 @@ public class Date implements Comparator<Date>, Comparable<Date> {
         this.year = 0;
         this.month = 1;
         this.day = 1;
+    }
+
+    public Date(boolean noDate) {
+        this.noDate = noDate;
+    }
+
+    public static Date today() {
+        Date returning = new Date();
+        returning.setDate(LocalDate.now());
+        return returning;
+    }
+
+    public boolean fakeDate() {
+        return noDate;
     }
 
     public int getYear() {
@@ -47,6 +65,20 @@ public class Date implements Comparator<Date>, Comparable<Date> {
 
     public void setDay(int day) {
         this.day = day;
+    }
+
+    public java.sql.Date getDateSQL() {
+        String string_date = toStringRegular();
+
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        long milliseconds = 0;
+        try {
+            java.util.Date d = f.parse(string_date);
+            milliseconds = d.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new java.sql.Date(milliseconds);
     }
 
     public static int getMonth(String month) {
