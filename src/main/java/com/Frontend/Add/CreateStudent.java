@@ -34,7 +34,7 @@ public class CreateStudent extends AppLayout {
 
     public CreateStudent() {
         //Creates the MenuBar again in this page
-        addToNavbar(Home.makeHeader());
+        addToNavbar(Home.makeHeader(Home.ADD_STUDENT_TAB));
 
         //Creates a Horizontal Layout to decrease maximum width
         HorizontalLayout full = new HorizontalLayout();
@@ -76,6 +76,7 @@ public class CreateStudent extends AppLayout {
         communityServiceCategoryField.setItems("CSA Community (50 Hours)", "CSA Service (200 Hours)",
                 "CSA Achievement (500 Hours)");
         communityServiceCategoryField.setPlaceholder("Community Service Category");
+        communityServiceCategoryField.setLabel("Community Service Category");
 
         EmailField emailField = new EmailField("Email");
         emailField.setPlaceholder("john.doe@highschoolstudent.org");

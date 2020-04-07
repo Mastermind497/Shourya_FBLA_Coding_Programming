@@ -36,7 +36,7 @@ public class AddHours extends AppLayout {
 
     public AddHours() {
         //Adds Navigation
-        addToNavbar(Home.makeHeader());
+        addToNavbar(Home.makeHeader(Home.ADD_HOURS_TAB));
 
         //The main form to fill out data
         //Creates a Horizontal Layout to decrease maximum width

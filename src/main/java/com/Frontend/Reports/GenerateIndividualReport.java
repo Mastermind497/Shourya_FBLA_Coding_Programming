@@ -43,7 +43,7 @@ public class GenerateIndividualReport extends AppLayout {
     boolean charts = false;
 
     public GenerateIndividualReport() {
-        addToNavbar(Home.makeHeader());
+        addToNavbar(Home.makeHeader(Home.REPORT_TAB));
         settingsForm();
     }
 
@@ -158,21 +158,22 @@ public class GenerateIndividualReport extends AppLayout {
 
         StudentData dataOfStudent = student.getStudentData();
 
-        H2 overviewHeading = new H2("Overview");
-            Div firstName = setText("First Name", dataOfStudent.getFirstName());
-            Div lastName = setText("Last Name" , dataOfStudent.getLastName());
-            Div studentID = setText("Student ID", Integer.toString(dataOfStudent.getStudentID()));
-            Div email = setText("Email", dataOfStudent.getEmail());
-            Div grade = setText("Grade", Short.toString(dataOfStudent.getGrade()));
+        H2 overviewHeading = new H2("Overview of " + student);
+        Div firstName = setText("First Name", dataOfStudent.getFirstName());
+        Div lastName = setText("Last Name", dataOfStudent.getLastName());
+        Div studentID = setText("Student ID", Integer.toString(dataOfStudent.getStudentID()));
+        Div email = setText("Email", dataOfStudent.getEmail());
+        Div grade = setText("Grade", Short.toString(dataOfStudent.getGrade()));
 
-            Div communityServiceCategoryGoal = setText("Community Service Category Goal",
-                    dataOfStudent.getCommunityServiceCategory());
-            Div communityServiceCategoryCurrent = setText("Current Community Service Category",
-                    dataOfStudent.getCurrentCommunityServiceCategory());
-            Div communityServiceHours = setText("Community Service Hours",
-                    Double.toString(dataOfStudent.getCommunityServiceHours()));
+        Div communityServiceCategoryGoal = setText("Community Service Category Goal",
+                dataOfStudent.getCommunityServiceCategory());
+        Div communityServiceCategoryCurrent = setText("Current Community Service Category",
+                dataOfStudent.getCurrentCommunityServiceCategory());
+        Div communityServiceHours = setText("Community Service Hours",
+                Double.toString(dataOfStudent.getCommunityServiceHours()));
+        Div hoursToGoTillGoal = setText("Hours Left for Goal", getHoursRemaining(dataOfStudent));
 
-            Div lastEdited = setText("Last Edited", dataOfStudent.getLastEdited().toString());
+        Div lastEdited = setText("Last Edited", dataOfStudent.getLastEdited().toString());
 
         //Heading to describe section
         dataBoard.addRow(overviewHeading);
@@ -181,13 +182,13 @@ public class GenerateIndividualReport extends AppLayout {
         dataBoard.addRow(firstName, lastName, studentID, grade);
 
         //Second Row: Supporting Information
-        dataBoard.addRow(email, communityServiceHours);
+        dataBoard.addRow(email, lastEdited);
 
         //Add a space between the second and third rows
         dataBoard.addRow(new H3(" "));
 
         //Third Row: Gives Brief Overview of hours
-        dataBoard.addRow(communityServiceCategoryCurrent, communityServiceCategoryGoal, lastEdited);
+        dataBoard.addRow(communityServiceHours, hoursToGoTillGoal, communityServiceCategoryCurrent, communityServiceCategoryGoal);
 
         H2 hourAnalysis = new H2("Progress Gauge");
         //Creates a Solid Gauge for each of the Different Awards
@@ -202,7 +203,7 @@ public class GenerateIndividualReport extends AppLayout {
         serviceChartLayout.add(serviceTitle, serviceChart);
         serviceChartLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         VerticalLayout achievementChartLayout = new VerticalLayout();
-        Chart achievementChart = Charts.solidGauge(dataOfStudent.getCommunityServiceHours(), 500, 1);
+        Chart achievementChart = Charts.solidGauge(dataOfStudent.getCommunityServiceHours(), 500, 4);
         H5 achievementTitle = new H5("CSA Achievement");
         achievementChartLayout.add(achievementTitle, achievementChart);
         achievementChartLayout.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -251,10 +252,33 @@ public class GenerateIndividualReport extends AppLayout {
     }
 
     /**
+     * Calculates the hours remaining for a student to reach his or her community service goal
+     *
+     * @param student The Student who is being analyzed
+     * @return A String containing formatted hours to go
+     */
+    private String getHoursRemaining(StudentData student) {
+        String category = student.getCommunityServiceCategory();
+        double hours = student.getCommunityServiceHours();
+        if (category.contains("50")) {
+            if (hours >= 50) return "Goal Reached! Next Goal: CSA Service (200 Hours)";
+            else return (50 - hours) + " Hours To Go";
+        } else if (category.contains("200")) {
+            if (hours >= 200) return "Goal Reached! Next Goal: CSA Achievement (500 Hours)";
+            else return (200 - hours) + " Hours To Go";
+        } else {
+            assert category.contains("500");
+            if (hours >= 500) return "Completed the Highest Goal! Congratulations!";
+            else return (500 - hours) + "To Go";
+        }
+    }
+
+    /**
      * This method returns a the pre-formatted data of a student. This simplifies the job significantly when
      * writing multiple pieces of data
+     *
      * @param header The heading text of the piece of data
-     * @param text The piece of data
+     * @param text   The piece of data
      * @return A Div containing the formatted Student Data
      */
     private Div setText(String header, String text) {

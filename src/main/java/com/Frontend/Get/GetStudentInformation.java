@@ -35,7 +35,7 @@ public class GetStudentInformation extends AppLayout {
     GridPro<StudentData> grid;
 
     public GetStudentInformation() {
-        addToNavbar(Home.makeHeader());
+        addToNavbar(Home.makeHeader(Home.VIEW_EDIT_TAB));
 //        //Creates Grid Data Holder
 //        Crud<StudentData> crud = new Crud<>(StudentData.class, createStudentEditor());
 //

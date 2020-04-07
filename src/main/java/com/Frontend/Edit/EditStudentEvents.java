@@ -4,7 +4,6 @@ import com.Backend.Event;
 import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Frontend.Add.CreateStudent;
-import com.Frontend.Home;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -35,7 +34,7 @@ public class EditStudentEvents extends AppLayout {
     public static Event oldEvent = null;
 
     public EditStudentEvents() {
-        addToNavbar(Home.makeHeader());
+//        addToNavbar(Home.makeHeader());
 
         if (selected == null) {
             chooseStudent();

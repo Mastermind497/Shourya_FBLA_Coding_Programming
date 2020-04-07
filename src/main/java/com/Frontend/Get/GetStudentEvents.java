@@ -5,7 +5,6 @@ import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Backend.StudentData;
 import com.Frontend.Add.CreateStudent;
-import com.Frontend.Home;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -35,7 +34,7 @@ public class GetStudentEvents extends AppLayout {
      */
     @Deprecated
     public GetStudentEvents() {
-        addToNavbar(Home.makeHeader());
+//        addToNavbar(Home.makeHeader());
 
         //allows redirection from View Student Grid
         if (selected == null) {
@@ -145,7 +144,7 @@ public class GetStudentEvents extends AppLayout {
         ArrayList<Student> students = MySQLMethods.getStudents();
         //Adds Create New Student Option
         students.add(new Student(true));
-        ComboBox<Student> studentChoices = new ComboBox<>();
+        ComboBox<Student> studentChoices = new ComboBox<>("Select a Student");
         studentChoices.setItems(students);
         studentChoices.addValueChangeListener(e -> {
             if (studentChoices.getValue().getCreateNewStudent()) {

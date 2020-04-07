@@ -4,7 +4,6 @@ import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Backend.StudentData;
 import com.Frontend.Add.CreateStudent;
-import com.Frontend.Home;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -28,7 +27,6 @@ import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -39,8 +37,13 @@ import static com.Backend.MySQLMethods.updateTracker;
 public class EditStudentInformation extends AppLayout {
     public static Student selected;
 
-    public EditStudentInformation() throws IOException {
-        addToNavbar(Home.makeHeader());
+    /**
+     * Originally used to edit info
+     *
+     * @deprecated
+     */
+    public EditStudentInformation() {
+//        addToNavbar(Home.makeHeader();
 
         if (selected == null) {
             chooseStudent();
