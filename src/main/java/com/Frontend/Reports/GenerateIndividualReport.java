@@ -3,6 +3,7 @@ package com.Frontend.Reports;
 import com.Backend.*;
 import com.Frontend.Charts;
 import com.Frontend.Home;
+import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.board.Board;
 import com.vaadin.flow.component.button.Button;
@@ -14,7 +15,10 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H5;
+import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -23,7 +27,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 
 @Route("individual-reports")
 @PageTitle("Generate Reports | FBLA Genie")
@@ -59,7 +63,7 @@ public class GenerateIndividualReport extends AppLayout {
                 new ResponsiveStep("40em", 3));
 
         //Gets Student Data values and adds to a dropdown list
-        ArrayList<Student> studentNames = MySQLMethods.getStudents();
+        List<Student> studentNames = MySQLMethods.getStudents();
         Select<Student> studentSelect = new Select<>();
         studentSelect.setLabel("Student");
         studentSelect.setItems(studentNames);
@@ -149,6 +153,18 @@ public class GenerateIndividualReport extends AppLayout {
      * @param student The student whose report is being generated
      */
     public void report(Student student) {
+        StudentData dataOfStudent = student.getStudentData();
+
+        //Sees if any date was selected. If not, it returns the full Data Analysis
+        List<Event> eventsList;
+        if (startingDate.fakeDate()) {
+            eventsList = MySQLMethods.selectStudentEventsAsEvent(student);
+        } else {
+            eventsList = MySQLMethods.selectStudentEventsInRange(student, startingDate);
+        }
+        double hoursInRange = Event.getTotalHours(eventsList);
+        double totalHours = MySQLMethods.round(dataOfStudent.getCommunityServiceHours());
+
         VerticalLayout main = new VerticalLayout();
         main.setPadding(true);
         main.setMargin(true);
@@ -156,27 +172,16 @@ public class GenerateIndividualReport extends AppLayout {
         //Dropdown menu for all data
         Board dataBoard = new Board();
 
-        StudentData dataOfStudent = student.getStudentData();
-
         H2 overviewHeading = new H2("Overview of " + student);
+        //Heading to describe section
+        dataBoard.addRow(overviewHeading);
+
         Div firstName = setText("First Name", dataOfStudent.getFirstName());
         Div lastName = setText("Last Name", dataOfStudent.getLastName());
         Div studentID = setText("Student ID", Integer.toString(dataOfStudent.getStudentID()));
         Div email = setText("Email", dataOfStudent.getEmail());
         Div grade = setText("Grade", Short.toString(dataOfStudent.getGrade()));
-
-        Div communityServiceCategoryGoal = setText("Community Service Category Goal",
-                dataOfStudent.getCommunityServiceCategory());
-        Div communityServiceCategoryCurrent = setText("Current Community Service Category",
-                dataOfStudent.getCurrentCommunityServiceCategory());
-        Div communityServiceHours = setText("Community Service Hours",
-                Double.toString(dataOfStudent.getCommunityServiceHours()));
-        Div hoursToGoTillGoal = setText("Hours Left for Goal", getHoursRemaining(dataOfStudent));
-
         Div lastEdited = setText("Last Edited", dataOfStudent.getLastEdited().toString());
-
-        //Heading to describe section
-        dataBoard.addRow(overviewHeading);
 
         //First Row: Basic Overview
         dataBoard.addRow(firstName, lastName, studentID, grade);
@@ -185,10 +190,28 @@ public class GenerateIndividualReport extends AppLayout {
         dataBoard.addRow(email, lastEdited);
 
         //Add a space between the second and third rows
-        dataBoard.addRow(new H3(" "));
+        dataBoard.addRow(new Html("<hr>"));
+        if (hoursInRange != totalHours) {
+            Div communityServiceHoursInRange = setText("Community Service Hours in Selected Range",
+                    Double.toString(hoursInRange));
+            Div percentOfTotal = setText("Percentage of Total Hours", new Percent(hoursInRange, totalHours).toString());
+
+            dataBoard.addRow(communityServiceHoursInRange, percentOfTotal);
+        }
+
+        Div communityServiceCategoryGoal = setText("Community Service Category Goal",
+                dataOfStudent.getCommunityServiceCategory());
+        Div communityServiceCategoryCurrent = setText("Current Community Service Category",
+                dataOfStudent.getCurrentCommunityServiceCategory());
+        Div communityServiceHours = setText("Total Community Service Hours",
+                Double.toString(dataOfStudent.getCommunityServiceHours()));
+        Div hoursToGoTillGoal = setText("Hours Left for Goal", getHoursRemaining(dataOfStudent));
 
         //Third Row: Gives Brief Overview of hours
         dataBoard.addRow(communityServiceHours, hoursToGoTillGoal, communityServiceCategoryCurrent, communityServiceCategoryGoal);
+
+        //Adding two lines to signify the end of a section
+        nextSection(dataBoard);
 
         H2 hourAnalysis = new H2("Progress Gauge");
         //Creates a Solid Gauge for each of the Different Awards
@@ -212,17 +235,12 @@ public class GenerateIndividualReport extends AppLayout {
         //Row 2: Charts depicting process through hours
         dataBoard.addRow(communityChartLayout, serviceChartLayout, achievementChartLayout);
 
+        //Adding double lines to indicate the end of a section
+        nextSection(dataBoard);
+
         H2 eventDetails = new H2("Event Details");
         dataBoard.addRow(eventDetails);
         Grid<Event> eventGrid = new Grid<>();
-        ArrayList<Event> eventsList;
-
-        //Sees if any date was selected. If not, it returns the full Data Analysis
-        if (startingDate.fakeDate()) {
-            eventsList = MySQLMethods.selectStudentEventsAsEvent(student);
-        } else {
-            eventsList = MySQLMethods.selectStudentEventsInRange(student, startingDate);
-        }
         eventGrid.setItems(eventsList);
         eventGrid.addColumn(Event::getEventName, "Name", "EventName").setHeader("Event Name");
         eventGrid.addColumn(Event::getHours, "double", "hours").setHeader("Event Hours");
@@ -271,6 +289,12 @@ public class GenerateIndividualReport extends AppLayout {
             if (hours >= 500) return "Completed the Highest Goal! Congratulations!";
             else return (500 - hours) + "To Go";
         }
+    }
+
+    public void nextSection(Board dataBoard) {
+        //Adding two lines to signify the end of a section
+        dataBoard.addRow(new Html("<hr>"));
+        dataBoard.addRow(new Html("<hr>"));
     }
 
     /**

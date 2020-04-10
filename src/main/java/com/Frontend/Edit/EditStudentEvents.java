@@ -27,6 +27,7 @@ import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @Route("edit-student-events")
 public class EditStudentEvents extends AppLayout {
@@ -53,7 +54,7 @@ public class EditStudentEvents extends AppLayout {
 
         //Choosing Student to Edit
         //Make Labels for Different Input Fields
-        ArrayList<Student> students = MySQLMethods.getStudents();
+        List<Student> students = MySQLMethods.getStudents();
 
         //Adds Create New Student Option
         students.add(new Student(true));
@@ -94,7 +95,7 @@ public class EditStudentEvents extends AppLayout {
 
         //Choosing Student to Edit
         //Make Labels for Different Input Fields
-        ArrayList<Event> events = new ArrayList<>();
+        List<Event> events = new ArrayList<>();
         try {
             events = MySQLMethods.selectStudentEventsAsEvent(selectedStudent);
         }

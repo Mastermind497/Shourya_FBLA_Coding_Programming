@@ -25,6 +25,7 @@ import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 //TODO Make this class fully-functional
 @Route("get-student-info")
@@ -53,7 +54,7 @@ public class GetStudentInformation extends AppLayout {
 
     public VerticalLayout mainTable() {
         //Shows data on a grid (Up to 100k pieces)
-        ArrayList<StudentData> data = MySQLMethods.selectFullTracker();
+        List<StudentData> data = MySQLMethods.selectFullTracker();
 
         //Creates a Grid with Inline editing and Sorting
         grid = new GridPro<>();
@@ -73,7 +74,7 @@ public class GetStudentInformation extends AppLayout {
         grid.addEditColumn(StudentData::getCommunityServiceHours, "hours", "double")
                 .text(StudentData::setCommunityServiceHoursFromSelect)
                 .setHeader("CS Hours");
-        ArrayList<String> categoryOptions = new ArrayList<>(Arrays.asList("CSA Community (50 Hours)", "CSA Service (200 Hours)", "CSA Achievement (500 Hours)"));
+        List<String> categoryOptions = new ArrayList<>(Arrays.asList("CSA Community (50 Hours)", "CSA Service (200 Hours)", "CSA Achievement (500 Hours)"));
         grid.addEditColumn(StudentData::getCommunityServiceCategory, "category")
                 .select(StudentData::setCommunityServiceCategory, categoryOptions)
                 .setHeader("CS Category");
@@ -188,7 +189,7 @@ public class GetStudentInformation extends AppLayout {
             Notification fullData = new Notification();
             Button close = new Button("Close");
             VerticalLayout layout = new VerticalLayout(close);
-            ArrayList<Component> arr = GetStudentEvents.viewEvents(student.getStudent());
+            List<Component> arr = GetStudentEvents.viewEvents(student.getStudent());
             Grid<StudentData> studentGrid = (Grid<StudentData>) arr.get(2);
             Grid<Event> events = (Grid<Event>) arr.get(0);
             events.addComponentColumn(event -> deleteButton(event, events, fullData, studentGrid)).setHeader("Delete");

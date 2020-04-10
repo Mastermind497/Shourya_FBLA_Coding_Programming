@@ -22,4 +22,9 @@ public class Percent {
     public double getPercent() {
         return percent.doubleValue();
     }
+
+    @Override
+    public String toString() {
+        return percent.toString() + "%";
+    }
 }

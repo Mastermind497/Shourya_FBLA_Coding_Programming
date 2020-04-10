@@ -27,8 +27,8 @@ import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import static com.Backend.MySQLMethods.selectTrackerDouble;
 import static com.Backend.MySQLMethods.updateTracker;
@@ -237,7 +237,7 @@ public class EditStudentInformation extends AppLayout {
 
         //Choosing Student to Edit
         //Make Labels for Different Input Fields
-        ArrayList<Student> students = MySQLMethods.getStudents();
+        List<Student> students = MySQLMethods.getStudents();
         //Adds Create New Student Option
         students.add(new Student(true));
         ComboBox<Student> studentChoices = new ComboBox<>();

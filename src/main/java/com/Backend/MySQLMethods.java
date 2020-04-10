@@ -3,6 +3,7 @@ package com.Backend;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -400,12 +401,12 @@ public class MySQLMethods {
     }
 
     /**
-     * This gets an ArrayList of all users in the table for admin to see
+     * This gets an List of all users in the table for admin to see
      *
-     * @return An ArrayList which contains all of the users in the system
+     * @return An List which contains all of the users in the system
      */
-    public static ArrayList<String> selectUsers() {
-        ArrayList<String> output = new ArrayList<>();
+    public static List<String> selectUsers() {
+        List<String> output = new ArrayList<>();
         try {
             //Creates a connection
             connection = getConnection();
@@ -834,15 +835,15 @@ public class MySQLMethods {
     }
 
     /**
-     * Creates an ArrayList which holds the data of all Student's whose data is stored.
+     * Creates an List which holds the data of all Student's whose data is stored.
      * This makes it much faster to view data of every student.
      *
-     * @return An ArrayList storing all Student Data
+     * @return An List storing all Student Data
      */
-    public static ArrayList<StudentData> selectFullTracker() {
+    public static List<StudentData> selectFullTracker() {
         try {
-            //The ArrayList
-            ArrayList<StudentData> studentDataList = new ArrayList<>();
+            //The List
+            List<StudentData> studentDataList = new ArrayList<>();
             //creates a connection
             connection = getConnection();
 
@@ -887,8 +888,8 @@ public class MySQLMethods {
         }
     }
 
-    public static ArrayList<Student> getStudents() {
-        ArrayList<Student> students = new ArrayList<>();
+    public static List<Student> getStudents() {
+        List<Student> students = new ArrayList<>();
 
         try {
             connection = getConnection();
@@ -921,8 +922,8 @@ public class MySQLMethods {
         return students;
     }
 
-    public static ArrayList<StudentData> getStudentData() {
-        ArrayList<StudentData> studentData = new ArrayList<>();
+    public static List<StudentData> getStudentData() {
+        List<StudentData> studentData = new ArrayList<>();
 
         try {
             connection = getConnection();
@@ -1033,7 +1034,7 @@ public class MySQLMethods {
      * @param studentID The Student's Student ID Number
      * @return an array of Strings containing all of the Events and their data
      */
-    public static ArrayList<Event> selectStudentEventsAsEvent(String firstName, String lastName, int studentID) {
+    public static List<Event> selectStudentEventsAsEvent(String firstName, String lastName, int studentID) {
         try {
             //converts to the studentName format
             String studentName = makeName(firstName, lastName, studentID);
@@ -1053,7 +1054,7 @@ public class MySQLMethods {
             ResultSet resultSet = statement.executeQuery(query);
 
             //Creates Output Strings
-            ArrayList<Event> output = new ArrayList<>();
+            List<Event> output = new ArrayList<>();
 
             while (resultSet.next()) {
                 Event next = new Event();
@@ -1080,7 +1081,7 @@ public class MySQLMethods {
      * @param student the selected student
      * @return an array of Strings containing all of the Events and their data
      */
-    public static ArrayList<Event> selectStudentEventsAsEvent(Student student) {
+    public static List<Event> selectStudentEventsAsEvent(Student student) {
         return selectStudentEventsAsEvent(student.getFirstName(), student.getLastName(), student.getStudentID());
     }
 
@@ -1090,10 +1091,10 @@ public class MySQLMethods {
      *
      * @param student   The Student whose events we need
      * @param startDate The Start Date of the Events
-     * @return An ArrayList containing the events being used
+     * @return An List containing the events being used
      */
-    public static ArrayList<Event> selectStudentEventsInRange(Student student, Date startDate) {
-        ArrayList<Event> output = new ArrayList<>();
+    public static List<Event> selectStudentEventsInRange(Student student, Date startDate) {
+        List<Event> output = new ArrayList<>();
         try {
             String fullName = makeName(student);
 
@@ -1103,7 +1104,7 @@ public class MySQLMethods {
             String query = "SELECT * FROM " + fullName + " WHERE eventDate >= ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setDate(1, startDate.getDateSQL());
-            ResultSet results = preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             //Creates Output Strings
             while (resultSet.next()) {

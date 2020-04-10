@@ -27,7 +27,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 
 @Route("add-hours")
 @PageTitle("Add Student Hours | FBLA Genie")
@@ -57,7 +57,7 @@ public class AddHours extends AppLayout {
 
 
         //Makes Labels for Different Input Fields
-        ArrayList<Student> students = MySQLMethods.getStudents();
+        List<Student> students = MySQLMethods.getStudents();
         //Adds Create New Student Option
         students.add(new Student(true));
         ComboBox<Student> studentChoices = new ComboBox<>("Student Name");
@@ -68,11 +68,16 @@ public class AddHours extends AppLayout {
             }
         });
 
+        //A Text Input field for the Name of the Event
         TextField eventName = new TextField("Event Name");
         eventName.setPlaceholder("Volunteering at Central Park");
         eventName.setValueChangeMode(ValueChangeMode.EAGER);
 
+        //A Number input field for the length of the event
         NumberField eventHours = new NumberField("Length of Event (Hours)");
+        eventHours.setHasControls(true);
+        eventHours.setStep(0.1d);
+        eventHours.setMin(0.1);
         eventHours.setPlaceholder("2.5");
         eventHours.setErrorMessage("That is not a Number, Please Enter a Number");
         eventHours.setValueChangeMode(ValueChangeMode.EAGER);
@@ -80,7 +85,7 @@ public class AddHours extends AppLayout {
         DatePicker dateOfEvent = new DatePicker("Date");
         dateOfEvent.setClearButtonVisible(true);
         dateOfEvent.addValueChangeListener(e ->
-            eventDate.setDate(dateOfEvent.getValue())
+                eventDate.setDate(dateOfEvent.getValue())
         );
         dateOfEvent.setMax(LocalDate.now());
 
@@ -88,6 +93,8 @@ public class AddHours extends AppLayout {
         studentChoices.setRequiredIndicatorVisible(true);
         eventName.setRequiredIndicatorVisible(true);
         eventHours.setRequiredIndicatorVisible(true);
+        dateOfEvent.setRequired(true);
+        dateOfEvent.setRequiredIndicatorVisible(true);
 
         //Adds Components with their desired widths
         addEventHours.add(studentChoices, 3);

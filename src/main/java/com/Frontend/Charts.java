@@ -1,8 +1,12 @@
 package com.Frontend;
 
+import com.Backend.Event;
 import com.Backend.Percent;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.*;
+
+import java.util.Collections;
+import java.util.List;
 
 public class Charts {
     public static Chart solidGauge(double current, double max, int colorIndex) {
@@ -63,7 +67,31 @@ public class Charts {
         return chart;
     }
 
-//    public static Chart lineGraph() {
-//
-//    }
+    public static Chart monthLineGraph(String title, List<Event> events) {
+        Collections.sort(events);
+
+        final Chart chart = new Chart();
+
+        Configuration configuration = chart.getConfiguration();
+
+        configuration.setTitle(title);
+
+        YAxis yAxis = configuration.getyAxis();
+        yAxis.setTitle("Hours");
+        configuration.addyAxis(yAxis);
+
+        XAxis xAxis = configuration.getxAxis();
+
+
+        Legend legend = configuration.getLegend();
+        legend.setLayout(LayoutDirection.VERTICAL);
+        legend.setVerticalAlign(VerticalAlign.MIDDLE);
+        legend.setAlign(HorizontalAlign.RIGHT);
+
+        PlotOptionsSeries plotOptionsSeries = new PlotOptionsSeries();
+        plotOptionsSeries.setPointStart(2010);
+        configuration.setPlotOptions(plotOptionsSeries);
+
+        return new Chart();
+    }
 }

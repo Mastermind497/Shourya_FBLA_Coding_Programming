@@ -21,6 +21,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class GetStudentEvents extends AppLayout {
     public static Student selected;
@@ -51,8 +52,8 @@ public class GetStudentEvents extends AppLayout {
      * @param chosen The chosen student
      * @link GetStudentInformation.java class and can be accessed by single-clicking any student.
      */
-    public static ArrayList<Component> viewEvents(Student chosen) {
-        ArrayList<StudentData> studentData = new ArrayList<>();
+    public static List<Component> viewEvents(Student chosen) {
+        List<StudentData> studentData = new ArrayList<>();
         studentData.add(chosen.getStudentData());
 
         //Creates a Grid with Inline editing and Sorting
@@ -73,7 +74,7 @@ public class GetStudentEvents extends AppLayout {
         grid.addEditColumn(StudentData::getCommunityServiceHours, "hours", "double")
                 .text(StudentData::setCommunityServiceHoursFromSelect)
                 .setHeader("CS Hours");
-        ArrayList<String> categoryOptions = new ArrayList<>(Arrays.asList("CSA Community (50 Hours)", "CSA Service (200 Hours)", "CSA Achievement (500 Hours)"));
+        List<String> categoryOptions = new ArrayList<>(Arrays.asList("CSA Community (50 Hours)", "CSA Service (200 Hours)", "CSA Achievement (500 Hours)"));
         grid.addEditColumn(StudentData::getCommunityServiceCategory, "category")
                 .select(StudentData::setCommunityServiceCategory, categoryOptions)
                 .setHeader("CS Category");
@@ -97,7 +98,7 @@ public class GetStudentEvents extends AppLayout {
 
         VerticalLayout layout = new VerticalLayout();
 
-        ArrayList<Event> eventList = MySQLMethods.selectStudentEventsAsEvent(chosen);
+        List<Event> eventList = MySQLMethods.selectStudentEventsAsEvent(chosen);
         Collections.sort(eventList);
         System.out.println(eventList);
 
@@ -127,7 +128,7 @@ public class GetStudentEvents extends AppLayout {
         layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
 
-        ArrayList<Component> newArr = new ArrayList<>();
+        List<Component> newArr = new ArrayList<>();
         newArr.add(events);
         newArr.add(layout);
         newArr.add(grid);
@@ -141,7 +142,7 @@ public class GetStudentEvents extends AppLayout {
 
         //Choosing Student to view Events
         //Make Labels for Different Input Fields
-        ArrayList<Student> students = MySQLMethods.getStudents();
+        List<Student> students = MySQLMethods.getStudents();
         //Adds Create New Student Option
         students.add(new Student(true));
         ComboBox<Student> studentChoices = new ComboBox<>("Select a Student");

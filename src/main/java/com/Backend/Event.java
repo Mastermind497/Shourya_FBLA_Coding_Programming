@@ -3,7 +3,9 @@ package com.Backend;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import static com.Backend.MySQLMethods.addStudentHours;
@@ -188,5 +190,18 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
 
     public void updateEvent(Event oldEvent, Event newEvent) {
         MySQLMethods.updateEvent(super.getStudent(), oldEvent, newEvent);
+    }
+
+    public static double getTotalHours(List<Event> eventList) {
+        double hours = 0;
+        for (Event event : eventList) {
+            hours += event.getHours();
+        }
+
+        return MySQLMethods.round(hours);
+    }
+
+    public List<String> getMonths(int start, int end) {
+        return new ArrayList<>();
     }
 }
