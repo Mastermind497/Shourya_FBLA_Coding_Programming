@@ -6,15 +6,15 @@ import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.SortDirection;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class StudentDataProvider extends AbstractBackEndDataProvider<StudentData, CrudFilter> {
-    final ArrayList<StudentData> studentData = FileMethods.getStudentData();
+    final List<StudentData> studentData = MySQLMethods.getStudentData();
     private Consumer<Long> sizeChangeListener;
 
     public static Predicate<StudentData> predicate(CrudFilter filter) {

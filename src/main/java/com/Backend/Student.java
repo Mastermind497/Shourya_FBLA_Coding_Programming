@@ -38,7 +38,6 @@ public class Student {
         return lastName;
     }
 
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -90,12 +89,16 @@ public class Student {
         }
     }
 
+    public void delete() {
+        MySQLMethods.delete(this);
+    }
+
     @Override
     public String toString() {
         if (!createNewStudent) {
             return firstName + " " + lastName + ", " + studentID;
         } else {
-            return "CREATE NEW STUDENT";
+            return "Create New Student";
         }
     }
 }

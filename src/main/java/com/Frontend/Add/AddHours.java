@@ -2,7 +2,7 @@ package com.Frontend.Add;
 
 import com.Backend.Date;
 import com.Backend.Event;
-import com.Backend.FileMethods;
+import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Frontend.Home;
 import com.vaadin.flow.component.Key;
@@ -23,19 +23,20 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.DoubleRangeValidator;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 @Route("add-hours")
+@PageTitle("Add Student Hours | FBLA Genie")
 public class AddHours extends AppLayout {
     static Date eventDate = new Date();
 
-    public AddHours() throws Exception {
+    public AddHours() {
         //Adds Navigation
-        addToNavbar(Home.makeHeader());
+        addToNavbar(Home.makeHeader(Home.ADD_HOURS_TAB));
 
         //The main form to fill out data
         //Creates a Horizontal Layout to decrease maximum width
@@ -56,10 +57,10 @@ public class AddHours extends AppLayout {
 
 
         //Makes Labels for Different Input Fields
-        ArrayList<Student> students = new ArrayList<>(Arrays.asList(FileMethods.getStudents()));
+        List<Student> students = MySQLMethods.getStudents();
         //Adds Create New Student Option
         students.add(new Student(true));
-        ComboBox<Student> studentChoices = new ComboBox<>();
+        ComboBox<Student> studentChoices = new ComboBox<>("Student Name");
         studentChoices.setItems(students);
         studentChoices.addValueChangeListener(e -> {
             if (studentChoices.getValue() != null && studentChoices.getValue().getCreateNewStudent()) {
@@ -67,28 +68,33 @@ public class AddHours extends AppLayout {
             }
         });
 
+        //A Text Input field for the Name of the Event
         TextField eventName = new TextField("Event Name");
         eventName.setPlaceholder("Volunteering at Central Park");
         eventName.setValueChangeMode(ValueChangeMode.EAGER);
 
-        NumberField eventHours = new NumberField("Length of Event");
+        //A Number input field for the length of the event
+        NumberField eventHours = new NumberField("Length of Event (Hours)");
+        eventHours.setHasControls(true);
+        eventHours.setStep(0.1d);
+        eventHours.setMin(0.1);
         eventHours.setPlaceholder("2.5");
         eventHours.setErrorMessage("That is not a Number, Please Enter a Number");
         eventHours.setValueChangeMode(ValueChangeMode.EAGER);
 
         DatePicker dateOfEvent = new DatePicker("Date");
         dateOfEvent.setClearButtonVisible(true);
-        dateOfEvent.addValueChangeListener(e -> {
-            eventDate.setYear(dateOfEvent.getValue().getYear());
-            eventDate.setMonth(dateOfEvent.getValue().getMonthValue());
-            eventDate.setDay(dateOfEvent.getValue().getDayOfMonth());
-        });
+        dateOfEvent.addValueChangeListener(e ->
+                eventDate.setDate(dateOfEvent.getValue())
+        );
         dateOfEvent.setMax(LocalDate.now());
 
         //Makes all components required
         studentChoices.setRequiredIndicatorVisible(true);
         eventName.setRequiredIndicatorVisible(true);
         eventHours.setRequiredIndicatorVisible(true);
+        dateOfEvent.setRequired(true);
+        dateOfEvent.setRequiredIndicatorVisible(true);
 
         //Adds Components with their desired widths
         addEventHours.add(studentChoices, 3);

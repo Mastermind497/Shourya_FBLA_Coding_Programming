@@ -1,8 +1,9 @@
 package com.Frontend.Edit;
 
-import com.Backend.*;
+import com.Backend.Event;
+import com.Backend.MySQLMethods;
+import com.Backend.Student;
 import com.Frontend.Add.CreateStudent;
-import com.Frontend.Home;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -24,10 +25,9 @@ import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 @Route("edit-student-events")
 public class EditStudentEvents extends AppLayout {
@@ -35,7 +35,7 @@ public class EditStudentEvents extends AppLayout {
     public static Event oldEvent = null;
 
     public EditStudentEvents() {
-        addToNavbar(Home.makeHeader());
+//        addToNavbar(Home.makeHeader());
 
         if (selected == null) {
             chooseStudent();
@@ -54,14 +54,8 @@ public class EditStudentEvents extends AppLayout {
 
         //Choosing Student to Edit
         //Make Labels for Different Input Fields
-        ArrayList<Student> students = new ArrayList<>();
-        try {
-            students = new ArrayList<>(Arrays.asList(FileMethods.getStudents()));
-        }
-        catch (IOException ioe) {
-            Notification.show(ioe.getMessage());
-            ioe.printStackTrace();
-        }
+        List<Student> students = MySQLMethods.getStudents();
+
         //Adds Create New Student Option
         students.add(new Student(true));
         ComboBox<Student> studentChoices = new ComboBox<>();
@@ -101,7 +95,7 @@ public class EditStudentEvents extends AppLayout {
 
         //Choosing Student to Edit
         //Make Labels for Different Input Fields
-        ArrayList<Event> events = new ArrayList<>();
+        List<Event> events = new ArrayList<>();
         try {
             events = MySQLMethods.selectStudentEventsAsEvent(selectedStudent);
         }
@@ -112,12 +106,9 @@ public class EditStudentEvents extends AppLayout {
         //Adds Create New Student Option
         ComboBox<Event> eventChoices = new ComboBox<>();
         eventChoices.setItems(events);
-        eventChoices.addValueChangeListener(e -> {
-            if (eventChoices.getValue().getCreateNewStudent()) {
-                UI.getCurrent().navigate(CreateStudent.class);
-            }
-            oldEvent = eventChoices.getValue();
-        });
+        eventChoices.addValueChangeListener(e ->
+            oldEvent = eventChoices.getValue()
+        );
         eventChoices.setRequiredIndicatorVisible(true);
 
         Button edit = new Button("Edit This Event");

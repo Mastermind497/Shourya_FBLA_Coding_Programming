@@ -1,6 +1,5 @@
 package com.Frontend.Add;
 
-import com.Backend.FileMethods;
 import com.Backend.StudentData;
 import com.Frontend.Home;
 import com.vaadin.flow.component.Key;
@@ -23,19 +22,19 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
-import java.io.IOException;
 
 import static com.Backend.MySQLMethods.selectTrackerString;
 
 @Route("create-student")
+@PageTitle("Create a Student | FBLA Genie")
 public class CreateStudent extends AppLayout {
     private static int count = 0;
 
     public CreateStudent() {
         //Creates the MenuBar again in this page
-        addToNavbar(Home.makeHeader());
+        addToNavbar(Home.makeHeader(Home.ADD_STUDENT_TAB));
 
         //Creates a Horizontal Layout to decrease maximum width
         HorizontalLayout full = new HorizontalLayout();
@@ -74,9 +73,10 @@ public class CreateStudent extends AppLayout {
         //Button Group
 
         Select<String> communityServiceCategoryField = new Select<>();
-        communityServiceCategoryField.setItems("CSA Community (50 Hours)", "CSA Service (200 Hours",
+        communityServiceCategoryField.setItems("CSA Community (50 Hours)", "CSA Service (200 Hours)",
                 "CSA Achievement (500 Hours)");
         communityServiceCategoryField.setPlaceholder("Community Service Category");
+        communityServiceCategoryField.setLabel("Community Service Category");
 
         EmailField emailField = new EmailField("Email");
         emailField.setPlaceholder("john.doe@highschoolstudent.org");
@@ -199,15 +199,12 @@ public class CreateStudent extends AppLayout {
 
         //add listeners for the buttons
         save.addClickListener(event -> {
-            if (binder.writeBeanIfValid(student)) {
+            if (count < 1) {
+                Notification.show("Years Done Can not be Less Than 1");
+            } else if (binder.writeBeanIfValid(student)) {
                 if (selectTrackerString(student.getFirstName(), student.getLastName(), student.getStudentID(), "firstName") == null) {
                     student.setYearsDone((short) count);
                     student.createStudent();
-                    try {
-                        FileMethods.addToStudent(student.getFirstName(), student.getLastName(), student.getStudentID());
-                    } catch (IOException e) {
-                        Notification.show("Student couldn't be added to File");
-                    }
                     Notification.show("Your data is being processed");
                     binder.readBean(null);
                     Notification.show("Your data has been processed!");
