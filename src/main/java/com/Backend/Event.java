@@ -10,10 +10,18 @@ import java.util.StringTokenizer;
 
 import static com.Backend.MySQLMethods.addStudentHours;
 
-public class Event extends Student implements Comparable<Event>, Comparator<Event> {
+public class Event extends Student implements Comparable<Event>, Comparator<Event>, Cloneable {
     private String eventName;
     private double hours;
     private Date date;
+
+    public static List<String> getMonths(int start, int end) {
+        List<String> months = new ArrayList<>(end - start + 1);
+        for (int i = start; i <= end; i++) {
+            months.add(Date.getMonth(i));
+        }
+        return months;
+    }
 
     public Event(String firstName, String lastName, int studentID, String eventName, double hours,
                  int year, int month, int day) {
@@ -178,14 +186,46 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
         return String.format("Name: %s, Hours: %s, Date: %s", eventName, hours, date);
     }
 
-    @Override
-    public int compareTo(Event o) {
-        return this.date.compareTo(o.getDate());
+    public static List<String> getMonthsWithYearList(Date startDate, Date endDate) {
+        List<String> months = new ArrayList<>();
+        //Calculates the number of months in the period
+        int numTimes = (endDate.getMonth() - startDate.getMonth()) + (endDate.getYear() - startDate.getYear()) + 1;
+        if (numTimes < 0) {
+            Date temp = endDate;
+            endDate = startDate;
+            startDate = endDate;
+            numTimes = (endDate.getMonth() - startDate.getMonth()) + (endDate.getYear() - startDate.getYear()) + 1;
+        }
+
+        for (int i = 0; i < numTimes; i++) {
+            months.add(Date.getMonth(startDate.getMonth()) + " " + startDate.getYear());
+            startDate.incrementByMonth();
+        }
+
+        return months;
     }
 
-    @Override
-    public int compare(Event o1, Event o2) {
-        return o1.getDate().compareTo(o2.getDate());
+    public static String[] getMonthsWithYear(Date startDateIn, Date endDateIn) {
+        Date startDate = startDateIn.clone();
+        Date endDate = endDateIn.clone();
+
+        //Calculates the number of months in the period
+        int numTimes = (endDate.getMonth() - startDate.getMonth()) + (endDate.getYear() - startDate.getYear()) + 1;
+        if (numTimes < 0) {
+            Date temp = endDate;
+            endDate = startDate;
+            startDate = endDate;
+            numTimes = (endDate.getMonth() - startDate.getMonth()) + (endDate.getYear() - startDate.getYear()) + 1;
+        }
+
+        String[] months = new String[numTimes];
+
+        for (int i = 0; i < numTimes; i++) {
+            months[i] = (Date.getMonth(startDate.getMonth()) + " " + startDate.getYear());
+            startDate.incrementByMonth();
+        }
+
+        return months;
     }
 
     public void updateEvent(Event oldEvent, Event newEvent) {
@@ -201,7 +241,23 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
         return MySQLMethods.round(hours);
     }
 
-    public List<String> getMonths(int start, int end) {
-        return new ArrayList<>();
+    @Override
+    protected Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            System.err.println("Cloning not Supported");
+            return this;
+        }
+    }
+
+    @Override
+    public int compareTo(Event o) {
+        return o.getDate().compareTo(this.getDate());
+    }
+
+    @Override
+    public int compare(Event o1, Event o2) {
+        return date.compare(o1.getDate(), o2.getDate());
     }
 }

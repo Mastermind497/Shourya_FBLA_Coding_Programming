@@ -1,14 +1,24 @@
 package com.Frontend;
 
 import com.Backend.Event;
+import com.Backend.MySQLMethods;
 import com.Backend.Percent;
+import com.Backend.Student;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class Charts {
+    public static void main(String[] args) {
+        MySQLMethods.setUp();
+        List<Event> e = MySQLMethods.selectStudentEventsAsEvent(new Student("Shourya", "Bansal", 224272));
+        Chart chart = monthLineGraph("Test", e);
+    }
+
     public static Chart solidGauge(double current, double max, int colorIndex) {
         Percent percent = new Percent(current, max);
         Chart chart = new Chart(ChartType.SOLIDGAUGE);
@@ -80,18 +90,41 @@ public class Charts {
         yAxis.setTitle("Hours");
         configuration.addyAxis(yAxis);
 
+        String[] xAxisLabels = Event.getMonthsWithYear(events.get(0).getDate(), events.get(events.size() - 1).getDate());
+        System.out.println(Arrays.toString(xAxisLabels));
         XAxis xAxis = configuration.getxAxis();
+        xAxis.setTitle("Months");
+        xAxis.setCategories(xAxisLabels);
+        configuration.addxAxis(xAxis);
 
+        //The Data for the Chart
+        ListSeries series = new ListSeries("Months");
+        List<Number> hours = new ArrayList<>(xAxisLabels.length);
+        //Creates a list of hours with all of the hours allocated such that it matches with the month labels
+        int currentMonth = events.get(0).getMonth();
+        int currentYear = events.get(0).getYear();
+        double sum = 0;
+        for (int i = 0; i < events.size(); i++) {
+            Event e = events.get(i);
+            if (e.getMonth() == currentMonth && e.getYear() == currentYear) {
+                sum += e.getHours();
+            } else {
+                hours.add(sum);
+                sum = 0;
+                currentMonth++;
+                if (currentMonth > 12) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                i--;
+            }
+        }
+        //Last Sum because it doesn't get added in the loop
+        hours.add(sum);
+        System.out.println(hours);
+        series.setData(hours);
+        configuration.addSeries(series);
 
-        Legend legend = configuration.getLegend();
-        legend.setLayout(LayoutDirection.VERTICAL);
-        legend.setVerticalAlign(VerticalAlign.MIDDLE);
-        legend.setAlign(HorizontalAlign.RIGHT);
-
-        PlotOptionsSeries plotOptionsSeries = new PlotOptionsSeries();
-        plotOptionsSeries.setPointStart(2010);
-        configuration.setPlotOptions(plotOptionsSeries);
-
-        return new Chart();
+        return chart;
     }
 }

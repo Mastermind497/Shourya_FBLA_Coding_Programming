@@ -32,6 +32,8 @@ import java.util.List;
 @Route("individual-reports")
 @PageTitle("Generate Reports | FBLA Genie")
 public class GenerateIndividualReport extends AppLayout {
+    public static boolean checkboxAdded = false;
+
     Student selectedStudent = new Student();
 
     //Creates a VerticalLayout to store options later in the code, but allow previous code to access the variable
@@ -90,17 +92,19 @@ public class GenerateIndividualReport extends AppLayout {
                 chooseEvents.setValue(true);
                 chooseEvents.addValueChangeListener(e -> events = chooseEvents.getValue());
 
-            //Shows CSA Analysis, including progress, checkpoints, etc
-            Checkbox chooseCSAVisibility = new Checkbox("See CSA Data");
-                chooseCSAVisibility.setValue(true);
-                chooseCSAVisibility.addValueChangeListener(e-> csaCategory = chooseCSAVisibility.getValue());
+        //Shows CSA Analysis, including progress, checkpoints, etc
+        Checkbox chooseCSAVisibility = new Checkbox("See CSA Data");
+        chooseCSAVisibility.setValue(true);
+        chooseCSAVisibility.addValueChangeListener(e -> csaCategory = chooseCSAVisibility.getValue());
 
-            //Includes Charts
-            Checkbox chooseCharts = new Checkbox("Include Charts");
-                chooseCharts.setValue(true);
-                chooseCharts.addValueChangeListener(e -> charts = chooseCharts.getValue());
-
-        options.add(selectAll, chooseEvents, chooseCSAVisibility, chooseCharts);
+        //Includes Charts
+        Checkbox chooseCharts = new Checkbox("Include Charts");
+        chooseCharts.setValue(true);
+        chooseCharts.addValueChangeListener(e -> charts = chooseCharts.getValue());
+        if (!checkboxAdded) {
+            options.add(selectAll, chooseEvents, chooseCSAVisibility, chooseCharts);
+            checkboxAdded = true;
+        }
         //The options can't be edited until a student is selected
         options.setEnabled(false);
         options.setPadding(false);
@@ -258,6 +262,9 @@ public class GenerateIndividualReport extends AppLayout {
         eventGrid.setMultiSort(true);
 
         dataBoard.add(eventGrid);
+
+        Chart hourLineGraph = Charts.monthLineGraph("Hours per Month", eventsList);
+        dataBoard.add(hourLineGraph);
 
         //FIXME
         // * Add Charts to show time through the events (over the week/month)

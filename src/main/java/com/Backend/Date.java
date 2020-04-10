@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
  * Creates a date class to store the date. This would allow easy
  * storage and manipulation of the date
  */
-public class Date implements Comparator<Date>, Comparable<Date> {
+public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
     private int year;
     private int month;
     private int day;
@@ -35,6 +35,16 @@ public class Date implements Comparator<Date>, Comparable<Date> {
         Date returning = new Date();
         returning.setDate(LocalDate.now());
         return returning;
+    }
+
+    @Override
+    protected Date clone() {
+        try {
+            return (Date) super.clone();
+        } catch (CloneNotSupportedException e) {
+            System.err.println("Cloning Not Supported");
+            return this;
+        }
     }
 
     public boolean fakeDate() {
@@ -218,30 +228,67 @@ public class Date implements Comparator<Date>, Comparable<Date> {
     @Override
     public int compareTo(Date o) {
         if (this.year != o.getYear()) {
-            return this.year - o.getYear();
+            Integer year = o.getYear();
+            return year.compareTo(this.getYear());
         }
         else {
             if (this.month != o.getMonth()) {
-                return this.month - o.getMonth();
+                Integer month = o.getMonth();
+                return month.compareTo(this.getMonth());
             }
             else {
-                return this.day - o.getDay();
+                Integer day = o.getDay();
+                return day.compareTo(this.getDay());
             }
         }
     }
 
     @Override
-    public int compare(Date o1, Date o2) {
+    public int compare(Date o2, Date o1) {
         if (o1.getYear() != o2.getYear()) {
             return o1.getYear() - o2.getYear();
-        }
-        else {
+        } else {
             if (o1.getMonth() != o2.getMonth()) {
                 return o1.getMonth() - o2.getMonth();
-            }
-            else {
-                return o1.getMonth() - o2.getDay();
+            } else {
+                return o1.getDay() - o2.getDay();
             }
         }
+    }
+
+    /**
+     * Compares to see if two dates are the same
+     *
+     * @param date the Date compared
+     * @return Whether they are equal or not
+     */
+    public boolean equals(Date date) {
+        return (this.day == date.getDay()) && (this.month == date.getMonth()) && (this.year == date.getYear());
+    }
+
+    /**
+     * Compares to see if two dates are equal, ignoring the day
+     *
+     * @param date The date being compared
+     * @return Whether they are equal
+     */
+    public boolean equalsNoDay(Date date) {
+        return (this.month == date.getMonth()) && (this.year == date.getYear());
+    }
+
+    public void incrementDay() {
+        day++;
+    }
+
+    public void incrementByMonth() {
+        if (month < 12) month++;
+        else {
+            month = 0;
+            year++;
+        }
+    }
+
+    public void incrementYear() {
+        year++;
     }
 }
