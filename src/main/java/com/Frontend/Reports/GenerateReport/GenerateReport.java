@@ -1,16 +1,14 @@
-package com.Frontend.Reports;
+package com.Frontend.Reports.GenerateReport;
 
-import com.Frontend.Home;
+import com.Frontend.MainView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.formlayout.FormLayout.*;
+import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.router.Route;
 
-@Route("report")
+@Route(value = "report", layout = MainView.class)
 public class GenerateReport extends AppLayout {
     public GenerateReport() {
-        addToNavbar(Home.getTabs());
-
         FormLayout form = new FormLayout();
         form.setResponsiveSteps(
                 new ResponsiveStep("20em", 1),

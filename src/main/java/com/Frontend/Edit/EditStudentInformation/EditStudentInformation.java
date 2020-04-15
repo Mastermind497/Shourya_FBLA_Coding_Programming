@@ -1,9 +1,10 @@
-package com.Frontend.Edit;
+package com.Frontend.Edit.EditStudentInformation;
 
 import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Backend.StudentData;
-import com.Frontend.Add.CreateStudent;
+import com.Frontend.Add.CreateStudent.CreateStudent;
+import com.Frontend.MainView;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -33,7 +34,7 @@ import java.util.List;
 import static com.Backend.MySQLMethods.selectTrackerDouble;
 import static com.Backend.MySQLMethods.updateTracker;
 
-@Route("edit-student-info")
+@Route(layout = MainView.class)
 public class EditStudentInformation extends AppLayout {
     public static Student selected;
 
@@ -43,8 +44,6 @@ public class EditStudentInformation extends AppLayout {
      * @deprecated
      */
     public EditStudentInformation() {
-//        addToNavbar(Home.makeHeader();
-
         if (selected == null) {
             chooseStudent();
         }

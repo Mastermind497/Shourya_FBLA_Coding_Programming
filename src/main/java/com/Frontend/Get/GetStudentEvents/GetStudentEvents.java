@@ -1,10 +1,11 @@
-package com.Frontend.Get;
+package com.Frontend.Get.GetStudentEvents;
 
 import com.Backend.Event;
 import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Backend.StudentData;
-import com.Frontend.Add.CreateStudent;
+import com.Frontend.Add.CreateStudent.CreateStudent;
+import com.Frontend.MainView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -17,12 +18,14 @@ import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@Route(layout = MainView.class)
 public class GetStudentEvents extends AppLayout {
     public static Student selected;
 
@@ -35,8 +38,6 @@ public class GetStudentEvents extends AppLayout {
      */
     @Deprecated
     public GetStudentEvents() {
-//        addToNavbar(Home.makeHeader());
-
         //allows redirection from View Student Grid
         if (selected == null) {
             selectStudent();

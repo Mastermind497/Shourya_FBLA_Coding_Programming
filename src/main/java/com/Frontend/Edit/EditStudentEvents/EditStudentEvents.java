@@ -1,12 +1,12 @@
-package com.Frontend.Edit;
+package com.Frontend.Edit.EditStudentEvents;
 
 import com.Backend.Event;
 import com.Backend.MySQLMethods;
 import com.Backend.Student;
-import com.Frontend.Add.CreateStudent;
+import com.Frontend.Add.CreateStudent.CreateStudent;
+import com.Frontend.MainView;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -29,29 +29,24 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route("edit-student-events")
-public class EditStudentEvents extends AppLayout {
+@Route(layout = MainView.class)
+public class EditStudentEvents extends VerticalLayout {
     public static Student selected = null;
     public static Event oldEvent = null;
 
     public EditStudentEvents() {
-//        addToNavbar(Home.makeHeader());
-
+        removeAll();
         if (selected == null) {
             chooseStudent();
-        }
-        else if (oldEvent == null) {
+        } else if (oldEvent == null) {
             eventSelector(selected);
-        }
-        else {
+        } else {
             onButtonClick(oldEvent);
         }
     }
 
-    public VerticalLayout chooseStudent() {
-        //Grouping in a Vertical Column
-        VerticalLayout selector = new VerticalLayout();
-
+    public void chooseStudent() {
+        removeAll();
         //Choosing Student to Edit
         //Make Labels for Different Input Fields
         List<Student> students = MySQLMethods.getStudents();
@@ -71,35 +66,28 @@ public class EditStudentEvents extends AppLayout {
         Button edit = new Button("Edit This Student");
         edit.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        selector.add(studentChoices, edit);
-        selector.setAlignItems(FlexComponent.Alignment.CENTER);
-        selector.setAlignSelf(FlexComponent.Alignment.CENTER);
-
-        setContent(selector);
+        add(studentChoices, edit);
+        setAlignItems(FlexComponent.Alignment.CENTER);
+        setAlignSelf(FlexComponent.Alignment.CENTER);
 
         //If Button is Clicked
         edit.addClickListener(event -> {
             try {
                 eventSelector(selected);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-
-        return selector;
     }
 
-    public VerticalLayout eventSelector(Student selectedStudent) {
-        VerticalLayout selector = new VerticalLayout();
+    public void eventSelector(Student selectedStudent) {
 
         //Choosing Student to Edit
         //Make Labels for Different Input Fields
         List<Event> events = new ArrayList<>();
         try {
             events = MySQLMethods.selectStudentEventsAsEvent(selectedStudent);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Notification.show(e.getMessage());
             e.printStackTrace();
         }
@@ -107,32 +95,30 @@ public class EditStudentEvents extends AppLayout {
         ComboBox<Event> eventChoices = new ComboBox<>();
         eventChoices.setItems(events);
         eventChoices.addValueChangeListener(e ->
-            oldEvent = eventChoices.getValue()
+                oldEvent = eventChoices.getValue()
         );
         eventChoices.setRequiredIndicatorVisible(true);
 
         Button edit = new Button("Edit This Event");
         edit.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        selector.add(eventChoices, edit);
-        selector.setAlignItems(FlexComponent.Alignment.CENTER);
-        selector.setAlignSelf(FlexComponent.Alignment.CENTER);
+        removeAll();
+        add(eventChoices, edit);
+        setAlignItems(FlexComponent.Alignment.CENTER);
+        setAlignSelf(FlexComponent.Alignment.CENTER);
 
-        setContent(selector);
 
         //If Button is Clicked
         edit.addClickListener(Event -> {
             try {
                 onButtonClick(oldEvent);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        return selector;
     }
 
-    public VerticalLayout onButtonClick(Event selectedEvent) {
+    public void onButtonClick(Event selectedEvent) {
         //The new Event Data
         Event newEvent = new Event();
 
@@ -153,11 +139,11 @@ public class EditStudentEvents extends AppLayout {
 
         //Makes Labels for Different Input Fields
         TextField eventName = new TextField("Event Name");
-        eventName.setValue(oldEvent.getEventName());
+        eventName.setValue(selectedEvent.getEventName());
         eventName.setValueChangeMode(ValueChangeMode.EAGER);
 
         NumberField eventHours = new NumberField("Length of Event");
-        eventHours.setValue(oldEvent.getHours());
+        eventHours.setValue(selectedEvent.getHours());
         eventHours.setErrorMessage("That is not a Number, Please Enter a Number");
         eventHours.setValueChangeMode(ValueChangeMode.EAGER);
 
@@ -165,7 +151,7 @@ public class EditStudentEvents extends AppLayout {
         dateOfEvent.setClearButtonVisible(true);
         dateOfEvent.setMax(LocalDate.now());
         //Sets the displayed date to the previous event date
-        dateOfEvent.setValue(LocalDate.of(oldEvent.getYear(), oldEvent.getMonth(), oldEvent.getDay()));
+        dateOfEvent.setValue(LocalDate.of(selectedEvent.getYear(), selectedEvent.getMonth(), selectedEvent.getDay()));
 
         //Makes all components required
         eventName.setRequiredIndicatorVisible(true);
@@ -212,7 +198,7 @@ public class EditStudentEvents extends AppLayout {
             Notification.show("Your data is being processed");
             if (binder.writeBeanIfValid(newEvent)) {
                 try {
-                    MySQLMethods.updateEvent(selected, oldEvent, newEvent);
+                    MySQLMethods.updateEvent(selected, selectedEvent, newEvent);
                 } catch (Exception ex) {
                     Notification.show("Error Occurred, Please Try Again \n" + ex.getMessage());
                     ex.printStackTrace();
@@ -221,8 +207,8 @@ public class EditStudentEvents extends AppLayout {
                 binder.readBean(null);
                 Notification.show("Your data has been processed!");
                 selected = null;
-                oldEvent = null;
-                setContent(chooseStudent());
+                EditStudentEvents.oldEvent = null;
+                chooseStudent();
             } else {
                 Notification.show("Your Data couldn't be added");
             }

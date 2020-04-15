@@ -1,10 +1,11 @@
-package com.Frontend.Get;
+package com.Frontend.Get.GetStudentInformation;
 
 import com.Backend.Event;
 import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Backend.StudentData;
-import com.Frontend.Home;
+import com.Frontend.Get.GetStudentEvents.GetStudentEvents;
+import com.Frontend.MainView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -28,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 //TODO Make this class fully-functional
-@Route("get-student-info")
+@Route(value = "get-student-info", layout = MainView.class)
 @PageTitle("View and Edit Information | FBLA Genie")
 public class GetStudentInformation extends AppLayout {
 
@@ -36,7 +37,6 @@ public class GetStudentInformation extends AppLayout {
     GridPro<StudentData> grid;
 
     public GetStudentInformation() {
-        addToNavbar(Home.makeHeader(Home.VIEW_EDIT_TAB));
 //        //Creates Grid Data Holder
 //        Crud<StudentData> crud = new Crud<>(StudentData.class, createStudentEditor());
 //

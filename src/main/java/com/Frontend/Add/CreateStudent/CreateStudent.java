@@ -1,9 +1,8 @@
-package com.Frontend.Add;
+package com.Frontend.Add.CreateStudent;
 
 import com.Backend.StudentData;
-import com.Frontend.Home;
+import com.Frontend.MainView;
 import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -27,15 +26,12 @@ import com.vaadin.flow.router.Route;
 
 import static com.Backend.MySQLMethods.selectTrackerString;
 
-@Route("create-student")
+@Route(value = "create-student", layout = MainView.class)
 @PageTitle("Create a Student | FBLA Genie")
-public class CreateStudent extends AppLayout {
+public class CreateStudent extends VerticalLayout {
     private static int count = 0;
 
     public CreateStudent() {
-        //Creates the MenuBar again in this page
-        addToNavbar(Home.makeHeader(Home.ADD_STUDENT_TAB));
-
         //Creates a Horizontal Layout to decrease maximum width
         HorizontalLayout full = new HorizontalLayout();
 
@@ -223,9 +219,8 @@ public class CreateStudent extends AppLayout {
             binder.readBean(null);
         });
 
-        VerticalLayout container = new VerticalLayout(full, actions);
-        container.setAlignItems(FlexComponent.Alignment.CENTER);
-        setContent(container);
+        add(full, actions);
+        setAlignItems(Alignment.CENTER);
     }
 
     public static void addToCount() {

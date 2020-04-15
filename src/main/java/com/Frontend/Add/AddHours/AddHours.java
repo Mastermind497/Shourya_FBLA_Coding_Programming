@@ -1,13 +1,13 @@
-package com.Frontend.Add;
+package com.Frontend.Add.AddHours;
 
 import com.Backend.Date;
 import com.Backend.Event;
 import com.Backend.MySQLMethods;
 import com.Backend.Student;
-import com.Frontend.Home;
+import com.Frontend.Add.CreateStudent.CreateStudent;
+import com.Frontend.MainView;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -29,14 +29,12 @@ import com.vaadin.flow.router.Route;
 import java.time.LocalDate;
 import java.util.List;
 
-@Route("add-hours")
+@Route(value = "add-hours", layout = MainView.class)
 @PageTitle("Add Student Hours | FBLA Genie")
-public class AddHours extends AppLayout {
+public class AddHours extends VerticalLayout {
     static Date eventDate = new Date();
 
     public AddHours() {
-        //Adds Navigation
-        addToNavbar(Home.makeHeader(Home.ADD_HOURS_TAB));
 
         //The main form to fill out data
         //Creates a Horizontal Layout to decrease maximum width
@@ -147,8 +145,7 @@ public class AddHours extends AppLayout {
             binder.readBean(null);
         });
 
-        VerticalLayout container = new VerticalLayout(full, actions);
-        container.setAlignItems(FlexComponent.Alignment.CENTER);
-        setContent(container);
+        add(full, actions);
+        setAlignItems(Alignment.CENTER);
     }
 }

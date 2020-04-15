@@ -1,8 +1,8 @@
-package com.Frontend.Reports;
+package com.Frontend.Reports.GenerateIndividualReport;
 
 import com.Backend.*;
 import com.Frontend.Charts;
-import com.Frontend.Home;
+import com.Frontend.MainView;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.board.Board;
@@ -30,7 +30,7 @@ import com.vaadin.flow.router.Route;
 import java.time.LocalDate;
 import java.util.List;
 
-@Route("individual-reports")
+@Route(value = "individual-reports", layout = MainView.class)
 @PageTitle("Generate Reports | FBLA Genie")
 public class GenerateIndividualReport extends AppLayout {
     public static boolean checkboxAdded = false;
@@ -50,7 +50,6 @@ public class GenerateIndividualReport extends AppLayout {
     boolean charts = false;
 
     public GenerateIndividualReport() {
-        addToNavbar(Home.makeHeader(Home.REPORT_TAB));
         settingsForm();
     }
 
