@@ -6,6 +6,7 @@ import com.Frontend.Home;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.board.Board;
+import com.vaadin.flow.component.board.Row;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.charts.Chart;
@@ -261,15 +262,15 @@ public class GenerateIndividualReport extends AppLayout {
 
         eventGrid.setMultiSort(true);
 
-        dataBoard.add(eventGrid);
+        dataBoard.addRow(eventGrid);
 
-        Chart hourLineGraph = Charts.monthLineGraph("Hours per Month", eventsList);
-        dataBoard.add(hourLineGraph);
-
-        //FIXME
-        // * Add Charts to show time through the events (over the week/month)
-        // * Add Functionality for select time frames
-        // * Add Blob Chart for Everyone or something?
+        Button viewChart = new Button("Show Monthly Hour Graph");
+        Row questionRow = dataBoard.addRow(viewChart);
+        viewChart.addClickListener(onClick -> {
+            Chart hourLineGraph = Charts.monthLineGraph("Hours per Month", eventsList);
+            dataBoard.add(hourLineGraph);
+            dataBoard.removeRow(questionRow);
+        });
 
         main.add(dataBoard);
 
