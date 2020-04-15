@@ -1,12 +1,12 @@
-package com.Frontend.Edit;
+package com.Frontend.Edit.EditStudentInformation;
 
 import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Backend.StudentData;
-import com.Frontend.Add.CreateStudent;
+import com.Frontend.Add.CreateStudent.CreateStudent;
+import com.Frontend.MainView;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -33,8 +33,8 @@ import java.util.List;
 import static com.Backend.MySQLMethods.selectTrackerDouble;
 import static com.Backend.MySQLMethods.updateTracker;
 
-@Route("edit-student-info")
-public class EditStudentInformation extends AppLayout {
+@Route(layout = MainView.class)
+public class EditStudentInformation extends VerticalLayout {
     public static Student selected;
 
     /**
@@ -43,8 +43,7 @@ public class EditStudentInformation extends AppLayout {
      * @deprecated
      */
     public EditStudentInformation() {
-//        addToNavbar(Home.makeHeader();
-
+        removeAll();
         if (selected == null) {
             chooseStudent();
         }
@@ -53,8 +52,8 @@ public class EditStudentInformation extends AppLayout {
         }
     }
 
-    public VerticalLayout onButtonClick(Student studentSelected) {
-
+    public void onButtonClick(Student studentSelected) {
+        removeAll();
         //Creates a Horizontal Layout to decrease maximum width
         HorizontalLayout full = new HorizontalLayout();
 
@@ -221,19 +220,16 @@ public class EditStudentInformation extends AppLayout {
             // clear fields by setting null
             binder.readBean(null);
             selected = null;
-            setContent(chooseStudent());
+            chooseStudent();
         });
 
-        VerticalLayout container = new VerticalLayout(full, actions);
-        container.setAlignItems(FlexComponent.Alignment.CENTER);
-        setContent(container);
-
-        return container;
+        removeAll();
+        add(full, actions);
+        setAlignItems(FlexComponent.Alignment.CENTER);
     }
 
-    public VerticalLayout chooseStudent() {
-        //Grouping in a Vertical Column
-        VerticalLayout selector = new VerticalLayout();
+    public void chooseStudent() {
+        removeAll();
 
         //Choosing Student to Edit
         //Make Labels for Different Input Fields
@@ -253,15 +249,11 @@ public class EditStudentInformation extends AppLayout {
         Button edit = new Button("Edit This Student");
         edit.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        selector.add(studentChoices, edit);
-        selector.setAlignItems(FlexComponent.Alignment.CENTER);
-        selector.setAlignSelf(FlexComponent.Alignment.CENTER);
-
-        setContent(selector);
+        add(studentChoices, edit);
+        setAlignItems(FlexComponent.Alignment.CENTER);
+        setAlignSelf(FlexComponent.Alignment.CENTER);
 
         //If Button is Clicked
         edit.addClickListener(event -> onButtonClick(selected));
-
-        return selector;
     }
 }

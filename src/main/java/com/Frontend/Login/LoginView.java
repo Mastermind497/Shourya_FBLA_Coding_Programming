@@ -11,7 +11,7 @@ import com.vaadin.flow.router.Route;
 
 import java.util.Collections;
 
-@Route("login")
+@Route(value = "login")
 @PageTitle("Login | FBLA Genie")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver{
 
