@@ -4,18 +4,11 @@ import com.Backend.Event;
 import com.Backend.MySQLMethods;
 import com.Backend.Student;
 import com.Backend.StudentData;
-import com.Frontend.Add.CreateStudent.CreateStudent;
 import com.Frontend.MainView;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.gridpro.GridPro;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -26,26 +19,8 @@ import java.util.Collections;
 import java.util.List;
 
 @Route(layout = MainView.class)
-public class GetStudentEvents extends AppLayout {
+public class GetStudentEvents extends VerticalLayout {
     public static Student selected;
-
-    /**
-     * This used to be the original method for editing data before inline editing. After
-     * that was discovered, this method has been deprecated and not used anymore. it is just here
-     * to show progress made.
-     *
-     * @deprecated
-     */
-    @Deprecated
-    public GetStudentEvents() {
-        //allows redirection from View Student Grid
-        if (selected == null) {
-            selectStudent();
-        }
-        if (selected != null) {
-            viewEvents(selected);
-        }
-    }
 
     /**
      * Views events and hours done by the chosen student. Now, this method is linked to the
@@ -135,47 +110,5 @@ public class GetStudentEvents extends AppLayout {
         newArr.add(grid);
 
         return newArr;
-    }
-
-    public VerticalLayout selectStudent() {
-        //Grouping in a Vertical Column
-        VerticalLayout selector = new VerticalLayout();
-
-        //Choosing Student to view Events
-        //Make Labels for Different Input Fields
-        List<Student> students = MySQLMethods.getStudents();
-        //Adds Create New Student Option
-        students.add(new Student(true));
-        ComboBox<Student> studentChoices = new ComboBox<>("Select a Student");
-        studentChoices.setItems(students);
-        studentChoices.addValueChangeListener(e -> {
-            if (studentChoices.getValue().getCreateNewStudent()) {
-                UI.getCurrent().navigate(CreateStudent.class);
-            }
-            selected = studentChoices.getValue();
-        });
-        studentChoices.setRequiredIndicatorVisible(true);
-
-        Button choose = new Button("View This Student's Event History");
-        choose.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        selector.add(studentChoices, choose);
-        selector.setAlignItems(FlexComponent.Alignment.CENTER);
-        selector.setAlignSelf(FlexComponent.Alignment.CENTER);
-
-        setContent(selector);
-
-        //If Button is Clicked
-        choose.addClickListener(event -> {
-            try {
-                viewEvents(selected);
-            } catch (Exception e) {
-                Notification.show(e.getMessage());
-                e.printStackTrace();
-            }
-        });
-
-
-        return selector;
     }
 }

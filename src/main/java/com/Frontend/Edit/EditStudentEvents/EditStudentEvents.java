@@ -81,7 +81,7 @@ public class EditStudentEvents extends VerticalLayout {
     }
 
     public void eventSelector(Student selectedStudent) {
-
+        removeAll();
         //Choosing Student to Edit
         //Make Labels for Different Input Fields
         List<Event> events = new ArrayList<>();
@@ -119,6 +119,7 @@ public class EditStudentEvents extends VerticalLayout {
     }
 
     public void onButtonClick(Event selectedEvent) {
+        removeAll();
         //The new Event Data
         Event newEvent = new Event();
 
@@ -220,13 +221,11 @@ public class EditStudentEvents extends VerticalLayout {
             // clear fields by setting null
             binder.readBean(null);
             selected = null;
-            setContent(chooseStudent());
+            chooseStudent();
         });
 
-        VerticalLayout container = new VerticalLayout(full, actions);
-        container.setAlignItems(FlexComponent.Alignment.CENTER);
-        setContent(container);
-
-        return container;
+        removeAll();
+        add(full, actions);
+        setAlignItems(FlexComponent.Alignment.CENTER);
     }
 }
