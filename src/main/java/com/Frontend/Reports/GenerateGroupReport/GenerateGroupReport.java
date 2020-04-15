@@ -11,6 +11,7 @@ import com.vaadin.flow.router.Route;
 public class GenerateGroupReport extends VerticalLayout {
     Button selector = new Button("Generate Report");
     public GenerateGroupReport() {
+        MainView.setActiveTab(MainView.REPORT_TAB);
         add(selector);
         selector.addClickListener(onClick -> {
             remove(selector);

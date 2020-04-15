@@ -4,7 +4,6 @@ import com.Backend.*;
 import com.Frontend.Charts;
 import com.Frontend.MainView;
 import com.vaadin.flow.component.Html;
-import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.board.Board;
 import com.vaadin.flow.component.board.Row;
 import com.vaadin.flow.component.button.Button;
@@ -32,7 +31,7 @@ import java.util.List;
 
 @Route(value = "individual-reports", layout = MainView.class)
 @PageTitle("Generate Reports | FBLA Genie")
-public class GenerateIndividualReport extends AppLayout {
+public class GenerateIndividualReport extends VerticalLayout {
     public static boolean checkboxAdded = false;
 
     Student selectedStudent = new Student();
@@ -50,13 +49,12 @@ public class GenerateIndividualReport extends AppLayout {
     boolean charts = false;
 
     public GenerateIndividualReport() {
+        MainView.setActiveTab(MainView.REPORT_TAB);
         settingsForm();
     }
 
     public void settingsForm() {
-        //VerticalLayout to store form and buttons
-        VerticalLayout mainLayout = new VerticalLayout();
-
+        removeAll();
         //Makes the form
         FormLayout form = new FormLayout();
         form.setResponsiveSteps(
@@ -143,11 +141,9 @@ public class GenerateIndividualReport extends AppLayout {
             startDate.setValue(null);
         });
 
-        mainLayout.add(form, actions);
-        mainLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-        mainLayout.setAlignSelf(FlexComponent.Alignment.CENTER);
-
-        setContent(mainLayout);
+        add(form, actions);
+        setAlignItems(FlexComponent.Alignment.CENTER);
+        setAlignSelf(FlexComponent.Alignment.CENTER);
     }
 
     /**
@@ -157,6 +153,7 @@ public class GenerateIndividualReport extends AppLayout {
      * @param student The student whose report is being generated
      */
     public void report(Student student) {
+        removeAll();
         StudentData dataOfStudent = student.getStudentData();
 
         //Sees if any date was selected. If not, it returns the full Data Analysis
@@ -169,9 +166,9 @@ public class GenerateIndividualReport extends AppLayout {
         double hoursInRange = Event.getTotalHours(eventsList);
         double totalHours = MySQLMethods.round(dataOfStudent.getCommunityServiceHours());
 
-        VerticalLayout main = new VerticalLayout();
-        main.setPadding(true);
-        main.setMargin(true);
+        //Adds space between edge of screen and content
+        setPadding(true);
+        setMargin(true);
 
         //Dropdown menu for all data
         Board dataBoard = new Board();
@@ -271,9 +268,7 @@ public class GenerateIndividualReport extends AppLayout {
             dataBoard.removeRow(questionRow);
         });
 
-        main.add(dataBoard);
-
-        setContent(main);
+        add(dataBoard);
     }
 
     /**

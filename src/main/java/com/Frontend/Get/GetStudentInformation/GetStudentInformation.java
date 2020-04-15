@@ -8,7 +8,6 @@ import com.Frontend.Get.GetStudentEvents.GetStudentEvents;
 import com.Frontend.MainView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
@@ -31,28 +30,19 @@ import java.util.List;
 //TODO Make this class fully-functional
 @Route(value = "get-student-info", layout = MainView.class)
 @PageTitle("View and Edit Information | FBLA Genie")
-public class GetStudentInformation extends AppLayout {
+public class GetStudentInformation extends VerticalLayout {
 
     Button close = new Button("Close", buttonClickEvent -> UI.getCurrent().getPage().reload());
     GridPro<StudentData> grid;
 
     public GetStudentInformation() {
-//        //Creates Grid Data Holder
-//        Crud<StudentData> crud = new Crud<>(StudentData.class, createStudentEditor());
-//
-//        //Data Provider to Search for Students
-//        StudentDataProvider dataProvider = new StudentDataProvider();
-//
-//        crud.setDataProvider(dataProvider);
-//        crud.addSaveListener(e -> dataProvider.persist(e.getItem()));
-//        crud.addDeleteListener(e -> dataProvider.delete(e.getItem()));
-//
-//        crud.addThemeVariants(CrudVariant.NO_BORDER);
+        MainView.setActiveTab(MainView.VIEW_EDIT_TAB);
 
         mainTable();
     }
 
-    public VerticalLayout mainTable() {
+    public void mainTable() {
+        removeAll();
         //Shows data on a grid (Up to 100k pieces)
         List<StudentData> data = MySQLMethods.selectFullTracker();
 
@@ -98,36 +88,21 @@ public class GetStudentInformation extends AppLayout {
 
         grid.setMultiSort(true);
 
-//        grid.addItemDoubleClickListener(click -> {
-//            Student selected = click.getItem().getStudent();
-//            Notification fullData = new Notification();
-//            Button close = new Button("Close");
-//            VerticalLayout layout = new VerticalLayout(close, GetStudentEvents.viewEvents(selected));
-//            layout.setAlignItems(FlexComponent.Alignment.CENTER);
-//            layout.setWidth("73em");
-//            fullData.add(layout);
-//            fullData.setPosition(Notification.Position.MIDDLE);
-//            fullData.open();
-//            close.addClickListener(onClick -> fullData.close());
-//        });
-
         //Layouts to help in orienting
-        VerticalLayout aligner = new VerticalLayout();
         HorizontalLayout choice = new HorizontalLayout();
 
         Button exportData = new Button("Export Data");
         exportData.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        //Button is disabled until exporting feature is added
+        exportData.setEnabled(false);
 
         choice.add(exportData);
         choice.setAlignItems(FlexComponent.Alignment.CENTER);
         choice.setAlignSelf(FlexComponent.Alignment.CENTER);
 
-        aligner.add(grid, choice);
-        aligner.setAlignItems(FlexComponent.Alignment.CENTER);
-        aligner.setAlignSelf(FlexComponent.Alignment.CENTER);
-
-        setContent(aligner);
-        return aligner;
+        add(grid, choice);
+        setAlignItems(FlexComponent.Alignment.CENTER);
+        setAlignSelf(FlexComponent.Alignment.CENTER);
     }
 
     public Button deleteButton(Student student) {
