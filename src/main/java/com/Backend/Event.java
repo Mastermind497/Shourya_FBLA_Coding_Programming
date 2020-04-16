@@ -186,7 +186,9 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
         return String.format("Name: %s, Hours: %s, Date: %s", eventName, hours, date);
     }
 
-    public static List<String> getMonthsWithYearList(Date startDate, Date endDate) {
+    public static List<String> getMonthsWithYearList(Date startDateIn, Date endDateIn) {
+        Date startDate = startDateIn.clone();
+        Date endDate = endDateIn.clone();
         List<String> months = new ArrayList<>();
         //Calculates the number of months in the period
         int numTimes = (endDate.getMonth() - startDate.getMonth()) + (endDate.getYear() - startDate.getYear()) + 1;
@@ -203,6 +205,10 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
         }
 
         return months;
+    }
+
+    public static int monthsInRange(Date startDate, Date endDate) {
+        return (endDate.getMonth() - startDate.getMonth()) + (endDate.getYear() - startDate.getYear()) + 1;
     }
 
     public static String[] getMonthsWithYear(Date startDateIn, Date endDateIn) {

@@ -49,7 +49,6 @@ public class GenerateIndividualReport extends VerticalLayout {
     boolean charts = false;
 
     public GenerateIndividualReport() {
-        MainView.setActiveTab(MainView.REPORT_TAB);
         settingsForm();
     }
 
@@ -259,14 +258,16 @@ public class GenerateIndividualReport extends VerticalLayout {
         eventGrid.setMultiSort(true);
 
         dataBoard.addRow(eventGrid);
-
-        Button viewChart = new Button("Show Monthly Hour Graph");
-        Row questionRow = dataBoard.addRow(viewChart);
-        viewChart.addClickListener(onClick -> {
-            Chart hourLineGraph = Charts.monthLineGraph("Hours per Month", eventsList);
-            dataBoard.add(hourLineGraph);
-            dataBoard.removeRow(questionRow);
-        });
+        if (Event.monthsInRange(eventsList.get(0).getDate(), eventsList.get(eventsList.size() - 1).getDate()) > 1) {
+            Button viewChart = new Button("Show Monthly Hour Graph");
+            Row questionRow = dataBoard.addRow(viewChart);
+            viewChart.addClickListener(onClick -> {
+                Chart hourLineGraph = Charts.monthLineGraph("Hours per Month", eventsList);
+                dataBoard.add(new Html("<hr>"));
+                dataBoard.add(hourLineGraph);
+                dataBoard.removeRow(questionRow);
+            });
+        }
 
         add(dataBoard);
     }

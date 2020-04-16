@@ -95,55 +95,42 @@ public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
         switch (month) {
             case "january":
             case "jan":
-                System.out.println(1);
                 return 1;
             case "february":
             case "feb":
             case "f":
-                System.out.println(2);
                 return 2;
             case "march":
             case "mar":
-                System.out.println(3);
                 return 3;
             case "april":
             case "ap":
             case "apr":
-                System.out.println(4);
                 return 4;
             case "may":
-                System.out.println(5);
                 return 5;
             case "june":
             case "jun":
-                System.out.println(6);
                 return 6;
             case "july":
             case "jul":
-                System.out.println(7);
                 return 7;
             case "august":
             case "aug":
-                System.out.println(8);
                 return 8;
             case "september":
             case "sept":
-                System.out.println(9);
                 return 9;
             case "october":
             case "oct":
-                System.out.println(10);
                 return 10;
             case "november":
             case "nov":
-                System.out.println(11);
                 return 11;
             case "december":
             case "dec":
-                System.out.println(12);
                 return 12;
             default:
-                System.out.println(" None");
                 return -1;
         }
     }
@@ -182,7 +169,6 @@ public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
     public void setDate(String date) {
         StringTokenizer st = new StringTokenizer(date, "-");
         int year = Integer.parseInt(st.nextToken());
-        System.out.println(year);
         if (year > 1900) {
             this.setYear(year);
         } else {

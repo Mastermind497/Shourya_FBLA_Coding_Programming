@@ -76,7 +76,6 @@ public class GetStudentEvents extends VerticalLayout {
 
         List<Event> eventList = MySQLMethods.selectStudentEventsAsEvent(chosen);
         Collections.sort(eventList);
-        System.out.println(eventList);
 
         GridPro<Event> events = new GridPro<>();
         events.setItems(eventList);

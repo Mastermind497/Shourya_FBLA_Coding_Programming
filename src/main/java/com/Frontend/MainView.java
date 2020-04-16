@@ -8,21 +8,17 @@ import com.Frontend.Get.GetStudentInformation.GetStudentInformation;
 import com.Frontend.Reports.GenerateIndividualReport.GenerateIndividualReport;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.contextmenu.MenuItem;
-import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 
@@ -51,13 +47,12 @@ import java.util.ArrayList;
  *
  * @author Shourya Bansal
  */
-@Route(value = "")
 @PWA(name = "FBLA Genie",
         shortName = "FBLA Genie",
         description = "This is the Application made by Shourya Bansal for the FBLA Coding " +
                 "& Programming competition in the 2019-2020 school year")
 public class MainView extends AppLayout {
-    public static final Tab HOME_TAB = createTab(VaadinIcon.HOME, "Home", "", MainView.class);
+    public static final Tab HOME_TAB = createTab(VaadinIcon.HOME, "Home", "", Home.class);
     public static final Tab ADD_STUDENT_TAB = createTab(VaadinIcon.FILE_ADD, "Add a Student", "", CreateStudent.class);
     public static final Tab ADD_HOURS_TAB = createTab(VaadinIcon.EDIT, "Add Hours", "to Student", AddHours.class);
     public static final Tab VIEW_EDIT_TAB = createTab(VaadinIcon.EYE, "View and Edit", "Students", GetStudentInformation.class);
@@ -68,18 +63,6 @@ public class MainView extends AppLayout {
     //Creates the Home Screen
     //TODO get active tab feature working
     public MainView() {
-        addToNavbar(makeHeader());
-    }
-
-    /**
-     * This method is used to add a header to the GUI on any page of the App.
-     * This speeds up the process significantly instead of having to recreate and
-     * retype the code each and every time. This also cleans code up.
-     *
-     * @deprecated This function is not used any more. This will be replaced by a built in
-     * feature which uses the overall Layout of the MainView
-     */
-    public static VerticalLayout makeHeader() {
         final Tabs tabs = new Tabs();
         //If there is internet, sets main image to the FBLA-PBL logo
         Image logo = new Image("https://www.fbla-pbl.org/media/FBLA-PBL_registered.png", "FBLA-PBL Logo");
@@ -90,43 +73,8 @@ public class MainView extends AppLayout {
         tabs.add(getAvailableTabs());
         tabs.setFlexGrowForEnclosedTabs(1);
 
-        //Sets up a MenuBar for Navigation
-        MenuBar menuBar = new MenuBar();
-        menuBar.setOpenOnHover(true); //Opens options on hover
-
-        //Starts Setting up MenuBar Options
-        MenuItem home = menuBar.addItem("Home", event ->
-                UI.getCurrent().navigate(MainView.class)
-        );
-        MenuItem addData = menuBar.addItem("Add Data");
-//        MenuItem editData = menuBar.addItem("Edit Data");
-        MenuItem viewData = menuBar.addItem("View Data", event ->
-                UI.getCurrent().navigate(GetStudentInformation.class));
-        MenuItem genReport = menuBar.addItem("Reports");
-        MenuItem documentation = menuBar.addItem("Documentation");
-
-        //Creates Submenus for the MenuBar Options to make it clean and easy to read
-        SubMenu addDataSubMenu = addData.getSubMenu();
-        addDataSubMenu.addItem("Add a Student", event ->
-                UI.getCurrent().navigate(CreateStudent.class)
-        );
-        addDataSubMenu.addItem("Add Student Hours", event ->
-                UI.getCurrent().navigate(AddHours.class)
-        );
-
-        SubMenu genRepSubMenu = genReport.getSubMenu();
-        genRepSubMenu.addItem("Generate Individual Report", e ->
-                UI.getCurrent().navigate(GenerateIndividualReport.class));
-        genRepSubMenu.addItem("Generate Overall Report");
-
-
-        Anchor logout = new Anchor("/logout", "Log Out");
-
-        HorizontalLayout header = new HorizontalLayout(menuBar, logout);
-        header.expand(menuBar);
-
-        header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
-        header.addClassName("header");
+        Span appName = new Span("FLBA Genie");
+        appName.addClassName("hide-on-mobile");
 
         //Creates a Vertical Layout to store all the above components
         VerticalLayout verticalLayout = new VerticalLayout();
@@ -141,11 +89,35 @@ public class MainView extends AppLayout {
         //Checks to see if main database is made. Makes if not
         MySQLMethods.setUp();
 
-        return verticalLayout;
+        addToNavbar(verticalLayout);
+        this.setDrawerOpened(false);
     }
 
     public static void setActiveTab(Tab activeTab) {
         tabs.setSelectedTab(activeTab);
+    }
+
+    public static void setActiveTab(String activeTab) {
+        activeTab = activeTab.toLowerCase();
+        switch (activeTab) {
+            case "addhours":
+                tabs.setSelectedTab(ADD_HOURS_TAB);
+                return;
+            case "addstudent":
+                tabs.setSelectedTab(ADD_STUDENT_TAB);
+                return;
+            case "documentation":
+                tabs.setSelectedTab(DOC_TAB);
+                return;
+            case "getinfo":
+                tabs.setSelectedTab(VIEW_EDIT_TAB);
+                return;
+            case "report":
+                tabs.setSelectedTab(REPORT_TAB);
+                return;
+            default:
+                tabs.setSelectedTab(HOME_TAB);
+        }
     }
 
     public static Tabs getTabs() {
@@ -177,7 +149,9 @@ public class MainView extends AppLayout {
     }
 
     private static Tab createTab(VaadinIcon icon, String title1, String title2, Class<? extends Component> viewClass) {
-        return createTab(populateLink(new RouterLink(null, viewClass), icon, title1, title2));
+        RouterLink routerLink = new RouterLink(null, viewClass);
+        routerLink.setHighlightCondition(HighlightConditions.sameLocation());
+        return createTab(populateLink(routerLink, icon, title1, title2));
     }
 
     private static Tab createTab(Component content) {

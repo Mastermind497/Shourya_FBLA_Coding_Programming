@@ -8,7 +8,6 @@ import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -91,7 +90,6 @@ public class Charts {
         configuration.addyAxis(yAxis);
 
         String[] xAxisLabels = Event.getMonthsWithYear(events.get(0).getDate(), events.get(events.size() - 1).getDate());
-        System.out.println(Arrays.toString(xAxisLabels));
         XAxis xAxis = configuration.getxAxis();
         xAxis.setTitle("Months");
         xAxis.setCategories(xAxisLabels);
@@ -121,7 +119,6 @@ public class Charts {
         }
         //Last Sum because it doesn't get added in the loop
         hours.add(sum);
-        System.out.println(hours);
         series.setData(hours);
         configuration.addSeries(series);
 

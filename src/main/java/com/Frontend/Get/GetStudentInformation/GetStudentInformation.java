@@ -36,8 +36,6 @@ public class GetStudentInformation extends VerticalLayout {
     GridPro<StudentData> grid;
 
     public GetStudentInformation() {
-        MainView.setActiveTab(MainView.VIEW_EDIT_TAB);
-
         mainTable();
     }
 

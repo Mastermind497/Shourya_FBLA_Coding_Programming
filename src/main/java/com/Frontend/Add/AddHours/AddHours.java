@@ -35,7 +35,6 @@ public class AddHours extends VerticalLayout {
     static Date eventDate = new Date();
 
     public AddHours() {
-
         //The main form to fill out data
         //Creates a Horizontal Layout to decrease maximum width
         HorizontalLayout full = new HorizontalLayout();

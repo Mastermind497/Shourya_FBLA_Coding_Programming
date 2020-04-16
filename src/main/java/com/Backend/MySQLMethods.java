@@ -1450,9 +1450,7 @@ public class MySQLMethods {
             //Fix main table total
             StudentData data = student.getStudentData();
             double newEventHours = newEvent.getHours() - oldEvent.getHours();
-            System.out.println(newEventHours);
             double finalHours = data.getCommunityServiceHours() + newEventHours;
-            System.out.println(finalHours);
             data.setCommunityServiceHours(finalHours);
             updateTracker(student, data);
 //            String mainQuery = "UPDATE tracker SET eventHours = ? WHERE fullName = ?";

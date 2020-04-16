@@ -1,8 +1,8 @@
 package com.Frontend;
 
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.PWA;
 
 /* FIXME
     * Add Title to Each Page
@@ -28,14 +28,11 @@ import com.vaadin.flow.server.PWA;
  * @author Shourya Bansal
  */
 @Route(value = "", layout = MainView.class)
-@PWA(name = "FBLA Genie",
-        shortName = "FBLA Genie",
-        description = "This is the Application made by Shourya Bansal for the FBLA Coding " +
-                "& Programming competition in the 2019-2020 school year")
+
 public class Home extends VerticalLayout {
 
     //Creates the Home Screen
     public Home() {
-
+        add(new H1("This is the HOME layout. This text is a placeholder for what is to come."));
     }
 }

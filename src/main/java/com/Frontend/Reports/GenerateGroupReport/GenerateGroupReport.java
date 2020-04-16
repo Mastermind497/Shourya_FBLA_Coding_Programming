@@ -1,6 +1,7 @@
 package com.Frontend.Reports.GenerateGroupReport;
 
 import com.Frontend.MainView;
+import com.vaadin.flow.component.board.Board;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -11,7 +12,7 @@ import com.vaadin.flow.router.Route;
 public class GenerateGroupReport extends VerticalLayout {
     Button selector = new Button("Generate Report");
     public GenerateGroupReport() {
-        MainView.setActiveTab(MainView.REPORT_TAB);
+        removeAll();
         add(selector);
         selector.addClickListener(onClick -> {
             remove(selector);
@@ -21,6 +22,7 @@ public class GenerateGroupReport extends VerticalLayout {
         setAlignSelf(Alignment.CENTER);
     }
     public void generateReport() {
-
+        removeAll();
+        Board dataBoard = new Board();
     }
 }

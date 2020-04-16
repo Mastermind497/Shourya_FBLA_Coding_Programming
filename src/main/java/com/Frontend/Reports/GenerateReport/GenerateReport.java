@@ -9,7 +9,7 @@ import com.vaadin.flow.router.Route;
 @Route(value = "report", layout = MainView.class)
 public class GenerateReport extends VerticalLayout {
     public GenerateReport() {
-        MainView.setActiveTab(MainView.REPORT_TAB);
+        removeAll();
         FormLayout form = new FormLayout();
         form.setResponsiveSteps(
                 new ResponsiveStep("20em", 1),
