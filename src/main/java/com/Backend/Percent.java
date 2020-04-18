@@ -2,8 +2,8 @@ package com.Backend;
 
 import java.math.BigDecimal;
 
-public class Percent {
-    private BigDecimal percent;
+public class Percent extends Number {
+    private final BigDecimal percent;
 
     public Percent(int current, int max) {
         double percent = (double) current / max;
@@ -26,5 +26,25 @@ public class Percent {
     @Override
     public String toString() {
         return percent.toString() + "%";
+    }
+
+    @Override
+    public int intValue() {
+        return percent.toBigInteger().intValue();
+    }
+
+    @Override
+    public long longValue() {
+        return percent.toBigIntegerExact().intValueExact();
+    }
+
+    @Override
+    public float floatValue() {
+        return (float) percent.doubleValue();
+    }
+
+    @Override
+    public double doubleValue() {
+        return percent.doubleValue();
     }
 }
