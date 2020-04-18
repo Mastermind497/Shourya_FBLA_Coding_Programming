@@ -1,6 +1,7 @@
 package com.Backend;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -1128,6 +1129,109 @@ public class MySQLMethods {
         return output;
     }
 
+    public static double getHoursWeek(Student student) {
+        double hours = 0; //Prepares the hours variable for taking in numbers
+        try {
+            String formattedName = makeName(student);
+            connection = getConnection();
+            //Creates a query which selects the communityServiceHours of Events which were done in the past week for a specific student
+            String query = "SELECT eventHours FROM " + formattedName + " WHERE eventDate >= ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setObject(1, LocalDate.now().minusDays(7));
+
+            //Gets the results from executing the query
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                hours += resultSet.getDouble("eventHours");
+            }
+
+            resultSet.close();
+            connection.close();
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Weekly Hours Failed");
+        }
+        return hours;
+    }
+
+    public static double getHoursMonth(Student student) {
+        double hours = 0; //Prepares the hours variable for taking in numbers
+        try {
+            String formattedName = makeName(student);
+            connection = getConnection();
+            //Creates a query which selects the communityServiceHours of Events which were done in the past week for a specific student
+            String query = "SELECT eventHours FROM " + formattedName + " WHERE eventDate >= ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setObject(1, LocalDate.now().minusMonths(1));
+
+            //Gets the results from executing the query
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                hours += resultSet.getDouble("eventHours");
+            }
+
+            resultSet.close();
+            connection.close();
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Weekly Hours Failed");
+        }
+        return hours;
+    }
+
+    public static double getHoursYear(Student student) {
+        double hours = 0; //Prepares the hours variable for taking in numbers
+        try {
+            String formattedName = makeName(student);
+            connection = getConnection();
+            //Creates a query which selects the communityServiceHours of Events which were done in the past week for a specific student
+            String query = "SELECT eventHours FROM " + formattedName + " WHERE eventDate >= ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setObject(1, LocalDate.now().minusYears(1));
+
+            //Gets the results from executing the query
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                hours += resultSet.getDouble("eventHours");
+            }
+
+            resultSet.close();
+            connection.close();
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Weekly Hours Failed");
+        }
+        return hours;
+    }
+
+    public static double getHoursAll(Student student) {
+        double hours = 0; //Prepares the hours variable for taking in numbers
+        try {
+            String formattedName = makeName(student);
+            connection = getConnection();
+            //Creates a query which selects the communityServiceHours of Events which were done in the past week for a specific student
+            String query = "SELECT eventHours FROM " + formattedName;
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            //Gets the results from executing the query
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                hours += resultSet.getDouble("eventHours");
+            }
+
+            resultSet.close();
+            connection.close();
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Weekly Hours Failed");
+        }
+        return hours;
+    }
+
     /**
      * Selects data on just one event given its eventName
      *
@@ -1137,6 +1241,7 @@ public class MySQLMethods {
      * @param eventName The name of the event
      * @return A String containing all of the Event Details
      * @throws Exception for SQL Exceptions
+     * @deprecated replaced by Event Class. To Be deleted in a different commit
      */
     public static String selectStudentEvent(String firstName, String lastName, int studentID, String eventName) throws Exception {
         //converts to the studentName format
