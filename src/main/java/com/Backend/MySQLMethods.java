@@ -1,5 +1,7 @@
 package com.Backend;
 
+import com.Frontend.Charts;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -1127,6 +1129,30 @@ public class MySQLMethods {
         }
 
         return output;
+    }
+
+    public static List<StudentData> getStudentData(String range) {
+        List<StudentData> studentDataList = getStudentData();
+
+        //Replaces each student's hours with the hours from their time range
+        for (StudentData s : studentDataList) {
+            switch (range) {
+                case Charts.WEEK_CHART:
+                    s.setCommunityServiceHoursTemp(getHoursWeek(s));
+                    break;
+                case Charts.MONTH_CHART:
+                    s.setCommunityServiceHoursTemp(getHoursMonth(s));
+                    break;
+                case Charts.YEAR_CHART:
+                    s.setCommunityServiceHoursTemp(getHoursYear(s));
+                    break;
+                default:
+                    s.setCommunityServiceHoursTemp(getHoursAll(s));
+                    break;
+            }
+        }
+
+        return studentDataList;
     }
 
     public static double getHoursWeek(Student student) {
