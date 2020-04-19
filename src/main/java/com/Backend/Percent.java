@@ -7,7 +7,7 @@ public class Percent extends Number {
 
     public Percent(int current, int max) {
         double percent = (double) current / max;
-        this.percent = BigDecimal.valueOf(round(percent));
+        this.percent = BigDecimal.valueOf(round(percent * 100));
     }
 
     public Percent(double current, double max) {
