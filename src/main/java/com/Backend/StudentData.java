@@ -1,6 +1,8 @@
 package com.Backend;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -111,6 +113,19 @@ public class StudentData extends Student {
 
     public double getCommunityServiceHours() {
         return communityServiceHours;
+    }
+
+    public static String getAverageCategory(List<StudentData> studentDataList) {
+        int category = 0;
+        for (StudentData s : studentDataList) {
+            if (s.getCurrentCommunityServiceCategory().contains("Achievement")) category += 3;
+            else if (s.getCurrentCommunityServiceCategory().contains("Service")) category += 2;
+            else if (s.getCurrentCommunityServiceCategory().contains("Community")) category++;
+        }
+
+        short averageCategory = (short) Math.round((double) category / studentDataList.size());
+
+        return category(averageCategory);
     }
 
     public void setCommunityServiceHours(double communityServiceHours) {
@@ -271,9 +286,108 @@ public class StudentData extends Student {
         this.lastEdited.setDay(Integer.parseInt(st.nextToken()));
     }
 
+    public static String getAverageGoal(List<StudentData> studentDataList) {
+        int category = 0;
+        for (StudentData s : studentDataList) {
+            if (s.getCommunityServiceCategory().contains("Achievement")) category += 3;
+            else if (s.getCommunityServiceCategory().contains("Service")) category += 2;
+            else if (s.getCommunityServiceCategory().contains("Community")) category++;
+        }
+
+        short averageCategory = (short) Math.round((double) category / studentDataList.size());
+
+        return category(averageCategory);
+    }
+
     public void createStudent() {
         MySQLMethods.createStudent(super.getFirstName(), super.getLastName(), super.getStudentID(),
                 grade, communityServiceCategory, email, yearsDone);
+    }
+
+    /**
+     * Takes a List of Students and returns the value of their average current category
+     * discounting students with no hours
+     *
+     * @param studentDataListIn A List of Students which contains both active and inactive students
+     * @return The Average Category of only the Active Students
+     */
+    public static String getActiveCategory(List<StudentData> studentDataListIn) {
+        //Removes all inactive students without making any changes to the original List
+        List<StudentData> studentDataList = removeInactive(studentDataListIn);
+
+        //Using the new List of only Active Students, it returns the average category
+        return getAverageCategory(studentDataList);
+    }
+
+    /**
+     * Takes a List of Students and returns the value of their average Community Service Goal
+     * discounting the students with no hours
+     *
+     * @param studentDataListIn A List of Students which contains both active and inactive students
+     * @return The Average Category Goal of only the Active Students
+     */
+    public static String getActiveGoal(List<StudentData> studentDataListIn) {
+        //Removes all inactive students without making any changes to the original List
+        List<StudentData> studentDataList = removeInactive(studentDataListIn);
+
+        //Using the new list of only active Students, it returns the average goal
+        return getAverageGoal(studentDataList);
+    }
+
+    /**
+     * Takes a list of Students and removes all of the students with no hours. No
+     * changes are made to the original List to ensure that both the old and new list are still
+     * accessible by the User
+     *
+     * @param studentDataListIn A List of Students with bost active and inactive students
+     * @return A new list with only the active students
+     */
+    public static List<StudentData> removeInactive(List<StudentData> studentDataListIn) {
+        //Clones the list so that changes are not made in the original list
+        List<StudentData> studentDataList = new ArrayList<>(studentDataListIn);
+
+        //Removes all non-active students
+        studentDataList.removeIf(s -> !s.isActive());
+
+        return studentDataList;
+    }
+
+    /**
+     * Returns a new list with only the inactive students
+     *
+     * @param studentDataListIn A List containing both active and inactive students
+     * @return A new list with only inactive students
+     */
+    public static List<StudentData> removeActive(List<StudentData> studentDataListIn) {
+        //Clones the List so changes are not made in the original list
+        List<StudentData> studentDataList = new ArrayList<>(studentDataListIn);
+
+        //Removes all Active Students
+        studentDataList.removeIf(StudentData::isActive);
+
+        return studentDataList;
+    }
+
+    /**
+     * Uses an Average Number generated in other methods to return the
+     * average Community Service Goal
+     *
+     * @param averageCategory A Calculated Number of the Average Community Service Category
+     * @return A String of the Average Category
+     */
+    private static String category(short averageCategory) {
+        if (averageCategory == 3) return "CSA Achievement (500 Hours)";
+        else if (averageCategory == 2) return "CSA Service (200 Hours)";
+        else if (averageCategory == 1) return "CSA Community (50 Hours)";
+        else return "None";
+    }
+
+    public void setCommunityServiceHoursTemp(double communityServiceHours) {
+        this.communityServiceHours = MySQLMethods.round(communityServiceHours);
+    }
+
+    public boolean isActive() {
+        return communityServiceHours > 0;
     }
 
     @Override
