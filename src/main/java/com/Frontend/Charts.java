@@ -3,7 +3,7 @@ package com.Frontend;
 import com.Backend.Event;
 import com.Backend.MySQLMethods;
 import com.Backend.Percent;
-import com.Backend.Student;
+import com.Backend.StudentData;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.*;
 
@@ -12,11 +12,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class Charts {
-    public static void main(String[] args) {
-        MySQLMethods.setUp();
-        List<Event> e = MySQLMethods.selectStudentEventsAsEvent(new Student("Shourya", "Bansal", 224272));
-        Chart chart = monthLineGraph("Test", e);
-    }
+
+    public static final String WEEK_CHART = "Week";
+    public static final String MONTH_CHART = "Month";
+    public static final String YEAR_CHART = "Year";
+    public static final String ALL_TIME_CHART = "All Time";
 
     public static Chart solidGauge(double current, double max, int colorIndex) {
         Percent percent = new Percent(current, max);
@@ -123,5 +123,89 @@ public class Charts {
         configuration.addSeries(series);
 
         return chart;
+    }
+
+    public static Chart contributionTreemapChart(List<StudentData> studentDataList, String chartType) {
+        Chart chart = new Chart(ChartType.TREEMAP);
+
+        Configuration configuration = chart.getConfiguration();
+        configuration.getTooltip().setEnabled(true);
+
+        PlotOptionsTreemap plotOptions = new PlotOptionsTreemap();
+        plotOptions.setLayoutAlgorithm(TreeMapLayoutAlgorithm.STRIPES); //test different values to see what works best
+        plotOptions.setAlternateStartingDirection(false);
+
+        Level level1 = new Level();
+        level1.setLevel(1);
+        level1.setLayoutAlgorithm(TreeMapLayoutAlgorithm.SLICEANDDICE);
+
+        DataLabels dataLabels = new DataLabels();
+        dataLabels.setEnabled(true);
+        dataLabels.setAlign(HorizontalAlign.LEFT);
+        dataLabels.setVerticalAlign(VerticalAlign.TOP);
+
+        level1.setDataLabels(dataLabels);
+        plotOptions.setLevels(level1);
+
+        TreeSeries series = createTreeSeries(studentDataList, chartType);
+        series.setPlotOptions(plotOptions);
+
+        chart.getConfiguration().addSeries(series);
+
+        chart.getConfiguration().setTitle("Student Hours (Rounded to the nearest Integer)");
+
+        return chart;
+    }
+
+    public static Chart contributionTreemapChart(String chartType) {
+        return contributionTreemapChart(MySQLMethods.getStudentData(chartType), chartType);
+    }
+
+    private static TreeSeries createTreeSeries(List<StudentData> studentDataList, String chartType) {
+        TreeSeries series = new TreeSeries();
+
+        int low, med, high;
+
+        switch (chartType) {
+            case YEAR_CHART:
+            case ALL_TIME_CHART:
+                low = 25;
+                med = 75;
+                break;
+            default:
+                low = 5;
+                med = 10;
+                break;
+        }
+
+        TreeSeriesItem hoursLow = new TreeSeriesItem("HL", low + " Or Less Hours");
+        //Red
+        hoursLow.setColorIndex(5);
+
+        TreeSeriesItem hoursMed = new TreeSeriesItem("HM", med + " Or Less Hours");
+        //Orange
+        hoursMed.setColorIndex(3);
+
+        TreeSeriesItem hoursHigh = new TreeSeriesItem("HH", "More than " + med + "hours");
+        //Green
+        hoursHigh.setColorIndex(2);
+        series.addAll(hoursLow, hoursMed, hoursHigh);
+
+        for (StudentData student : studentDataList) {
+            if (student.getCommunityServiceHours() <= low) {
+                series.add(new TreeSeriesItem(student.toString(), hoursLow, round(student.getCommunityServiceHours())));
+            } else if (student.getCommunityServiceHours() <= med) {
+                series.add(new TreeSeriesItem(student.toString(), hoursMed, round(student.getCommunityServiceHours())));
+            } else {
+                series.add(new TreeSeriesItem(student.toString(), hoursHigh, round(student.getCommunityServiceHours())));
+            }
+        }
+
+        return series;
+    }
+
+    private static int round(double toRound) {
+        toRound += 0.5;
+        return (int) toRound;
     }
 }
