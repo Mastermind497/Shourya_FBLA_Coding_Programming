@@ -5,13 +5,12 @@ import com.Frontend.Add.AddHours.AddHours;
 import com.Frontend.Add.CreateStudent.CreateStudent;
 import com.Frontend.Documentation.Documentation;
 import com.Frontend.Get.GetStudentInformation.GetStudentInformation;
-import com.Frontend.Reports.GenerateIndividualReport.GenerateIndividualReport;
+import com.Frontend.Reports.GenerateGroupReport.GenerateGroupReport;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -56,7 +55,7 @@ public class MainView extends AppLayout {
     public static final Tab ADD_STUDENT_TAB = createTab(VaadinIcon.FILE_ADD, "Add a Student", "", CreateStudent.class);
     public static final Tab ADD_HOURS_TAB = createTab(VaadinIcon.EDIT, "Add Hours", "to Student", AddHours.class);
     public static final Tab VIEW_EDIT_TAB = createTab(VaadinIcon.EYE, "View and Edit", "Students", GetStudentInformation.class);
-    public static final Tab REPORT_TAB = createTab(VaadinIcon.RECORDS, "Generate Reports", "", GenerateIndividualReport.class);
+    public static final Tab REPORT_TAB = createTab(VaadinIcon.RECORDS, "Generate Reports", "", GenerateGroupReport.class);//TODO Make this general for all reports
     public static final Tab DOC_TAB = createTab(VaadinIcon.QUESTION, "Documentation", "and FAQs", Documentation.class);
     public static final Tabs tabs = getTabs();
 
@@ -64,24 +63,20 @@ public class MainView extends AppLayout {
     //TODO get active tab feature working
     public MainView() {
         final Tabs tabs = new Tabs();
-        //If there is internet, sets main image to the FBLA-PBL logo
-        Image logo = new Image("https://www.fbla-pbl.org/media/FBLA-PBL_registered.png", "FBLA-PBL Logo");
-        logo.setHeight("60px");
 
         //Uses Tabs for Navigation
         tabs.setOrientation(Tabs.Orientation.HORIZONTAL);
         tabs.add(getAvailableTabs());
         tabs.setFlexGrowForEnclosedTabs(1);
 
-        Span appName = new Span("FLBA Genie");
-        appName.addClassName("hide-on-mobile");
+        H2 appName = new H2("FLBA Genie");
 
         //Creates a Vertical Layout to store all the above components
         VerticalLayout verticalLayout = new VerticalLayout();
 
         //Adds component to Vertical Layout
         verticalLayout.setSizeFull();
-        verticalLayout.add(logo, tabs);
+        verticalLayout.add(appName, tabs);
 
         //Aligns everything to the center
         verticalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -91,33 +86,6 @@ public class MainView extends AppLayout {
 
         addToNavbar(verticalLayout);
         this.setDrawerOpened(false);
-    }
-
-    public static void setActiveTab(Tab activeTab) {
-        tabs.setSelectedTab(activeTab);
-    }
-
-    public static void setActiveTab(String activeTab) {
-        activeTab = activeTab.toLowerCase();
-        switch (activeTab) {
-            case "addhours":
-                tabs.setSelectedTab(ADD_HOURS_TAB);
-                return;
-            case "addstudent":
-                tabs.setSelectedTab(ADD_STUDENT_TAB);
-                return;
-            case "documentation":
-                tabs.setSelectedTab(DOC_TAB);
-                return;
-            case "getinfo":
-                tabs.setSelectedTab(VIEW_EDIT_TAB);
-                return;
-            case "report":
-                tabs.setSelectedTab(REPORT_TAB);
-                return;
-            default:
-                tabs.setSelectedTab(HOME_TAB);
-        }
     }
 
     public static Tabs getTabs() {

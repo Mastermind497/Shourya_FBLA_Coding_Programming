@@ -79,6 +79,12 @@ public class CreateStudent extends VerticalLayout {
         emailField.setClearButtonVisible(true);
         emailField.setErrorMessage("Please enter a valid email address");
         emailField.setValueChangeMode(ValueChangeMode.EAGER);
+        //Makes sure there is an @ symbol in the email
+//        emailField.addValueChangeListener(onChange -> {
+//            if (!onChange.getValue().contains("@")) {
+//                emailField.setErrorMessage("Not a Valid Email Address");
+//            }
+//        });
 
         //Will state number of years
         Div numberOfYears = new Div();

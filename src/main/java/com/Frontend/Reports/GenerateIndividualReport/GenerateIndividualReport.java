@@ -16,9 +16,8 @@ import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H5;
-import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -28,6 +27,10 @@ import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static com.Frontend.Reports.GenerateReport.GenerateReport.nextSection;
+import static com.Frontend.Reports.GenerateReport.GenerateReport.setText;
+
 
 @Route(value = "individual-reports", layout = MainView.class)
 @PageTitle("Generate Reports | FBLA Genie")
@@ -172,7 +175,7 @@ public class GenerateIndividualReport extends VerticalLayout {
         //Dropdown menu for all data
         Board dataBoard = new Board();
 
-        H2 overviewHeading = new H2("Overview of " + student);
+        H1 overviewHeading = new H1("Overview of " + student);
         //Heading to describe section
         dataBoard.addRow(overviewHeading);
 
@@ -213,7 +216,7 @@ public class GenerateIndividualReport extends VerticalLayout {
         //Adding two lines to signify the end of a section
         nextSection(dataBoard);
 
-        H2 hourAnalysis = new H2("Progress Gauge");
+        H1 hourAnalysis = new H1("Progress Gauge");
         //Creates a Solid Gauge for each of the Different Awards
         VerticalLayout communityChartLayout = new VerticalLayout();
         Chart communityChart = Charts.solidGauge(dataOfStudent.getCommunityServiceHours(), 50, 2);
@@ -238,7 +241,7 @@ public class GenerateIndividualReport extends VerticalLayout {
         //Adding double lines to indicate the end of a section
         nextSection(dataBoard);
 
-        H2 eventDetails = new H2("Event Details");
+        H1 eventDetails = new H1("Event Details");
         dataBoard.addRow(eventDetails);
         Grid<Event> eventGrid = new Grid<>();
         eventGrid.setItems(eventsList);
@@ -293,27 +296,4 @@ public class GenerateIndividualReport extends VerticalLayout {
             else return (500 - hours) + "To Go";
         }
     }
-
-    public void nextSection(Board dataBoard) {
-        //Adding two lines to signify the end of a section
-        dataBoard.addRow(new Html("<hr>"));
-        dataBoard.addRow(new Html("<hr>"));
-    }
-
-    /**
-     * This method returns a the pre-formatted data of a student. This simplifies the job significantly when
-     * writing multiple pieces of data
-     *
-     * @param header The heading text of the piece of data
-     * @param text   The piece of data
-     * @return A Div containing the formatted Student Data
-     */
-    private Div setText(String header, String text) {
-        Div div = new Div();
-        div.add(new H6(header + ":"));
-        div.add(text);
-
-        return div;
-    }
-
 }
