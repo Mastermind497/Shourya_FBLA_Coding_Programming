@@ -151,6 +151,16 @@ public class StudentData extends Student {
         return communityServiceCategory;
     }
 
+    public int getCommunityServiceCategoryInt() {
+        if (communityServiceCategory.contains("Achievement")) {
+            return 3;
+        } else if (communityServiceCategory.contains("SERVICE")) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
+
     public String getCurrentCommunityServiceCategory() {
         if (communityServiceHours >= 500) return "CSA Achievement (500 Hours)";
         else if (communityServiceHours >= 200) return "CSA Service (200 Hours)";

@@ -8,6 +8,7 @@ import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -164,7 +165,7 @@ public class Charts {
     private static TreeSeries createTreeSeries(List<StudentData> studentDataList, String chartType) {
         TreeSeries series = new TreeSeries();
 
-        int low, med, high;
+        int low, med;
 
         switch (chartType) {
             case YEAR_CHART:
@@ -202,6 +203,50 @@ public class Charts {
         }
 
         return series;
+    }
+
+    public static Chart barGraphCommunityServiceCategoryGoals(List<StudentData> studentDataList) {
+        Chart chart = new Chart();
+
+        Configuration configuration = chart.getConfiguration();
+        configuration.setTitle("Community Service Category Analysis");
+        configuration.setSubTitle("Community Service Goals");
+        chart.getConfiguration().getChart().setType(ChartType.COLUMN);
+
+        addGoalsBar(configuration, studentDataList);
+
+        XAxis x = new XAxis();
+        x.setCrosshair(new Crosshair());
+        x.setCategories("CSA Community (50 Hours)", "CSA Service (200 Hours)", "CSA Achievement (500 Hours)");
+        configuration.addxAxis(x);
+
+        YAxis y = new YAxis();
+        y.setMin(0);
+        y.setTitle("Number of Students");
+        configuration.addyAxis(y);
+
+        Tooltip tooltip = new Tooltip();
+        tooltip.setShared(true);
+        configuration.setTooltip(tooltip);
+
+        return chart;
+    }
+
+    private static void addGoalsBar(Configuration configuration, List<StudentData> studentDataList) {
+        List<Integer> activeStudents = Arrays.asList(0, 0, 0);
+        List<Integer> inactivestudents = Arrays.asList(0, 0, 0);
+        List<Integer> totalStudents = Arrays.asList(0, 0, 0);
+
+        for (StudentData s : studentDataList) {
+            int type = s.getCommunityServiceCategoryInt();
+            totalStudents.set(type - 1, totalStudents.get(type - 1) + 1);
+            if (s.isActive()) activeStudents.set(type - 1, activeStudents.get(type - 1) + 1);
+            else inactivestudents.set(type - 1, inactivestudents.get(type - 1) + 1);
+        }
+
+        configuration.addSeries(new ListSeries("Active Students", (Number) activeStudents));
+        configuration.addSeries(new ListSeries("Inactive Students", (Number) inactivestudents));
+        configuration.addSeries(new ListSeries("Total Students", (Number) totalStudents));
     }
 
     private static int round(double toRound) {
