@@ -57,11 +57,12 @@ public class GenerateGroupReport extends VerticalLayout {
         removeAll();
         Board dataBoard = new Board();
         //This list contains all of the students in the chapter for easy reference for the rest of the report
-        List<StudentData> studentDataList = MySQLMethods.getStudentData(option);
-        List<StudentData> inactiveStudentList = StudentData.removeActive(studentDataList);
+        List<StudentData> studentDataList = MySQLMethods.getStudentData();
+        List<StudentData> studentDataListInRange = MySQLMethods.getStudentData(option);
+        List<StudentData> inactiveStudentList = StudentData.removeActive(studentDataListInRange);
         int activeMembers = 0;
         double totalHours = 0;
-        for (StudentData s : studentDataList) {
+        for (StudentData s : studentDataListInRange) {
             if (s.getCommunityServiceHours() > 0) {
                 activeMembers++;
                 totalHours += s.getCommunityServiceHours();
@@ -84,9 +85,9 @@ public class GenerateGroupReport extends VerticalLayout {
         dataBoard.addRow(generalInformation);
 
         H2 chapterDetails = new H2("Chapter Details");
-        Div numMembers = setText("Number of Chapter Members", Integer.toString(studentDataList.size()));
+        Div numMembers = setText("Number of Chapter Members", Integer.toString(studentDataListInRange.size()));
         Div numActiveMembers = setText("Number of Active Members", Integer.toString(activeMembers)); //Note: An Active Member is someone who has more than 0 hours
-        Div percentActiveMembers = setText("Percent of Members Active", new Percent(activeMembers, studentDataList.size()).toString());
+        Div percentActiveMembers = setText("Percent of Members Active", new Percent(activeMembers, studentDataListInRange.size()).toString());
         Div numHours = setText("Total Hours In Chapter", Double.toString(totalHours));
 
         //Heading for Section
@@ -101,9 +102,9 @@ public class GenerateGroupReport extends VerticalLayout {
          * A Section for the Specific Member Details, such as Average Hours and such
          */
         H2 memberDetails = new H2("Member Details");
-        Div averageHours = setText("Average Hours Per Student", Double.toString(totalHours / studentDataList.size()));
-        Div averageCategory = setText("Average Achieved Community Service Category", StudentData.getAverageCategory(studentDataList));
-        Div averageGoal = setText("Average Community Service Goal", StudentData.getAverageGoal(studentDataList));
+        Div averageHours = setText("Average Hours Per Student", Double.toString(totalHours / studentDataListInRange.size()));
+        Div averageCategory = setText("Average Achieved Community Service Category", StudentData.getAverageCategory(studentDataListInRange));
+        Div averageGoal = setText("Average Community Service Goal", StudentData.getAverageGoal(studentDataListInRange));
 
         Div averageActiveHours = setText("Average Hours Per Active Student", "0 (0 Active Students)");
         Div averageActiveCategory = setText("Average Achieved Community Service Category by Active Students", "None (No Active Students)");
@@ -111,8 +112,8 @@ public class GenerateGroupReport extends VerticalLayout {
 
         if (activeMembers > 0) {
             averageActiveHours = setText("Average Hours Per Active Student", Double.toString(totalHours / activeMembers));
-            averageActiveCategory = setText("Average Achieved Community Service Category by Active Students", StudentData.getActiveCategory(studentDataList));
-            averageActiveGoal = setText("Average Community Service Goal of Active Students", StudentData.getActiveGoal(studentDataList));
+            averageActiveCategory = setText("Average Achieved Community Service Category by Active Students", StudentData.getActiveCategory(studentDataListInRange));
+            averageActiveGoal = setText("Average Community Service Goal of Active Students", StudentData.getActiveGoal(studentDataListInRange));
         }
 
         //Heading for Section
@@ -128,11 +129,40 @@ public class GenerateGroupReport extends VerticalLayout {
 
         //This next section is to help visualize the data
         Chart chart = Charts.contributionTreemapChart(option);
-        dataBoard.add(chart);
+        dataBoard.addRow(chart);
         if (inactiveStudentList.size() > 0) {
             Div inactiveStudentsHTML = makeBulletList("Inactive Students", inactiveStudentList);
             dataBoard.addRow(inactiveStudentsHTML);
         }
+
+        /*
+         *  Section 2: Community Service Award Analysis
+         *
+         * This section is for an overview of the Community Service Award Categories and their achievements. This will
+         * help in analyzing the goals and achievements of each student, differentiating between the active and inactive students
+         *
+         * This Section will include, but is not limited to:
+         *    A Bar Graph for goals and achievements
+         *    A Pie Chart for how many people achieved their goals
+         */
+        H1 csaAnalysis = new H1("Community Service Award Analysis");
+        dataBoard.addRow(csaAnalysis);
+        H2 evolutionChart = new H2("Community Service Division Bar/Pie Graph");
+
+        Chart goalChart = Charts.barGraphCommunityServiceCategoryGoals(studentDataList);
+        Chart achievedChart = Charts.barGraphCommunityServiceCategoryAchieved(studentDataList);
+
+        dataBoard.addRow(evolutionChart);
+        dataBoard.addRow(goalChart, achievedChart);
+        dataBoard.addRow(new Html("<hr>"));
+        dataBoard.addRow(Charts.goalDivisionChart(studentDataList, "Student Goal Division"),
+                Charts.currentDivisionChart(studentDataList, "Student Current Division"));
+
+        nextSection(dataBoard);
+
+        dataBoard.addRow(new H2("Community Service Goal Achievement Analysis"));
+        dataBoard.addRow(Charts.achievedGoalPieChart(studentDataList, "Students Who Achieved vs Didn't Achieve Their Goals"));
+
 
         add(dataBoard);
     }

@@ -233,20 +233,177 @@ public class Charts {
     }
 
     private static void addGoalsBar(Configuration configuration, List<StudentData> studentDataList) {
-        List<Integer> activeStudents = Arrays.asList(0, 0, 0);
-        List<Integer> inactivestudents = Arrays.asList(0, 0, 0);
-        List<Integer> totalStudents = Arrays.asList(0, 0, 0);
+        List<Number> activeStudents = Arrays.asList(0, 0, 0);
+        List<Number> inactiveStudents = Arrays.asList(0, 0, 0);
+        List<Number> totalStudents = Arrays.asList(0, 0, 0);
 
         for (StudentData s : studentDataList) {
             int type = s.getCommunityServiceCategoryInt();
-            totalStudents.set(type - 1, totalStudents.get(type - 1) + 1);
-            if (s.isActive()) activeStudents.set(type - 1, activeStudents.get(type - 1) + 1);
-            else inactivestudents.set(type - 1, inactivestudents.get(type - 1) + 1);
+            totalStudents.set(type - 1, totalStudents.get(type - 1).intValue() + 1);
+            if (s.isActive()) activeStudents.set(type - 1, activeStudents.get(type - 1).intValue() + 1);
+            else inactiveStudents.set(type - 1, inactiveStudents.get(type - 1).intValue() + 1);
         }
 
-        configuration.addSeries(new ListSeries("Active Students", (Number) activeStudents));
-        configuration.addSeries(new ListSeries("Inactive Students", (Number) inactivestudents));
-        configuration.addSeries(new ListSeries("Total Students", (Number) totalStudents));
+        configuration.addSeries(new ListSeries("Active Students", activeStudents));
+        configuration.addSeries(new ListSeries("Inactive Students", inactiveStudents));
+        configuration.addSeries(new ListSeries("Total Students", totalStudents));
+    }
+
+    public static Chart barGraphCommunityServiceCategoryAchieved(List<StudentData> studentDataList) {
+        Chart chart = new Chart();
+
+        Configuration configuration = chart.getConfiguration();
+        configuration.setTitle("Community Service Category Analysis");
+        configuration.setSubTitle("Community Service Category Achieved");
+        chart.getConfiguration().getChart().setType(ChartType.COLUMN);
+
+        addCurrentBar(configuration, studentDataList);
+
+        XAxis x = new XAxis();
+        x.setCrosshair(new Crosshair());
+        x.setCategories("None", "CSA Community (50 Hours)", "CSA Service (200 Hours)", "CSA Achievement (500 Hours)");
+        configuration.addxAxis(x);
+
+        YAxis y = new YAxis();
+        y.setMin(0);
+        y.setTitle("Number of Students");
+        configuration.addyAxis(y);
+
+        Tooltip tooltip = new Tooltip();
+        tooltip.setShared(true);
+        configuration.setTooltip(tooltip);
+
+        return chart;
+    }
+
+    private static void addCurrentBar(Configuration configuration, List<StudentData> studentDataList) {
+        List<Number> activeStudents = Arrays.asList(0, 0, 0, 0);
+        List<Number> inactiveStudents = Arrays.asList(0, 0, 0, 0);
+        List<Number> totalStudents = Arrays.asList(0, 0, 0, 0);
+
+        for (StudentData s : studentDataList) {
+            int type = s.getCurrentCommunityServiceCategoryInt();
+            totalStudents.set(type, totalStudents.get(type).intValue() + 1);
+            if (s.isActive()) activeStudents.set(type, activeStudents.get(type).intValue() + 1);
+            else inactiveStudents.set(type, inactiveStudents.get(type).intValue() + 1);
+        }
+
+        configuration.addSeries(new ListSeries("Active Students", activeStudents));
+        configuration.addSeries(new ListSeries("Inactive Students", inactiveStudents));
+        configuration.addSeries(new ListSeries("Total Students", totalStudents));
+    }
+
+    public static Chart achievedGoalPieChart(List<StudentData> list, String title) {
+        Chart chart = new Chart(ChartType.PIE);
+
+        Configuration configuration = chart.getConfiguration();
+
+        configuration.setTitle(title);
+
+        Tooltip tooltip = new Tooltip();
+        tooltip.setValueDecimals(1);
+        configuration.setTooltip(tooltip);
+
+        PlotOptionsPie plotOptionsPie = new PlotOptionsPie();
+        plotOptionsPie.setAllowPointSelect(true);
+        plotOptionsPie.setCursor(Cursor.POINTER);
+        plotOptionsPie.setShowInLegend(true);
+        configuration.setPlotOptions(plotOptionsPie);
+
+        DataSeries series = new DataSeries();
+        int achieved = 0;
+        int not = 0;
+        for (StudentData s : list) {
+            if (s.achievedGoal()) achieved++;
+            else not++;
+        }
+        series.add(new DataSeriesItem("Achieved Goal", achieved));
+        series.add(new DataSeriesItem("Not Achieved Goal", not));
+        configuration.setSeries(series);
+        chart.setVisibilityTogglingDisabled(true);
+
+        return chart;
+    }
+
+    public static Chart goalDivisionChart(List<StudentData> list, String title) {
+        Chart chart = new Chart(ChartType.PIE);
+
+        Configuration configuration = chart.getConfiguration();
+
+        configuration.setTitle(title);
+
+        Tooltip tooltip = new Tooltip();
+        tooltip.setValueDecimals(1);
+        configuration.setTooltip(tooltip);
+
+        PlotOptionsPie plotOptionsPie = new PlotOptionsPie();
+        plotOptionsPie.setAllowPointSelect(true);
+        plotOptionsPie.setCursor(Cursor.POINTER);
+        plotOptionsPie.setShowInLegend(true);
+        configuration.setPlotOptions(plotOptionsPie);
+
+        configuration.setSeries(goalsPie(list));
+        chart.setVisibilityTogglingDisabled(true);
+
+        return chart;
+    }
+
+    private static DataSeries goalsPie(List<StudentData> studentDataList) {
+        int community = 0, service = 0, achievement = 0;
+
+        for (StudentData s : studentDataList) {
+            if (s.getCommunityServiceCategory().toUpperCase().contains("COMMUNITY")) community++;
+            else if (s.getCommunityServiceCategory().toUpperCase().contains("SERVICE")) service++;
+            else achievement++;
+        }
+
+        DataSeries series = new DataSeries();
+
+        series.add(new DataSeriesItem("CSA Community (50 Hours)", community));
+        series.add(new DataSeriesItem("CSA Service (200 Hours)", service));
+        series.add(new DataSeriesItem("CSA Achievement (500 Hours)", achievement));
+
+        return series;
+    }
+
+    public static Chart currentDivisionChart(List<StudentData> list, String title) {
+        Chart chart = new Chart(ChartType.PIE);
+
+        Configuration configuration = chart.getConfiguration();
+
+        configuration.setTitle(title);
+
+        Tooltip tooltip = new Tooltip();
+        tooltip.setValueDecimals(1);
+        configuration.setTooltip(tooltip);
+
+        PlotOptionsPie plotOptionsPie = new PlotOptionsPie();
+        plotOptionsPie.setAllowPointSelect(true);
+        plotOptionsPie.setCursor(Cursor.POINTER);
+        plotOptionsPie.setShowInLegend(true);
+        configuration.setPlotOptions(plotOptionsPie);
+
+        configuration.setSeries(pieCurrent(list));
+        chart.setVisibilityTogglingDisabled(true);
+
+        return chart;
+    }
+
+    private static DataSeries pieCurrent(List<StudentData> studentDataList) {
+        int[] csaCategory = new int[4];
+
+        for (StudentData s : studentDataList) {
+            csaCategory[s.getCurrentCommunityServiceCategoryInt()]++;
+        }
+
+        DataSeries series = new DataSeries();
+
+        series.add(new DataSeriesItem("None", csaCategory[0]));
+        series.add(new DataSeriesItem("CSA Community (50 Hours)", csaCategory[1]));
+        series.add(new DataSeriesItem("CSA Service (200 Hours)", csaCategory[2]));
+        series.add(new DataSeriesItem("CSA Achievement (500 Hours)", csaCategory[3]));
+
+        return series;
     }
 
     private static int round(double toRound) {
