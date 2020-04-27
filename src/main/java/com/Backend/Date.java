@@ -1,5 +1,7 @@
 package com.Backend;
 
+import com.Frontend.Charts;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -24,7 +26,7 @@ public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
     }
 
     public Date() {
-        setDate(LocalDate.now());
+        this(0, 1, 1);
     }
 
     public Date(boolean noDate) {
@@ -35,6 +37,25 @@ public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
         Date returning = new Date();
         returning.setDate(LocalDate.now());
         return returning;
+    }
+
+    public static Date optionToDate(String s) {
+        switch (s) {
+            case Charts.WEEK_CHART:
+                Date dateWeek = new Date();
+                dateWeek.setDate(LocalDate.now().minusDays(7));
+                return dateWeek;
+            case Charts.MONTH_CHART:
+                Date dateMonth = new Date();
+                dateMonth.setDate(LocalDate.now().minusMonths(1));
+                return dateMonth;
+            case Charts.YEAR_CHART:
+                Date dateYear = new Date();
+                dateYear.setDate(LocalDate.now().minusYears(1));
+                return dateYear;
+            default: //Includes All Time
+                return new Date();
+        }
     }
 
     @Override

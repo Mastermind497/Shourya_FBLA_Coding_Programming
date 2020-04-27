@@ -9,7 +9,7 @@ import com.vaadin.flow.component.board.Row;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.charts.Chart;
-import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
@@ -21,7 +21,6 @@ import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -66,50 +65,51 @@ public class GenerateIndividualReport extends VerticalLayout {
 
         //Gets Student Data values and adds to a dropdown list
         List<Student> studentNames = MySQLMethods.getStudents();
-        Select<Student> studentSelect = new Select<>();
+        ComboBox<Student> studentSelect = new ComboBox<>();
         studentSelect.setLabel("Student");
         studentSelect.setItems(studentNames);
-        studentSelect.addValueChangeListener(e ->{
+        studentSelect.addValueChangeListener(e -> {
             selectedStudent = studentSelect.getValue();
             options.setEnabled(true);
             startDate.setEnabled(true);
         });
 
-        //Creates Checkboxes
-            Checkbox selectAll = new Checkbox("Select All");
-                selectAll.setValue(true);
-                selectAll.addValueChangeListener(e ->{
-                    if (selectAll.getValue()){
-                        //TODO set all buttons in the group true
-                    }
-                    else {
-                        //TODO set all buttons in the group false
-                    }
-                });
-
-            //Includes full list of events participated in
-            Checkbox chooseEvents = new Checkbox("Get Events");
-                chooseEvents.setValue(true);
-                chooseEvents.addValueChangeListener(e -> events = chooseEvents.getValue());
-
-        //Shows CSA Analysis, including progress, checkpoints, etc
-        Checkbox chooseCSAVisibility = new Checkbox("See CSA Data");
-        chooseCSAVisibility.setValue(true);
-        chooseCSAVisibility.addValueChangeListener(e -> csaCategory = chooseCSAVisibility.getValue());
-
-        //Includes Charts
-        Checkbox chooseCharts = new Checkbox("Include Charts");
-        chooseCharts.setValue(true);
-        chooseCharts.addValueChangeListener(e -> charts = chooseCharts.getValue());
-        if (!checkboxAdded) {
-            options.add(selectAll, chooseEvents, chooseCSAVisibility, chooseCharts);
-            checkboxAdded = true;
-        }
-        //The options can't be edited until a student is selected
-        options.setEnabled(false);
-        options.setPadding(false);
-        options.setSpacing(false);
-        options.setMargin(false);
+//        //Creates Checkboxes
+//
+//        //Includes full list of events participated in
+//        Checkbox chooseEvents = new Checkbox("Get Events");
+//        chooseEvents.setValue(true);
+//        chooseEvents.addValueChangeListener(e -> events = chooseEvents.getValue());
+//
+//        //Shows CSA Analysis, including progress, checkpoints, etc
+//        Checkbox chooseCSAVisibility = new Checkbox("See CSA Data");
+//        chooseCSAVisibility.setValue(true);
+//        chooseCSAVisibility.addValueChangeListener(e -> csaCategory = chooseCSAVisibility.getValue());
+//
+//        Checkbox selectAll = new Checkbox("Select All");
+//        selectAll.setValue(true);
+//        selectAll.addValueChangeListener(e ->{
+//            if (selectAll.getValue()){
+//                //TODO set all buttons in the group true
+//            }
+//            else {
+//                //TODO set all buttons in the group false
+//            }
+//        });
+//
+//        //Includes Charts
+//        Checkbox chooseCharts = new Checkbox("Include Charts");
+//        chooseCharts.setValue(true);
+//        chooseCharts.addValueChangeListener(e -> charts = chooseCharts.getValue());
+//        if (!checkboxAdded) {
+//            options.add(selectAll, chooseEvents, chooseCSAVisibility, chooseCharts);
+//            checkboxAdded = true;
+//        }
+//        //The options can't be edited until a student is selected
+//        options.setEnabled(false);
+//        options.setPadding(false);
+//        options.setSpacing(false);
+//        options.setMargin(false);
 
         startDate = new DatePicker("Get Events Starting From:");
         startDate.setClearButtonVisible(true);

@@ -5,7 +5,7 @@ import com.Frontend.Add.AddHours.AddHours;
 import com.Frontend.Add.CreateStudent.CreateStudent;
 import com.Frontend.Documentation.Documentation;
 import com.Frontend.Get.GetStudentInformation.GetStudentInformation;
-import com.Frontend.Reports.GenerateGroupReport.GenerateGroupReport;
+import com.Frontend.Reports.GenerateReport.GenerateReport;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -55,7 +55,7 @@ public class MainView extends AppLayout {
     public static final Tab ADD_STUDENT_TAB = createTab(VaadinIcon.FILE_ADD, "Add a Student", "", CreateStudent.class);
     public static final Tab ADD_HOURS_TAB = createTab(VaadinIcon.EDIT, "Add Hours", "to Student", AddHours.class);
     public static final Tab VIEW_EDIT_TAB = createTab(VaadinIcon.EYE, "View and Edit", "Students", GetStudentInformation.class);
-    public static final Tab REPORT_TAB = createTab(VaadinIcon.RECORDS, "Generate Reports", "", GenerateGroupReport.class);//TODO Make this general for all reports
+    public static final Tab REPORT_TAB = createTab(VaadinIcon.RECORDS, "Generate Reports", "", GenerateReport.class);
     public static final Tab DOC_TAB = createTab(VaadinIcon.QUESTION, "Documentation", "and FAQs", Documentation.class);
     public static final Tabs tabs = getTabs();
 
