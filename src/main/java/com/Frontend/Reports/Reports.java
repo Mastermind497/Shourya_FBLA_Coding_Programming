@@ -1,4 +1,4 @@
-package com.Frontend.Reports.GenerateReport;
+package com.Frontend.Reports;
 
 import com.Backend.*;
 import com.Frontend.Charts;
@@ -28,19 +28,19 @@ import java.util.List;
 import static com.Backend.MySQLMethods.round;
 
 @Route(value = "report", layout = MainView.class)
-@PageTitle("FBLA Genie | Generate Report")
-public class GenerateReport extends VerticalLayout {
-    final Button individualReport = new Button("Generate Individual Report", buttonClickEvent -> generateIndividualReport());
-    final Button groupReport = new Button("Generate Group Report", buttonClickEvent -> generateGroupReport());
+@PageTitle("FBLA Genie | Generate Reports")
+public class Reports extends VerticalLayout {
+    final Button groupReport = new Button("Generate Group Reports", buttonClickEvent -> generateGroupReport());
+    final Button individualReport = new Button("Generate Individual Reports", buttonClickEvent -> generateIndividualReport());
 
-    public GenerateReport() {
+    public Reports() {
         removeAll();
 
         HorizontalLayout form = new HorizontalLayout();
 
-        groupReport.setText("Generate Group Report");
+        groupReport.setText("Generate Group Reports");
         groupReport.addThemeVariants(ButtonVariant.LUMO_LARGE);
-        individualReport.setText("Generate Individual Report");
+        individualReport.setText("Generate Individual Reports");
         individualReport.addThemeVariants(ButtonVariant.LUMO_LARGE);
 
         form.add(groupReport, individualReport);
@@ -76,7 +76,7 @@ public class GenerateReport extends VerticalLayout {
                 new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
 
-        groupReport.setText("Generate Group Report Instead");
+        groupReport.setText("Generate Group Reports Instead");
 
         //Uses Size 1 Arrays To Allow Implementation in Lambda methods because they are effectively final
         Student[] selectedStudent = new Student[1];
@@ -209,9 +209,9 @@ public class GenerateReport extends VerticalLayout {
                 new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
 
-        individualReport.setText("Generate Individual Report Instead");
+        individualReport.setText("Generate Individual Reports Instead");
 
-        Button selector = new Button("Generate Group Report");
+        Button selector = new Button("Generate Group Reports");
         selector.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         ComboBox<String> rangeSelector = new ComboBox<>("Range of Data", Charts.WEEK_CHART, Charts.MONTH_CHART, Charts.YEAR_CHART, Charts.ALL_TIME_CHART);
         rangeSelector.setValue(Charts.ALL_TIME_CHART);
