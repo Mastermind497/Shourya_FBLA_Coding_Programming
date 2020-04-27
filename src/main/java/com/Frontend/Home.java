@@ -1,6 +1,8 @@
 package com.Frontend;
 
+import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
@@ -12,12 +14,9 @@ import com.vaadin.flow.router.Route;
     * Add Name Label to All Dropdowns
     * Calculate Grade level by Grad year
     * Edit Student Event
-    * Add Delete Button within Edit
     * Make Years Done Automatically Calculated
     * Edit Buttons Automatically Reset
-    * View All + View Individual
     * Fix Forget Password
-    * Add Student Hours swaps month and days
  */
 
 /**
@@ -33,6 +32,12 @@ public class Home extends VerticalLayout {
 
     //Creates the Home Screen
     public Home() {
-        add(new H1("This is the HOME layout. This text is a placeholder for what is to come."));
+        H1 header = new H1("Welcome to FBLA Genie");
+        HorizontalLayout headerLayout = new HorizontalLayout(header);
+        headerLayout.setAlignItems(Alignment.CENTER);
+        add(headerLayout);
+
+        add(new Html("This application is meant to make your life as a member of an FBLA Chapter much easier. This should " +
+                "help in organization, hour management, and Community Service Award Management"));
     }
 }
