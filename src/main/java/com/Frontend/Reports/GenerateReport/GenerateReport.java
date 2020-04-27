@@ -73,6 +73,7 @@ public class GenerateReport extends VerticalLayout {
 
         groupReport.setText("Generate Group Report Instead");
 
+        //Uses Size 1 Arrays To Allow Implementation in Lambda methods because they are effectively final
         Student[] selectedStudent = new Student[1];
         Date[] startingDate = new Date[1];
         String[] startingDateOption = new String[1];
@@ -82,15 +83,15 @@ public class GenerateReport extends VerticalLayout {
         ComboBox<Student> studentSelect = new ComboBox<>();
         studentSelect.setLabel("Student");
         studentSelect.setItems(studentNames);
-        studentSelect.addValueChangeListener(e -> {
-            selectedStudent[0] = studentSelect.getValue();
-        });
+        studentSelect.addValueChangeListener(e -> selectedStudent[0] = studentSelect.getValue());
 
         VerticalLayout datePicker = new VerticalLayout();
         datePicker.setPadding(false);
         datePicker.setSpacing(false);
 
         ComboBox<String> dateOption = new ComboBox<>("Type of Date Selection", "Specific Start Date", "General Date Range");
+
+        //Dynamically Changes the Date Selector Depending on Selected Date Option Tool
         dateOption.addValueChangeListener(onChange -> {
             try {
                 form.remove(datePicker);
@@ -113,9 +114,7 @@ public class GenerateReport extends VerticalLayout {
                 startingDate[0] = null;
                 ComboBox<String> rangeSelector = new ComboBox<>("Range of Data",
                         Charts.WEEK_CHART, Charts.MONTH_CHART, Charts.YEAR_CHART, Charts.ALL_TIME_CHART);
-                rangeSelector.addValueChangeListener(rangeChange -> {
-                    startingDateOption[0] = rangeChange.getValue();
-                });
+                rangeSelector.addValueChangeListener(rangeChange -> startingDateOption[0] = rangeChange.getValue());
                 rangeSelector.setValue(Charts.ALL_TIME_CHART);
                 rangeSelector.setRequired(true);
                 rangeSelector.setWidth("20em");
