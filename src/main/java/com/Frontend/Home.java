@@ -1,7 +1,7 @@
 package com.Frontend;
 
-import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -37,7 +37,7 @@ public class Home extends VerticalLayout {
         headerLayout.setAlignItems(Alignment.CENTER);
         add(headerLayout);
 
-        add(new Html("This application is meant to make your life as a member of an FBLA Chapter much easier. This should " +
+        add(new H5("This application is meant to make your life as a member of an FBLA Chapter much easier. This should " +
                 "help in organization, hour management, and Community Service Award Management"));
     }
 }
