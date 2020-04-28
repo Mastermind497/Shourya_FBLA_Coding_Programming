@@ -2,8 +2,6 @@ package com.Backend;
 
 import com.Frontend.Charts;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.StringTokenizer;
@@ -13,32 +11,64 @@ import java.util.StringTokenizer;
  * storage and manipulation of the date
  */
 public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
+    /**
+     * The Year in the Date
+     */
     private int year;
+
+    /**
+     * The Month in the Date
+     */
     private int month;
+
+    /**
+     * The Year in the Date
+     */
     private int day;
 
+    /**
+     * A Variable Used When Declaring a Date which might be null
+     */
     private boolean noDate = false;
 
+    /**
+     * Constructs a date given all its information
+     *
+     * @param year  Year
+     * @param month Month
+     * @param day   Day
+     */
     public Date(int year, int month, int day) {
         this.year = year;
         this.month = month;
         this.day = day;
     }
 
+    /**
+     * Constructs a Date of the First Day of the Common Era, to use as a Minimum Date
+     */
     public Date() {
         this(0, 1, 1);
     }
 
+    /**
+     * A Date which starts off as "Fake" because it hasn't been given any value
+     *
+     * @param noDate A boolean telling whether or not the date is Fake
+     */
     public Date(boolean noDate) {
         this.noDate = noDate;
     }
 
-    public static Date today() {
-        Date returning = new Date();
-        returning.setDate(LocalDate.now());
-        return returning;
-    }
-
+    /**
+     * Takes the options included in Charts.java and returns their related Date values
+     * <p>
+     * This is used for Dates which are based on the String Values, such as Week, Month, and Year. This typicaly is useful
+     * in reports when the user is choosing a date range
+     *
+     * @param s The Option Selected
+     * @return A Date with the constraints put on by the Option
+     */
     public static Date optionToDate(String s) {
         switch (s) {
             case Charts.WEEK_CHART:
@@ -58,58 +88,15 @@ public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
         }
     }
 
-    @Override
-    protected Date clone() {
-        try {
-            return (Date) super.clone();
-        } catch (CloneNotSupportedException e) {
-            System.err.println("Cloning Not Supported");
-            return this;
-        }
-    }
-
-    public boolean fakeDate() {
-        return noDate;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
-
-    public java.sql.Date getDateSQL() {
-        String string_date = toStringRegular();
-
-        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-        long milliseconds = 0;
-        try {
-            java.util.Date d = f.parse(string_date);
-            milliseconds = d.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return new java.sql.Date(milliseconds);
-    }
-
+    /**
+     * Converts a String of the month to its respective Integer values
+     * <p>
+     * This method allows the use of String-based months alongside their Integer-based
+     * counterparts, allowing easy conversion in one direction.
+     *
+     * @param month The month as a string
+     * @return The integer value of the month
+     */
     public static int getMonth(String month) {
         month = month.toLowerCase();
         System.out.print("Month: " + month);
@@ -156,6 +143,15 @@ public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
         }
     }
 
+    /**
+     * Converts an Integer of the month to its respective String-based version
+     * <p>
+     * This method allows the use of String-based months alongside their Integer-based
+     * counterparts, allowing easy conversion in one direction.
+     *
+     * @param month The month as an Integer
+     * @return The String value of the month
+     */
     public static String getMonth(int month) {
         switch (month) {
             case 1:
@@ -187,6 +183,92 @@ public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
         }
     }
 
+    /**
+     * Returns a copy of the Date without changing the original
+     * <p>
+     * This overrides the super method of clone to work for Date
+     *
+     * @return A copy of the Date
+     */
+    @Override
+    protected Date clone() {
+        try {
+            return (Date) super.clone();
+        } catch (CloneNotSupportedException e) {
+            System.err.println("Cloning Not Supported");
+            return this;
+        }
+    }
+
+    /**
+     * Gets the value of the "Fake Date" variable
+     *
+     * @return The "Fake Date" value
+     */
+    public boolean fakeDate() {
+        return noDate;
+    }
+
+    /**
+     * Gets the Year
+     *
+     * @return the current Year
+     */
+    public int getYear() {
+        return year;
+    }
+
+    /**
+     * Changes the Year
+     *
+     * @param year The New Year
+     */
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    /**
+     * Gets the Month
+     *
+     * @return The current Month
+     */
+    public int getMonth() {
+        return month;
+    }
+
+    /**
+     * Changes the Month
+     *
+     * @param month The new Month
+     */
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    /**
+     * Gets the Day
+     *
+     * @return The current Day
+     */
+    public int getDay() {
+        return day;
+    }
+
+    /**
+     * Changes the Day
+     *
+     * @param day The new Day
+     */
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    /**
+     * Takes a Date in the String format and converts it into a Date object.
+     *
+     * @param date the Date as a String
+     * @apiNote For this method to work, the date has to be in the format of yyyy-mm-dd
+     */
     public void setDate(String date) {
         StringTokenizer st = new StringTokenizer(date, "-");
         int year = Integer.parseInt(st.nextToken());
@@ -199,21 +281,41 @@ public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
         this.setDay(Integer.parseInt(st.nextToken()));
     }
 
+    /**
+     * Uses the modern version of Date in java, LocalDate, and turns it into the Backend Date.
+     *
+     * @param date The LocalDate being converted.
+     */
     public void setDate(LocalDate date) {
         this.year = date.getYear();
         this.month = date.getMonthValue();
         this.day = date.getDayOfMonth();
     }
 
+    /**
+     * Returns the month value as its respective string without the need to direct to static methods.
+     *
+     * @return The String value of the Month
+     */
     public String getMonthString() {
         return getMonth(month);
     }
 
+    /**
+     * Prints out the Date as a String in dd, MM, yyyy format
+     *
+     * @return The Entire Date as a String
+     */
     @Override
     public String toString() {
         return day + " " + getMonthString() + ", " + year;
     }
 
+    /**
+     * Uses the standard format of a Date, yyyy-mm-dd, and converts
+     *
+     * @return A String with the Date in the Standard Format
+     */
     public String toStringRegular() {
         String year = "" + this.year;
 
@@ -232,33 +334,44 @@ public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
         return year + "-" + month + "-" + day;
     }
 
+    /**
+     * Compares the current date with another to see which one comes first
+     *
+     * @param o The date compare with
+     * @return An integer representing the difference in date values
+     */
     @Override
     public int compareTo(Date o) {
         if (this.year != o.getYear()) {
             Integer year = o.getYear();
             return year.compareTo(this.getYear());
-        }
-        else {
+        } else {
             if (this.month != o.getMonth()) {
                 Integer month = o.getMonth();
                 return month.compareTo(this.getMonth());
-            }
-            else {
+            } else {
                 Integer day = o.getDay();
                 return day.compareTo(this.getDay());
             }
         }
     }
 
+    /**
+     * Compares two dates, o1 and o2, to find which one comes first
+     *
+     * @param o1 The First Date Being compared
+     * @param o2 The Second Date Being Compared
+     * @return An integer containing the comparison
+     */
     @Override
-    public int compare(Date o2, Date o1) {
-        if (o1.getYear() != o2.getYear()) {
-            return o1.getYear() - o2.getYear();
+    public int compare(Date o1, Date o2) {
+        if (o2.getYear() != o1.getYear()) {
+            return o2.getYear() - o1.getYear();
         } else {
-            if (o1.getMonth() != o2.getMonth()) {
-                return o1.getMonth() - o2.getMonth();
+            if (o2.getMonth() != o1.getMonth()) {
+                return o2.getMonth() - o1.getMonth();
             } else {
-                return o1.getDay() - o2.getDay();
+                return o2.getDay() - o1.getDay();
             }
         }
     }
@@ -283,10 +396,19 @@ public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
         return (this.month == date.getMonth()) && (this.year == date.getYear());
     }
 
+    /**
+     * Increments the Day by One, Changing the Month when necessary
+     */
     public void incrementDay() {
-        day++;
+        LocalDate date = LocalDate.of(year, month, day).plusDays(1);
+        day = date.getDayOfMonth();
+        month = date.getMonthValue();
+        year = date.getYear();
     }
 
+    /**
+     * Increments the month by one, changing the year if it hits 13
+     */
     public void incrementByMonth() {
         if (month < 12) month++;
         else {
@@ -295,6 +417,9 @@ public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
         }
     }
 
+    /**
+     * Increments the Year by 1
+     */
     public void incrementYear() {
         year++;
     }
