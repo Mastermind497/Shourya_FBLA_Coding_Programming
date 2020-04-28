@@ -1095,7 +1095,7 @@ public class MySQLMethods {
             //Creates a query
             String query = "SELECT * FROM " + fullName + " WHERE eventDate >= ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setObject(1, LocalDate.of(startDate.getYear(), startDate.getMonth(), startDate.getDay()));
+            preparedStatement.setObject(1, startDate.getLocalDate());
             ResultSet resultSet = preparedStatement.executeQuery();
 
             //Creates Output Strings
@@ -1549,10 +1549,10 @@ public class MySQLMethods {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, newEvent.getEventName());
             preparedStatement.setDouble(2, newEvent.getHours());
-            preparedStatement.setDate(6, oldEvent.getDateSQL());
+            preparedStatement.setObject(3, newEvent.getLocalDate());
             preparedStatement.setString(4, oldEvent.getEventName());
             preparedStatement.setDouble(5, oldEvent.getHours());
-            preparedStatement.setDate(3, newEvent.getDateSQL());
+            preparedStatement.setObject(6, oldEvent.getLocalDate());
             preparedStatement.executeUpdate();
 
             //closes resources
@@ -1628,7 +1628,7 @@ public class MySQLMethods {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, event.getEventName());
             statement.setDouble(2, event.getHours());
-            statement.setDate(3, event.getDateSQL());
+            statement.setObject(3, event.getLocalDate());
             statement.executeUpdate();
             statement.close();
 
