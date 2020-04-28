@@ -5,7 +5,6 @@ import com.Frontend.Charts;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -194,9 +193,6 @@ public class MySQLMethods {
             //creates a connection to the MySQL
             connection = getConnection();
 
-            //Calculates Today's Date
-            java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-
             String query = " insert into " + tableName + " (firstName, lastName, fullName, studentID, grade, communityServiceCategory,"
                     + "email, yearsDone, lastEdited)"
                     + " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -211,7 +207,7 @@ public class MySQLMethods {
             preparedStatement.setString(6, communityServiceCategory);
             preparedStatement.setString(7, email);
             preparedStatement.setShort(8, yearsDone);
-            preparedStatement.setDate(9, date);
+            preparedStatement.setObject(9, LocalDate.now());
 
             //executes statement
             preparedStatement.execute();
@@ -243,9 +239,6 @@ public class MySQLMethods {
         //Creates a database connection
         connection = getConnection();
 
-        //Creates a date for MySQL Table
-        Calendar calendar = new Calendar.Builder().setCalendarType("iso8601").setDate(year, month, day).build();
-        java.sql.Date date = new java.sql.Date(calendar.getTime().getTime());
 
         //Converts hours into two parts: int and decimal
         String query = " insert into " + makeName(firstName, lastName, studentID) + " (eventName, eventHours, eventDate)"
@@ -255,7 +248,7 @@ public class MySQLMethods {
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, eventName);
         preparedStatement.setDouble(2, hours);
-        preparedStatement.setDate(3, date);
+        preparedStatement.setObject(3, LocalDate.of(year, month, day));
 
         //executes statement
         preparedStatement.execute();
@@ -294,10 +287,6 @@ public class MySQLMethods {
             //Creates a database connection
             connection = getConnection();
 
-            //Creates a date for MySQL Table
-            Calendar calendar = new Calendar.Builder().setCalendarType("iso8601").setDate(year, month, day).build();
-            java.sql.Date date = new java.sql.Date(calendar.getTime().getTime());
-
             //Converts hours into two parts: int and decimal
             String query = " insert into " + makeName(student) + "(eventName, eventHours, eventDate)"
                     + " values (?, ?, ?)";
@@ -306,7 +295,7 @@ public class MySQLMethods {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, eventName);
             preparedStatement.setDouble(2, hours);
-            preparedStatement.setDate(3, date);
+            preparedStatement.setObject(3, LocalDate.of(year, month, day));
 
             //executes statement
             preparedStatement.execute();
@@ -1063,7 +1052,7 @@ public class MySQLMethods {
                 Event next = new Event();
                 next.setEventName(resultSet.getString("eventName"));
                 next.setHours(resultSet.getDouble("eventHours"));
-                java.sql.Date date = resultSet.getDate("eventDate");
+                LocalDate date = (LocalDate) resultSet.getObject("eventDate");
                 next.setDate(date);
                 next.setStudent(student);
                 output.add(next);
@@ -1106,7 +1095,7 @@ public class MySQLMethods {
             //Creates a query
             String query = "SELECT * FROM " + fullName + " WHERE eventDate >= ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setDate(1, startDate.getDateSQL());
+            preparedStatement.setObject(1, LocalDate.of(startDate.getYear(), startDate.getMonth(), startDate.getDay()));
             ResultSet resultSet = preparedStatement.executeQuery();
 
             //Creates Output Strings
@@ -1114,7 +1103,7 @@ public class MySQLMethods {
                 Event next = new Event();
                 next.setEventName(resultSet.getString("eventName"));
                 next.setHours(resultSet.getDouble("eventHours"));
-                java.sql.Date date = resultSet.getDate("eventDate");
+                LocalDate date = (LocalDate) resultSet.getObject("eventDate");
                 next.setDate(date);
                 next.setStudent(student);
                 output.add(next);
@@ -1363,13 +1352,8 @@ public class MySQLMethods {
             double hourChange = round(newDataDouble - currentHours);
 
             //Gets today's date
-            java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-
-            MySQLMethods.addStudentHours(selected, "MANUAL ADJUSTMENT", hourChange, calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
+            MySQLMethods.addStudentHours(selected, "MANUAL ADJUSTMENT", hourChange, LocalDate.now().getYear(),
+                    LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth());
         }
 
         //Generates a query
@@ -1775,11 +1759,9 @@ public class MySQLMethods {
      * @param studentID The Student's Student ID Number
      */
     public static void updateToCurrentDate(String firstName, String lastName, int studentID) {
-        //Get's Current Date
-        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
         try {
-            updateTracker(firstName, lastName, studentID, "lastEdited", date.toString());
+            updateTracker(firstName, lastName, studentID, "lastEdited", LocalDate.now().toString());
         } catch (Exception e) {
             //Do Nothing
         }
