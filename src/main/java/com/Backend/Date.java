@@ -282,6 +282,15 @@ public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
     }
 
     /**
+     * Returns the LocalDate of the Current Date
+     *
+     * @return The LocalDate of the Date
+     */
+    public LocalDate getLocalDate() {
+        return LocalDate.of(year, month, day);
+    }
+
+    /**
      * Uses the modern version of Date in java, LocalDate, and turns it into the Backend Date.
      *
      * @param date The LocalDate being converted.
