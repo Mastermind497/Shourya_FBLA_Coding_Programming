@@ -4,6 +4,11 @@ import com.vaadin.flow.component.notification.Notification;
 
 import java.util.StringTokenizer;
 
+/**
+ * The General Student Class to Store Basic Student Information
+ * <p>
+ * The Parent of StudentData and Event
+ */
 public class Student {
     private String firstName;
     private String lastName;
