@@ -1,6 +1,5 @@
 package com.Frontend.Add.AddHours;
 
-import com.Backend.Date;
 import com.Backend.Event;
 import com.Backend.MySQLMethods;
 import com.Backend.Student;
@@ -32,7 +31,6 @@ import java.util.List;
 @Route(value = "add-hours", layout = MainView.class)
 @PageTitle("Add Student Hours | FBLA Genie")
 public class AddHours extends VerticalLayout {
-    static Date eventDate = new Date();
 
     public AddHours() {
         //The main form to fill out data
@@ -81,9 +79,10 @@ public class AddHours extends VerticalLayout {
 
         DatePicker dateOfEvent = new DatePicker("Date");
         dateOfEvent.setClearButtonVisible(true);
-        dateOfEvent.addValueChangeListener(e ->
-                eventDate.setDate(dateOfEvent.getValue())
-        );
+        dateOfEvent.addValueChangeListener(e -> {
+            event.setDateNoUpdate(dateOfEvent.getValue());
+            System.out.println(dateOfEvent.getValue());
+        });
         dateOfEvent.setMax(LocalDate.now());
 
         //Makes all components required
@@ -129,7 +128,6 @@ public class AddHours extends VerticalLayout {
         //add listeners for the buttons
         save.addClickListener(e -> {
             if (binder.writeBeanIfValid(event)) {
-                event.setDate(eventDate);
                 event.addEvent();
                 Notification.show("Your data is being processed");
                 binder.readBean(null);

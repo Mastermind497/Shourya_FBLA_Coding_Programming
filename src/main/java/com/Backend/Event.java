@@ -305,6 +305,15 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
         this.date = date;
     }
 
+    public void setDateNoUpdate(LocalDate localDate) {
+        date.setYear(localDate.getYear());
+        System.out.println(date.getYear());
+        date.setMonth(localDate.getMonthValue());
+        System.out.println(date.getMonth());
+        date.setDay(localDate.getDayOfMonth());
+        System.out.println(date.getDay());
+    }
+
     /**
      * Gets the LocalDate (the new version of java.util.Date) of the current Date
      *
@@ -320,7 +329,7 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     public void addEvent() {
         try {
             addStudentHours(super.getFirstName(), super.getLastName(), super.getStudentID(), eventName, hours,
-                    date.getYear(), date.getMonth() - 1 //The date feature in Vaadin returns one month too large
+                    date.getYear(), date.getMonth()
                     , date.getDay());
         } catch (Exception e) {
             e.printStackTrace();
