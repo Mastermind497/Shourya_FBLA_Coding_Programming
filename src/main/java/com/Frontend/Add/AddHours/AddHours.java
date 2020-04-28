@@ -73,7 +73,7 @@ public class AddHours extends VerticalLayout {
         //A Number input field for the length of the event
         NumberField eventHours = new NumberField("Length of Event (Hours)");
         eventHours.setHasControls(true);
-        eventHours.setStep(0.1d);
+        eventHours.setStep(0.5d);
         eventHours.setMin(0.1);
         eventHours.setPlaceholder("2.5");
         eventHours.setErrorMessage("That is not a Number, Please Enter a Number");
