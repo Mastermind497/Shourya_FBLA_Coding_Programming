@@ -8,7 +8,9 @@ import com.Frontend.Get.GetStudentInformation.GetStudentInformation;
 import com.Frontend.Reports.Reports;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -17,9 +19,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.dom.ThemeList;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.theme.lumo.Lumo;
 
 import java.util.ArrayList;
 
@@ -60,7 +64,6 @@ public class MainView extends AppLayout {
     public static final Tabs tabs = getTabs();
 
     //Creates the Home Screen
-    //TODO get active tab feature working
     public MainView() {
         final Tabs tabs = new Tabs();
 
@@ -71,12 +74,30 @@ public class MainView extends AppLayout {
 
         H2 appName = new H2("FLBA Genie");
 
+        //A Button for Toggling Dark Mode
+        final Button toggleButton = new Button("Dark Mode", VaadinIcon.MOON.create());
+        toggleButton.addClickListener(click -> {
+            ThemeList themeList = UI.getCurrent().getElement().getThemeList();
+
+            if (themeList.contains(Lumo.DARK)) {
+                themeList.remove(Lumo.DARK);
+                toggleButton.setText("Dark Mode");
+                toggleButton.setIcon(VaadinIcon.MOON.create());
+            } else {
+                themeList.add(Lumo.DARK);
+                toggleButton.setText("Light Mode");
+                toggleButton.setIcon(VaadinIcon.SUN_O.create());
+            }
+        });
+
         //Creates a Vertical Layout to store all the above components
         VerticalLayout verticalLayout = new VerticalLayout();
 
         //Adds component to Vertical Layout
         verticalLayout.setSizeFull();
-        verticalLayout.add(appName, tabs);
+        verticalLayout.add(appName);
+        verticalLayout.add(toggleButton);
+        verticalLayout.add(tabs);
 
         //Aligns everything to the center
         verticalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
