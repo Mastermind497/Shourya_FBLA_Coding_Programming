@@ -15,27 +15,48 @@ import java.util.StringTokenizer;
  * @author Shourya Bansal
  */
 public class MySQLMethods {
-    //Login Credentials ot create/edit on MySQL
-    private static final String username = "java";
-    private static final String unlocker = "password";
-    //The Driver
-    private static final String Driver = "com.mysql.cj.jdbc.Driver";
-    private static final String tableName = "tracker";
+    /**
+     * The Name of the Passwords Table
+     */
     public static final String pwTableName = "passwords";
-    //The name of the database and table. It is a public static string because it is the same all the time in any file
+    /**
+     * Standard Username for MySQL Table
+     */
+    private static final String username = "java";
+    /**
+     * Standard Password for MySQL Table
+     */
+    private static final String unlocker = "password";
+    /**
+     * The Name and Location of the JDBC Driver
+     */
+    private static final String Driver = "com.mysql.cj.jdbc.Driver";
+    /**
+     * The Name of the tracker table
+     */
+    private static final String tableName = "tracker";
+    /**
+     * The Name of the Database
+     */
     public static String databaseName = "student_data";
-    //The location of the database
-    private static String DB_URL = "jdbc:mysql://localhost:3306/";
-    //Connection and Statement
-    private static Statement statement = null;
-    private static Connection connection = null;
-    private static ResultSet resultSet = null;
 
-    public static void main(String[] args) {
-        createDatabase();
-        createTable();
-        System.out.println(selectStudentEventsAsEvent(new Student("Shourya", "Bansal", 224272)));
-    }
+    /**
+     * The Location of the Database, its standard location
+     */
+    private static String DB_URL = "jdbc:mysql://localhost:3306/";
+
+    /**
+     * A Statement which stores a Query
+     */
+    private static Statement statement = null;
+    /**
+     * A Connection to the Database to allow Querying
+     */
+    private static Connection connection = null;
+    /**
+     * The Result of the Query, if it is trying to execute something
+     */
+    private static ResultSet resultSet = null;
 
     /**
      * This method runs at the start of any Query. It checks
@@ -105,6 +126,10 @@ public class MySQLMethods {
         }
     }
 
+    /**
+     * This method creates the password Table which will be implemented in the future to allow multiple users to access
+     * different layers of security
+     */
     public static void createPasswordTable() {
         connection = null;
         statement = null;
@@ -393,9 +418,9 @@ public class MySQLMethods {
     }
 
     /**
-     * This gets an List of all users in the table for admin to see
+     * This gets a List of all users in the table for admin to see
      *
-     * @return An List which contains all of the users in the system
+     * @return A List which contains all of the users in the system
      */
     public static List<String> selectUsers() {
         List<String> output = new ArrayList<>();
@@ -562,6 +587,15 @@ public class MySQLMethods {
         }
     }
 
+    /**
+     * Gets and value assigned as a "Double" from the main tracker
+     * <p>
+     * This currently includes hours
+     *
+     * @param student The Student whose data is being looked for
+     * @param data    The Type of data that needs to be found
+     * @return The double value that was looked for
+     */
     public static double selectTrackerDouble(Student student, String data) {
         return selectTrackerDouble(student.getFirstName(), student.getLastName(), student.getStudentID(), data);
     }
@@ -682,7 +716,7 @@ public class MySQLMethods {
     }
 
     /**
-     * Allows someone to get the full data of a Student from the Main Table.
+     * Allows someone to get the full data of a Student from the Main Table in a String
      *
      * @param firstName the student's first name
      * @param lastName  the student's last name
@@ -827,10 +861,10 @@ public class MySQLMethods {
     }
 
     /**
-     * Creates an List which holds the data of all Student's whose data is stored.
+     * Creates a List which holds the data of all Student's whose data is stored.
      * This makes it much faster to view data of every student.
      *
-     * @return An List storing all Student Data
+     * @return A List storing all Student Data
      */
     public static List<StudentData> selectFullTracker() {
         try {
@@ -880,6 +914,11 @@ public class MySQLMethods {
         }
     }
 
+    /**
+     * Generates a list of all students being tracked
+     *
+     * @return a List of Students
+     */
     public static List<Student> getStudents() {
         List<Student> students = new ArrayList<>();
 
@@ -914,6 +953,11 @@ public class MySQLMethods {
         return students;
     }
 
+    /**
+     * Generates a List of All Students being tracked, as well as their hours and other information
+     *
+     * @return A List of StudentData Objects
+     */
     public static List<StudentData> getStudentData() {
         List<StudentData> studentData = new ArrayList<>();
 
@@ -947,6 +991,11 @@ public class MySQLMethods {
         return studentData;
     }
 
+    /**
+     * Gets the number of students being tracked
+     *
+     * @return An integer containing the number of tracked students
+     */
     public static int numOfStudents() {
         int numOfStudents = 0;
         try {
@@ -965,8 +1014,7 @@ public class MySQLMethods {
             connection.close();
             statement.close();
             resultSet.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Get Students Failed");
         }
@@ -1050,11 +1098,11 @@ public class MySQLMethods {
 
             while (resultSet.next()) {
                 Event next = new Event();
+                next.setStudent(student);
                 next.setEventName(resultSet.getString("eventName"));
                 next.setHours(resultSet.getDouble("eventHours"));
-                LocalDate date = (LocalDate) resultSet.getObject("eventDate");
+                LocalDate date = resultSet.getDate("eventDate").toLocalDate();
                 next.setDate(date);
-                next.setStudent(student);
                 output.add(next);
             }
             resultSet.close();
@@ -1083,7 +1131,7 @@ public class MySQLMethods {
      *
      * @param student   The Student whose events we need
      * @param startDate The Start Date of the Events
-     * @return An List containing the events being used
+     * @return A List containing the events being used
      */
     public static List<Event> selectStudentEventsInRange(Student student, Date startDate) {
         List<Event> output = new ArrayList<>();
@@ -1101,11 +1149,11 @@ public class MySQLMethods {
             //Creates Output Strings
             while (resultSet.next()) {
                 Event next = new Event();
+                next.setStudent(student);
                 next.setEventName(resultSet.getString("eventName"));
                 next.setHours(resultSet.getDouble("eventHours"));
-                LocalDate date = (LocalDate) resultSet.getObject("eventDate");
+                LocalDate date = resultSet.getDate("eventDate").toLocalDate();
                 next.setDate(date);
-                next.setStudent(student);
                 output.add(next);
             }
 
@@ -1120,6 +1168,12 @@ public class MySQLMethods {
         return output;
     }
 
+    /**
+     * A List of All Students with their data, but limiting hours to only those earned in a specified range
+     *
+     * @param range The range of time from where hours should be received
+     * @return A list of StudentData objects
+     */
     public static List<StudentData> getStudentData(String range) {
         List<StudentData> studentDataList = getStudentData();
 
@@ -1144,6 +1198,12 @@ public class MySQLMethods {
         return studentDataList;
     }
 
+    /**
+     * Gets the hours a student earned in the past week
+     *
+     * @param student The Student being found
+     * @return The hours the student earned in a week
+     */
     public static double getHoursWeek(Student student) {
         double hours = 0; //Prepares the hours variable for taking in numbers
         try {
@@ -1170,6 +1230,12 @@ public class MySQLMethods {
         return hours;
     }
 
+    /**
+     * Gets the number of hours a student earned in a Month
+     *
+     * @param student The Student being tracked
+     * @return The hours the student earned in a month
+     */
     public static double getHoursMonth(Student student) {
         double hours = 0; //Prepares the hours variable for taking in numbers
         try {
@@ -1196,6 +1262,12 @@ public class MySQLMethods {
         return hours;
     }
 
+    /**
+     * Gets the hours a student earned in a year
+     *
+     * @param student The student being tracked
+     * @return The hours earned in a year
+     */
     public static double getHoursYear(Student student) {
         double hours = 0; //Prepares the hours variable for taking in numbers
         try {
@@ -1222,6 +1294,12 @@ public class MySQLMethods {
         return hours;
     }
 
+    /**
+     * Gets the the total hours a student has earned their entire time in FBLA
+     *
+     * @param student The Student being tracked
+     * @return The total hours a student earned
+     */
     public static double getHoursAll(Student student) {
         double hours = 0; //Prepares the hours variable for taking in numbers
         try {
@@ -1372,6 +1450,14 @@ public class MySQLMethods {
         if (!dataType.equals("lastEdited")) updateToCurrentDate(firstName, lastName, studentID);
     }
 
+    /**
+     * Updates the first name of a Student in case that needs to be changed
+     *
+     * @param firstName    The Old First Name of the Student
+     * @param lastName     The Student's last Name
+     * @param studentID    The Student's Student ID Number
+     * @param newFirstName The Student's new First Name
+     */
     public static void updateFirstName(String firstName, String lastName, int studentID, String newFirstName) {
         try {
             connection = getConnection();
@@ -1400,6 +1486,14 @@ public class MySQLMethods {
         }
     }
 
+    /**
+     * Updates the last Name of a Student in case that needs to be done
+     *
+     * @param firstName   The First name of the Student
+     * @param lastName    The Old Last name of the Student
+     * @param studentID   The Student's Student ID Number
+     * @param newLastName The New Last name of the Student
+     */
     public static void updateLastName(String firstName, String lastName, int studentID, String newLastName) {
         try {
             connection = getConnection();
@@ -1429,6 +1523,14 @@ public class MySQLMethods {
         }
     }
 
+    /**
+     * Updates the Student ID of a Student just in case that changes
+     *
+     * @param firstName    The Student's First Name
+     * @param lastName     The Student's Last Name
+     * @param studentID    The Student's Old Student ID
+     * @param newStudentID The Student's New Student ID
+     */
     public static void updateStudentID(String firstName, String lastName, int studentID, int newStudentID) {
         try {
             connection = getConnection();
@@ -1458,6 +1560,16 @@ public class MySQLMethods {
         }
     }
 
+    /**
+     * Updates the main, general tracking table
+     * <p>
+     * There can be no changes in First Name, Last Name, or Student ID in these two pieces of data for the change
+     * to work successfully
+     *
+     * @param initialStudent The Student Being updated
+     * @param newData        The Data being inserted into the student
+     * @throws Exception For MySQL Exceptions
+     */
     public static void updateTracker(Student initialStudent, StudentData newData) throws Exception {
         String fullName = initialStudent.getFullName();
 
@@ -1524,6 +1636,7 @@ public class MySQLMethods {
             preparedStatement.close();
             connection.close();
 
+            //Fixes Total Hours if EventHours were changed
             if (dataType.equals("eventHours")) {
                 double currentHours = selectTrackerDouble(firstName, lastName, studentID, "communityServiceHours");
                 updateTracker(firstName, lastName, studentID, "CommunityServiceHours",
@@ -1536,6 +1649,13 @@ public class MySQLMethods {
         }
     }
 
+    /**
+     * Updates a student's event
+     *
+     * @param student  The student being updated
+     * @param oldEvent The old event information
+     * @param newEvent The new event details
+     */
     public static void updateEvent(Student student, Event oldEvent, Event newEvent) {
         //Gets connection to database
         try {
@@ -1568,10 +1688,6 @@ public class MySQLMethods {
             double finalHours = data.getCommunityServiceHours() + newEventHours;
             data.setCommunityServiceHours(finalHours);
             updateTracker(student, data);
-//            String mainQuery = "UPDATE tracker SET eventHours = ? WHERE fullName = ?";
-//            PreparedStatement mainPreparedStatement = connection.prepareStatement(query);
-//            mainPreparedStatement.setDouble(1, finalHours);
-//            mainPreparedStatement.setString(2, tableName);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Update Event Failed");
@@ -1778,6 +1894,9 @@ public class MySQLMethods {
         return (double) (stageOne) / 100;
     }
 
+    /**
+     * Runs the necessary methods to set up the tables in case this is the first time the app is running
+     */
     public static void setUp() {
         createDatabase();
         createTable();
