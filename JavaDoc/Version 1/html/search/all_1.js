@@ -1,9 +1,0 @@
-var searchData=
-[
-    ['changename_5', ['changeName', ['../classcom_1_1_backend_1_1_my_s_q_l_methods.html#a1c57a43b8c902b87fd6a614b2d817e24', 1, 'com.backend.MySQLMethods.changeName(String nameIn)'], ['../classcom_1_1_backend_1_1_my_s_q_l_methods.html#a7f78c07dc434e4023a47d9dab7492f83', 1, 'com.backend.MySQLMethods.changeName(String firstName, String lastName)']]],
-    ['configureuiserviceinitlistener_6', ['ConfigureUIServiceInitListener', ['../classcom_1_1_frontend_1_1_security_1_1_configure_u_i_service_init_listener.html', 1, 'com::Frontend::Security']]],
-    ['createdatabase_7', ['createDatabase', ['../classcom_1_1_backend_1_1_my_s_q_l_methods.html#a205c4c5bfa2915473f531da52cf289de', 1, 'com::backend::MySQLMethods']]],
-    ['createstudent_8', ['CreateStudent', ['../classcom_1_1_frontend_1_1_add_1_1_create_student.html', 1, 'com.Frontend.Add.CreateStudent'], ['../classcom_1_1_backend_1_1_my_s_q_l_methods.html#aa7a005601454fb2af8e6193bcd88d678', 1, 'com.backend.MySQLMethods.createStudent()']]],
-    ['createstudenttable_9', ['createStudentTable', ['../classcom_1_1_backend_1_1_my_s_q_l_methods.html#a4fdf2268b67ba192a02545d727916bac', 1, 'com::backend::MySQLMethods']]],
-    ['createtable_10', ['createTable', ['../classcom_1_1_backend_1_1_my_s_q_l_methods.html#a798fdb856edcecfecb44e6647ed9dca2', 1, 'com::backend::MySQLMethods']]]
-];
