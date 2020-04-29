@@ -42,7 +42,7 @@ public class GetStudentInformation extends VerticalLayout {
     public void mainTable() {
         removeAll();
         //Shows data on a grid (Up to 100k pieces)
-        List<StudentData> data = MySQLMethods.selectFullTracker();
+        List<StudentData> data = MySQLMethods.getStudentData();
 
         //Creates a Grid with Inline editing and Sorting
         grid = new GridPro<>();
@@ -108,7 +108,7 @@ public class GetStudentInformation extends VerticalLayout {
                 String.format("Are you sure you want to delete %s? This action cannot be undone", student.getFirstName() + " " + student.getLastName()),
                 "Delete", onDelete -> {
             student.delete();
-            grid.setItems(MySQLMethods.selectFullTracker());
+            grid.setItems(MySQLMethods.getStudentData());
         },
                 "Cancel", this::onClose);
         dialog.setConfirmButtonTheme("error primary");
@@ -147,7 +147,7 @@ public class GetStudentInformation extends VerticalLayout {
     //Closes the DialogBox
     private void onClose(ConfirmDialog.CancelEvent cancelEvent) {
         cancelEvent.getSource().close();
-        grid.setItems(MySQLMethods.selectFullTracker());
+        grid.setItems(MySQLMethods.getStudentData());
     }
 
     public Button expandButton(StudentData student) {
@@ -183,7 +183,7 @@ public class GetStudentInformation extends VerticalLayout {
             fullData.open();
             close.addClickListener(onClick -> {
                 fullData.close();
-                grid.setItems(MySQLMethods.selectFullTracker());
+                grid.setItems(MySQLMethods.getStudentData());
             });
             System.out.println("End Notification");
         });

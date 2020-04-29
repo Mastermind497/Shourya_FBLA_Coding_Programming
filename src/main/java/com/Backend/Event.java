@@ -328,7 +328,7 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
      */
     public void addEvent() {
         try {
-            addStudentHours(super.getFirstName(), super.getLastName(), super.getStudentID(), eventName, hours,
+            addStudentHours(super.getStudent(), eventName, hours,
                     date.getYear(), date.getMonth()
                     , date.getDay());
         } catch (Exception e) {

@@ -20,30 +20,29 @@ public class MySQLMethods {
      */
     public static final String pwTableName = "passwords";
     /**
+     * The Name of the Database
+     */
+    public static final String DATABASE_NAME = "student_data";
+    /**
      * Standard Username for MySQL Table
      */
-    private static final String username = "java";
+    private static final String USERNAME = "java";
     /**
      * Standard Password for MySQL Table
      */
-    private static final String unlocker = "password";
+    private static final String PASSWORD = "password";
     /**
      * The Name and Location of the JDBC Driver
      */
-    private static final String Driver = "com.mysql.cj.jdbc.Driver";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     /**
      * The Name of the tracker table
      */
-    private static final String tableName = "tracker";
-    /**
-     * The Name of the Database
-     */
-    public static String databaseName = "student_data";
-
+    private static final String TABLE_NAME = "tracker";
     /**
      * The Location of the Database, its standard location
      */
-    private static String DB_URL = "jdbc:mysql://localhost:3306/";
+    private static String DATABASE_URL = "jdbc:mysql://localhost:3306/";
 
     /**
      * A Statement which stores a Query
@@ -70,7 +69,7 @@ public class MySQLMethods {
 
             //Runs a statement on MySQL to create a database
             statement = connection.createStatement();
-            statement.executeUpdate("CREATE DATABASE IF NOT EXISTS " + databaseName);
+            statement.executeUpdate("CREATE DATABASE IF NOT EXISTS " + DATABASE_NAME);
             System.out.println("Database Created");
             //Closes Variables to avoid errors
             statement.close();
@@ -81,7 +80,7 @@ public class MySQLMethods {
             System.out.println("Database Creation Failed");
             e.printStackTrace();
         } finally {
-            if (!DB_URL.contains(databaseName)) DB_URL += databaseName;
+            if (!DATABASE_URL.contains(DATABASE_NAME)) DATABASE_URL += DATABASE_NAME;
         }
     }
 
@@ -98,7 +97,7 @@ public class MySQLMethods {
             //Executes Query & Creates Table
             statement = connection.createStatement();
             //Uses Statement to Create MySQL Table in database
-            String table = "CREATE TABLE IF NOT EXISTS " + tableName + " ("
+            String table = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                     + "id INT AUTO_INCREMENT PRIMARY KEY," //The primary key, an auto-incrementing ID
                     + "firstName VARCHAR(255) NOT NULL,"
                     + "lastName VARCHAR(255) NOT NULL,"
@@ -218,7 +217,7 @@ public class MySQLMethods {
             //creates a connection to the MySQL
             connection = getConnection();
 
-            String query = " insert into " + tableName + " (firstName, lastName, fullName, studentID, grade, communityServiceCategory,"
+            String query = " insert into " + TABLE_NAME + " (firstName, lastName, fullName, studentID, grade, communityServiceCategory,"
                     + "email, yearsDone, lastEdited)"
                     + " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -243,55 +242,6 @@ public class MySQLMethods {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-    }
-
-    /**
-     * This adds events and hours into a students unique table. At the
-     * same time, this updates the hours in the main table
-     *
-     * @param firstName The First Name of the Student
-     * @param lastName  The Last Name of the Student
-     * @param studentID The Student's Student ID Number
-     * @param eventName The Name of the Event Completed
-     * @param hours     The Length of the Event
-     * @param year      The Year the Event Was Done
-     * @param month     The Month of the Event
-     * @param day       The Day of the Event
-     * @throws Exception This is throws in case the Database is not found
-     */
-    public static void addStudentHours(String firstName, String lastName, int studentID, String eventName, double hours,
-                                       int year, int month, int day) throws Exception {
-        //Creates a database connection
-        connection = getConnection();
-
-
-        //Converts hours into two parts: int and decimal
-        String query = " insert into " + makeName(firstName, lastName, studentID) + " (eventName, eventHours, eventDate)"
-                + " values (?, ?, ?)";
-
-        //Creates a preparedStatement to insert into mysql command line
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, eventName);
-        preparedStatement.setDouble(2, hours);
-        preparedStatement.setObject(3, LocalDate.of(year, month, day));
-
-        //executes statement
-        preparedStatement.execute();
-
-        //Ends everything
-        connection.close();
-        statement.close();
-
-        //next step, update hours in the main table
-        //gets current main hours
-        double currentHours = selectTrackerDouble(firstName, lastName, studentID, "CommunityServiceHours");
-        System.out.println("Adding an Event");
-        updateTracker(firstName, lastName, studentID, "CommunityServiceHours",
-                Double.toString(round(currentHours + hours)));//rounds Hours to nearest hundredth to account for inaccuracy of doubles
-        System.out.println("Event Added");
-
-        //now, update lastEdited in main table
-        updateToCurrentDate(firstName, lastName, studentID);
     }
 
     /**
@@ -418,48 +368,6 @@ public class MySQLMethods {
     }
 
     /**
-     * This gets a List of all users in the table for admin to see
-     *
-     * @return A List which contains all of the users in the system
-     */
-    public static List<String> selectUsers() {
-        List<String> output = new ArrayList<>();
-        try {
-            //Creates a connection
-            connection = getConnection();
-
-            //SQL Query to find find data
-            String query = "select password  from " + pwTableName + " where username = '" + username + "'";
-
-            //Create the java Statement (Goes in Query)
-            statement = connection.createStatement();
-
-            //The Result after executing the query
-            ResultSet resultSet = statement.executeQuery(query);
-
-            while (resultSet.next()) {
-                output.add(resultSet.getString(1));
-            }
-
-            try {
-                //Ends everything
-                connection.close();
-                statement.close();
-                resultSet.close();
-            } catch (Exception e) {
-                //Do Nothing
-            }
-            if (output.isEmpty()) {
-                return null;
-            }
-        } catch (Exception e) {
-            return null;
-        }
-
-        return output;
-    }
-
-    /**
      * This allows someone to get specific integer-type data from the Main Table.
      *
      * @param firstName The Student's first name
@@ -476,7 +384,7 @@ public class MySQLMethods {
             connection = getConnection();
 
             //SQL Query to find find data
-            String query = "select " + data + " from " + tableName + " where fullName = '" + studentName + "'";
+            String query = "select " + data + " from " + TABLE_NAME + " where fullName = '" + studentName + "'";
 
             //Create the java Statement (Goes in Query)
             statement = connection.createStatement();
@@ -517,7 +425,7 @@ public class MySQLMethods {
             connection = getConnection();
 
             //SQL Query to find find data
-            String query = "select " + data + " from " + tableName + " where fullName = '" + studentName + "'";
+            String query = "select " + data + " from " + TABLE_NAME + " where fullName = '" + studentName + "'";
 
             //Create the java Statement (Goes in Query)
             statement = connection.createStatement();
@@ -563,7 +471,7 @@ public class MySQLMethods {
             connection = getConnection();
 
             //SQL Query to find find data
-            String query = "SELECT " + data + " FROM " + tableName + " WHERE fullName = '" + fullName + "'";
+            String query = "SELECT " + data + " FROM " + TABLE_NAME + " WHERE fullName = '" + fullName + "'";
 
             //Create the java Statement (Goes in Query)
             statement = connection.createStatement();
@@ -588,19 +496,6 @@ public class MySQLMethods {
     }
 
     /**
-     * Gets and value assigned as a "Double" from the main tracker
-     * <p>
-     * This currently includes hours
-     *
-     * @param student The Student whose data is being looked for
-     * @param data    The Type of data that needs to be found
-     * @return The double value that was looked for
-     */
-    public static double selectTrackerDouble(Student student, String data) {
-        return selectTrackerDouble(student.getFirstName(), student.getLastName(), student.getStudentID(), data);
-    }
-
-    /**
      * This allows someone to get specific short-type data from the Main Table.
      *
      * @param firstName the student's first name
@@ -617,7 +512,7 @@ public class MySQLMethods {
             connection = getConnection();
 
             //SQL Query to find find data
-            String query = "select " + data + " from " + tableName + " where fullName = '" + studentName + "'";
+            String query = "select " + data + " from " + TABLE_NAME + " where fullName = '" + studentName + "'";
 
             //Create the java Statement (Goes in Query)
             statement = connection.createStatement();
@@ -642,175 +537,6 @@ public class MySQLMethods {
     }
 
     /**
-     * This allows someone to get specific boolean-type data from the Main database.
-     *
-     * @param firstName the student's first name
-     * @param lastName  the student's last name
-     * @param studentID The Student's Student ID Number
-     * @param data      the data field being accessed
-     * @return a boolean contain the data
-     * @throws Exception for SQL Errors
-     */
-    public static boolean selectTrackerBoolean(String firstName, String lastName, int studentID, String data) throws Exception {
-        String studentName = makeName(firstName, lastName, studentID);
-
-        //Uses method getConnection to get a connection to the database
-        connection = getConnection();
-
-        //SQL Query to find find data
-        String query = "select " + data + " from " + tableName + " where fullName = '" + studentName + "'";
-
-        //Create the java Statement (Goes in Query)
-        statement = connection.createStatement();
-
-        //The Result after executing the query
-        ResultSet resultSet = statement.executeQuery(query);
-
-        //returns the String inside column "data"
-        resultSet.next();
-        boolean output = resultSet.getBoolean(data);
-
-        //Closes all variables
-        resultSet.close();
-        statement.close();
-        connection.close();
-
-        return output;
-    }
-
-    /**
-     * This allows someone to get a specific Date from the main table (if one exists)
-     *
-     * @param firstName the student's first name
-     * @param lastName  the student's last name
-     * @param studentID The Student's Student ID Number
-     * @param data      the data field being accessed
-     * @return A String containing the date
-     * @throws Exception for SQL Errors
-     */
-    public static String selectTrackerDate(String firstName, String lastName, int studentID, String data) throws Exception {
-        String studentName = makeName(firstName, lastName, studentID);
-
-        //Creates a connection
-        connection = getConnection();
-
-        //SQL Query to find find data
-        String query = "select " + data + " from " + tableName + " where fullName = '" + studentName + "'";
-
-        //Create the java Statement (Goes in Query)
-        statement = connection.createStatement();
-
-        //The Result after executing the query
-        ResultSet resultSet = statement.executeQuery(query);
-
-        //returns the String inside column "data"
-        resultSet.next();
-        String output = resultSet.getString(data);
-
-        //Closes Variables
-        resultSet.close();
-        connection.close();
-        statement.close();
-
-        return output;
-    }
-
-    /**
-     * Allows someone to get the full data of a Student from the Main Table in a String
-     *
-     * @param firstName the student's first name
-     * @param lastName  the student's last name
-     * @param studentID The Student's Student ID Number
-     * @return A String containing all of the Data
-     * @throws Exception for SQL Errors
-     */
-    public static String selectTracker(String firstName, String lastName, int studentID) throws Exception {
-        //converts name to studentName following convention format
-        String studentName = makeName(firstName, lastName, studentID);
-
-        //creates a connection
-        connection = getConnection();
-
-        //SQL Query to find find data
-        String query = "select * from " + tableName + " where fullName = '" + studentName + "'";
-
-        //Create the java Statement (Goes in Query)
-        Statement statement = connection.createStatement();
-
-        //The Result after executing the query
-        ResultSet resultSet = statement.executeQuery(query);
-        resultSet.next();
-
-        //Creates the Output String
-        String output = "Primary Key ID Number: " + resultSet.getInt("id") + ", "
-                + "First Name: " + resultSet.getString("firstName") + ", "
-                + "Last Name: " + resultSet.getString("lastName") + ", "
-                + "Student ID: " + resultSet.getInt("studentID") + ", "
-                + "Grade: " + resultSet.getShort("grade") + ", "
-                + "Community Service Hours: " + resultSet.getDouble("communityServiceHours") + ", "
-                + "Community Service Category: " + resultSet.getString("communityServiceCategory") + ", "
-                + "Years Done: " + resultSet.getShort("yearsDone");
-
-        //closes resources
-        statement.close();
-        resultSet.close();
-        connection.close();
-        return output;
-    }
-
-    /**
-     * This method gets the data of a student with the information listed, but returns it all in its
-     * special class as a StudentData object.
-     *
-     * @param firstName The Student's First Name
-     * @param lastName  The Student's Last Name
-     * @param studentID The Student's ID
-     * @return A StudentData Object with all of the Student's Information
-     */
-    public static StudentData selectTrackerAsStudent(String firstName, String lastName, int studentID) {
-        try {
-            //converts name to studentName following convention format
-            String studentName = makeName(firstName, lastName, studentID);
-
-            StudentData studentData = new StudentData(true);
-
-            //creates a connection
-            connection = getConnection();
-
-            //SQL Query to find find data
-            String query = "select * from " + tableName + " where fullName = '" + studentName + "'";
-
-            //Create the java Statement (Goes in Query)
-            Statement statement = connection.createStatement();
-
-            //The Result after executing the query
-            ResultSet resultSet = statement.executeQuery(query);
-            resultSet.next();
-
-            //Adds the Data to the StudentData Object
-            studentData.setFirstName(resultSet.getString("firstName"));
-            studentData.setLastName(resultSet.getString("lastName"));
-            studentData.setStudentID(resultSet.getInt("studentID"));
-            studentData.setGrade(resultSet.getShort("Grade"));
-            studentData.setCommunityServiceHours(resultSet.getDouble("communityServiceHours"));
-            studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
-            studentData.setYearsDone(resultSet.getShort("yearsDone"));
-            studentData.setEmail(resultSet.getString("email"));
-            studentData.setLastEdited(resultSet.getDate("lastEdited").toString());
-
-            //closes resources
-            statement.close();
-            resultSet.close();
-            connection.close();
-
-            return studentData;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new StudentData();
-        }
-    }
-
-    /**
      * This method gets the data of a student with the information listed, but returns it all in its
      * special class as a StudentData object.
      *
@@ -828,7 +554,7 @@ public class MySQLMethods {
             connection = getConnection();
 
             //SQL Query to find find data
-            String query = "select * from " + tableName + " where fullName = '" + studentName + "'";
+            String query = "select * from " + TABLE_NAME + " where fullName = '" + studentName + "'";
 
             //Create the java Statement (Goes in Query)
             Statement statement = connection.createStatement();
@@ -861,60 +587,6 @@ public class MySQLMethods {
     }
 
     /**
-     * Creates a List which holds the data of all Student's whose data is stored.
-     * This makes it much faster to view data of every student.
-     *
-     * @return A List storing all Student Data
-     */
-    public static List<StudentData> selectFullTracker() {
-        try {
-            //The List
-            List<StudentData> studentDataList = new ArrayList<>();
-            //creates a connection
-            connection = getConnection();
-
-            //SQL Query to find find data
-            String query = "select * from " + tableName;
-
-            //Create the java Statement (Goes in Query)
-            Statement statement = connection.createStatement();
-
-            //The Result after executing the query
-            ResultSet resultSet = statement.executeQuery(query);
-
-            //While there is more data, it keeps running
-            while (resultSet.next()) {
-                //Creates a StudentData Object
-                StudentData studentData = new StudentData(true);
-
-                //Adds the Data to the StudentData Object
-                studentData.setFirstName(resultSet.getString("firstName"));
-                studentData.setLastName(resultSet.getString("lastName"));
-                studentData.setStudentID(resultSet.getInt("studentID"));
-                studentData.setGrade(resultSet.getShort("Grade"));
-                studentData.setCommunityServiceHours(resultSet.getDouble("communityServiceHours"));
-                studentData.setCommunityServiceCategory(resultSet.getString("communityServiceCategory"));
-                studentData.setYearsDone(resultSet.getShort("yearsDone"));
-                studentData.setEmail(resultSet.getString("email"));
-                studentData.setLastEdited(resultSet.getDate("lastEdited").toString());
-
-                //Adds the StudentData to the List
-                studentDataList.add(studentData);
-            }
-
-            //closes resources
-            statement.close();
-            resultSet.close();
-            connection.close();
-
-            return studentDataList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
-    }
-
-    /**
      * Generates a list of all students being tracked
      *
      * @return a List of Students
@@ -925,7 +597,7 @@ public class MySQLMethods {
         try {
             connection = getConnection();
 
-            String query = "select * from " + tableName;
+            String query = "select * from " + TABLE_NAME;
 
             statement = connection.createStatement();
 
@@ -964,7 +636,7 @@ public class MySQLMethods {
         try {
             connection = getConnection();
 
-            String query = "select * from " + tableName;
+            String query = "select * from " + TABLE_NAME;
 
             statement = connection.createStatement();
 
@@ -989,81 +661,6 @@ public class MySQLMethods {
         }
 
         return studentData;
-    }
-
-    /**
-     * Gets the number of students being tracked
-     *
-     * @return An integer containing the number of tracked students
-     */
-    public static int numOfStudents() {
-        int numOfStudents = 0;
-        try {
-            connection = getConnection();
-
-            String query = "select COUNT(*) from " + tableName;
-
-            statement = connection.createStatement();
-
-            ResultSet resultSet = statement.executeQuery(query);
-
-            resultSet.next();
-
-            numOfStudents = resultSet.getInt(1);
-
-            connection.close();
-            statement.close();
-            resultSet.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Get Students Failed");
-        }
-
-        return numOfStudents;
-    }
-
-    /**
-     * This allows access to all of a student's events
-     *
-     * @param firstName the student's first name
-     * @param lastName  the student's last name
-     * @param studentID The Student's Student ID Number
-     * @return an array of Strings containing all of the Events and their data
-     * @throws Exception for SQL Errors
-     */
-    public static String[] selectStudentEvents(String firstName, String lastName, int studentID) throws Exception {
-        //converts to the studentName format
-        String studentName = makeName(firstName, lastName, studentID);
-
-        //Uses getConnection to create a connection
-        connection = getConnection();
-
-        //SQL Query to find find data
-        String query = "select * from " + studentName;
-
-        //Create the java Statement (Runs the Query)
-        statement = connection.createStatement();
-
-        //The Result after executing the query
-        ResultSet resultSet = statement.executeQuery(query);
-
-        //Creates Output Strings
-        String[] output = new String[numberOfRows(studentName)];
-        int count = 0;
-
-        while (resultSet.next()) {
-            int id = resultSet.getInt("id");
-            String eventName = resultSet.getString("eventName");
-            double eventHours = resultSet.getDouble("eventHours");
-            String date = resultSet.getDate("eventDate").toString();
-            output[count] = String.format("Event ID: %s, Event Name: %s, Event Hours: %s, Date of Event: %s",
-                    id, eventName, eventHours, date);
-            count++;
-        }
-        resultSet.close();
-        statement.close();
-
-        return output;
     }
 
     /**
@@ -1581,7 +1178,7 @@ public class MySQLMethods {
         updateToCurrentDate(initialStudent.getFirstName(), initialStudent.getLastName(), initialStudent.getStudentID());
 
         //Generates a query
-        String query = "update " + tableName + " set " +
+        String query = "update " + TABLE_NAME + " set " +
                 "firstName = '" + newData.getFirstName() + "', " +
                 "lastName = '" + newData.getLastName() + "', " +
                 "studentID = '" + newData.getStudentID() + "', " +
@@ -1600,53 +1197,6 @@ public class MySQLMethods {
         //close resources
         preparedStatement.close();
         connection.close();
-    }
-
-    /**
-     * This allows changing student-specific event data
-     *
-     * @param firstName the student's first name
-     * @param lastName  the student's last name
-     * @param studentID The Student's Student ID Number
-     * @param dataType  the data field name
-     * @param newData   the new data value (in String form)
-     * @param eventName the name of the event being changed
-     */
-    public static void updateEvent(String firstName, String lastName, int studentID, String dataType, String newData, String eventName) {
-        try {
-            //gets connection with database
-            connection = getConnection();
-
-            String tableName = makeName(firstName, lastName, studentID);
-
-            //only used if the data field is hours
-            double initialHours = 0;
-            if (dataType.equals("eventHours")) {
-                initialHours = selectEventHours(firstName, lastName, studentID, eventName);
-            }
-
-            //Generates a query
-            String query = "update " + tableName + " set " + dataType + " = " + newData + " where eventName = '" + eventName + "'";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-
-            //executes query
-            preparedStatement.executeUpdate();
-
-            //close resources
-            preparedStatement.close();
-            connection.close();
-
-            //Fixes Total Hours if EventHours were changed
-            if (dataType.equals("eventHours")) {
-                double currentHours = selectTrackerDouble(firstName, lastName, studentID, "communityServiceHours");
-                updateTracker(firstName, lastName, studentID, "CommunityServiceHours",
-                        Double.toString(round(currentHours + Double.parseDouble(newData) - initialHours)));//rounds Hours to nearest hundredth to account for inaccuracy of doubles
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            updateToCurrentDate(firstName, lastName, studentID);
-        }
     }
 
     /**
@@ -1829,8 +1379,8 @@ public class MySQLMethods {
      */
     private static Connection getConnection() throws Exception {
         //Uses Driver
-        Class.forName(Driver);
-        connection = DriverManager.getConnection(DB_URL, username, unlocker);
+        Class.forName(DRIVER);
+        connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
         return connection;
     }
 
