@@ -4,7 +4,7 @@ import com.backend.MySQLMethods;
 import com.frontend.Add.AddHours.AddHours;
 import com.frontend.Add.CreateStudent.CreateStudent;
 import com.frontend.Documentation.Documentation;
-import com.frontend.Get.GetStudentInformation.GetStudentInformation;
+import com.frontend.GetStudentInformation.GetStudentInformation;
 import com.frontend.Reports.Reports;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
