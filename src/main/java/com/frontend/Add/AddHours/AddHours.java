@@ -12,8 +12,8 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -28,11 +28,21 @@ import com.vaadin.flow.router.Route;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * The Class for Adding Hours into a Student
+ */
 @Route(value = "add-hours", layout = MainView.class)
+//Uses the Layout from MainView.java wihtout having to recreate the entire thing
 @PageTitle("Add Student Hours | FBLA Genie")
 public class AddHours extends VerticalLayout {
 
+    /**
+     * The Add Hours View
+     */
     public AddHours() {
+        removeAll();
+        H1 heading = new H1("Add Student Hours");
+        add(heading);
         //The main form to fill out data
         //Creates a Horizontal Layout to decrease maximum width
         HorizontalLayout full = new HorizontalLayout();
@@ -51,13 +61,15 @@ public class AddHours extends VerticalLayout {
                 new FormLayout.ResponsiveStep("40em", 3));
 
 
-        //Makes Labels for Different Input Fields
+        /* Makes Labels for Different Input Fields */
+        //Gets all Students as Options for Adding Hours
         List<Student> students = MySQLMethods.getStudents();
         //Adds Create New Student Option
         students.add(new Student(true));
         ComboBox<Student> studentChoices = new ComboBox<>("Student Name");
         studentChoices.setItems(students);
         studentChoices.addValueChangeListener(e -> {
+            //Checks if the person selected the "Create New Student" Option
             if (studentChoices.getValue() != null && studentChoices.getValue().getCreateNewStudent()) {
                 UI.getCurrent().navigate(CreateStudent.class);
             }
@@ -65,7 +77,7 @@ public class AddHours extends VerticalLayout {
 
         //A Text Input field for the Name of the Event
         TextField eventName = new TextField("Event Name");
-        eventName.setPlaceholder("Volunteering at Central Park");
+        eventName.setPlaceholder("Volunteering at Central Park"); //Example Name
         eventName.setValueChangeMode(ValueChangeMode.EAGER);
 
         //A Number input field for the length of the event
@@ -77,6 +89,7 @@ public class AddHours extends VerticalLayout {
         eventHours.setErrorMessage("That is not a Number, Please Enter a Number");
         eventHours.setValueChangeMode(ValueChangeMode.EAGER);
 
+        //A Date Picker to choose the exact date of the event
         DatePicker dateOfEvent = new DatePicker("Date");
         dateOfEvent.setClearButtonVisible(true);
         dateOfEvent.addValueChangeListener(e -> {
@@ -86,7 +99,9 @@ public class AddHours extends VerticalLayout {
         dateOfEvent.setMax(LocalDate.now());
 
         //Makes all components required
+        studentChoices.setRequired(true);
         studentChoices.setRequiredIndicatorVisible(true);
+        eventName.setRequired(true);
         eventName.setRequiredIndicatorVisible(true);
         eventHours.setRequiredIndicatorVisible(true);
         dateOfEvent.setRequired(true);
@@ -98,10 +113,11 @@ public class AddHours extends VerticalLayout {
         addEventHours.add(eventHours, 1);
         addEventHours.add(dateOfEvent, 1);
 
+        //Adds the form to the layout
         full.add(addEventHours);
         full.setSpacing(true);
         full.setMargin(true);
-        full.setAlignItems(FlexComponent.Alignment.CENTER);
+        full.setAlignItems(Alignment.CENTER);
 
         //Button Bar
         HorizontalLayout actions = new HorizontalLayout();
@@ -110,9 +126,10 @@ public class AddHours extends VerticalLayout {
         actions.add(save, reset);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         reset.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        actions.setAlignItems(FlexComponent.Alignment.CENTER);
-        actions.setAlignSelf(FlexComponent.Alignment.CENTER);
+        actions.setAlignItems(Alignment.CENTER);
+        actions.setAlignSelf(Alignment.CENTER);
 
+        /* Bind Each Selection to the corresponding backend methods to speed up changing */
         binder.forField(studentChoices).bind(Event::getStudent, Event::setStudent);
 
         binder.forField(eventName)
@@ -127,6 +144,7 @@ public class AddHours extends VerticalLayout {
 
         //add listeners for the buttons
         save.addClickListener(e -> {
+            //Creates the event if it is a valid selection
             if (binder.writeBeanIfValid(event)) {
                 event.addEvent();
                 Notification.show("Your data is being processed");
@@ -137,6 +155,7 @@ public class AddHours extends VerticalLayout {
         //ENTER key also clicks save
         save.addClickShortcut(Key.ENTER);
 
+        //Clears all fields after "RESET" is clicked
         reset.addClickListener(e -> {
             // clear fields by setting null
             binder.readBean(null);
