@@ -6,7 +6,6 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * This Class will hold all the methods to allow manipulation of the Data in the Database.
@@ -923,82 +922,6 @@ public class MySQLMethods {
     }
 
     /**
-     * Selects data on just one event given its eventName
-     *
-     * @param firstName The student's first name
-     * @param lastName  The student's last name
-     * @param studentID The Student's Student ID Number
-     * @param eventName The name of the event
-     * @return A String containing all of the Event Details
-     * @throws Exception for SQL Exceptions
-     * @deprecated replaced by Event Class. To Be deleted in a different commit
-     */
-    public static String selectStudentEvent(String firstName, String lastName, int studentID, String eventName) throws Exception {
-        //converts to the studentName format
-        String studentName = makeName(firstName, lastName, studentID);
-
-        //Uses getConnection to create a connection
-        connection = getConnection();
-
-        //SQL Query to find find data
-        String query = "select * from " + studentName + " where eventName = '" + eventName + "'";
-
-        //Create the java Statement (Runs the Query)
-        statement = connection.createStatement();
-
-        //The Result after executing the query
-        ResultSet resultSet = statement.executeQuery(query);
-
-        //Creates Output Strings
-        resultSet.next();
-        int id = resultSet.getInt("id");
-        double eventHours = resultSet.getDouble("eventHours");
-        String date = resultSet.getDate("eventDate").toString();
-        String output = String.format("Event ID: %s, Event Name: %s, Event Hours: %s, Date of Event: %s",
-                id, eventName, eventHours, date);
-        resultSet.close();
-        statement.close();
-        return output;
-    }
-
-    /**
-     * This allows a user to get the hours of a specific event
-     *
-     * @param firstName the student's first name
-     * @param lastName  the student's last name
-     * @param studentID The Student's Student ID Number
-     * @param eventName the name of the event
-     * @return a double containing the hours
-     * @throws Exception for SQL Errors
-     */
-    public static double selectEventHours(String firstName, String lastName, int studentID, String eventName) throws Exception {
-        //converts to the studentName format
-        String studentName = makeName(firstName, lastName, studentID);
-
-        //Uses getConnection to create a connection
-        connection = getConnection();
-
-        //SQL Query to find find data
-        String query = "select eventHours from " + studentName + " where eventName = '" + eventName + "'";
-
-        //Create the java Statement (Runs the Query)
-        statement = connection.createStatement();
-
-        //The Result after executing the query
-        resultSet = statement.executeQuery(query);
-        resultSet.next();
-
-        //Creates Output Strings
-        double output = resultSet.getDouble("eventHours");
-
-        resultSet.close();
-        connection.close();
-        statement.close();
-
-        return output;
-    }
-
-    /**
      * This updates a value in the Main Table
      *
      * @param firstName the student's first name
@@ -1314,39 +1237,6 @@ public class MySQLMethods {
             e.printStackTrace();
             System.out.println("Couldn't Delete Event");
         }
-    }
-
-    /**
-     * This method is used to change the name of a student to a more useful
-     * and easier to use format.
-     *
-     * @param nameIn the input name, which should only consist of first name and last name
-     * @return Name in the Format first_last
-     * @deprecated {@link #makeName(String, String, int)}
-     */
-    @Deprecated
-    public static String changeName(String nameIn) {
-        String name = nameIn.toLowerCase();
-        StringTokenizer st = new StringTokenizer(name);
-        try {
-            return st.nextToken() + "_" + st.nextToken();
-        } catch (Exception e) {
-            return name;
-        }
-    }
-
-    /**
-     * This turns a name into the format first_last for more uses in a database and to allow for more
-     * consistency.
-     *
-     * @param firstName the student's first name
-     * @param lastName  the student's last name
-     * @return the String containing the new name
-     * @deprecated {@link #makeName(String, String, int)}{@link #makeName(Student)}
-     */
-    @Deprecated
-    public static String changeName(String firstName, String lastName) {
-        return (firstName + "_" + lastName).toLowerCase();
     }
 
     /**
