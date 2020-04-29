@@ -464,7 +464,7 @@ public class Reports extends VerticalLayout {
         nextSection(dataBoard);
 
         //This next section is to help visualize the data
-        Chart chart = Charts.contributionTreemapChart(option);
+        Chart chart = Charts.contributionTreeMapChart(option);
         dataBoard.addRow(chart);
         if (inactiveStudentList.size() > 0) {
             Div inactiveStudentsHTML = makeBulletList("Inactive Students", inactiveStudentList);

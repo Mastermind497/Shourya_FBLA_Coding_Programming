@@ -12,13 +12,36 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A Class to help make making classes much easier
+ */
 public class Charts {
 
+    /**
+     * A String identifying the option range of "Week"
+     */
     public static final String WEEK_CHART = "Week";
+    /**
+     * A String identifying the option range of "Month"
+     */
     public static final String MONTH_CHART = "Month";
+    /**
+     * A String identifying the option range of "Year"
+     */
     public static final String YEAR_CHART = "Year";
+    /**
+     * A String identifying the option range of "All Time"
+     */
     public static final String ALL_TIME_CHART = "All Time";
 
+    /**
+     * Creates a solid gauge chart for the hours a student has compared to a certain category,
+     *
+     * @param current    The Current Number of Hours
+     * @param max        The Max Possible Number of Hours, or hours to achieve an award
+     * @param colorIndex The Color of the Chart
+     * @return A Solid Gauge Chart
+     */
     public static Chart solidGauge(double current, double max, int colorIndex) {
         Percent percent = new Percent(current, max);
         Chart chart = new Chart(ChartType.SOLIDGAUGE);
@@ -77,6 +100,14 @@ public class Charts {
         return chart;
     }
 
+    /**
+     * Generates a Line Graph so that, for long-term reports, hours can be tracked over time to analyze
+     * consistent growth
+     *
+     * @param title  The Chart Title
+     * @param events The List of Events the chart should encompass
+     * @return A Line Graph
+     */
     public static Chart monthLineGraph(String title, List<Event> events) {
         Collections.sort(events);
 
@@ -126,7 +157,14 @@ public class Charts {
         return chart;
     }
 
-    public static Chart contributionTreemapChart(List<StudentData> studentDataList, String chartType) {
+    /**
+     * Generates a TreeMap chart to help divide which students contributed the most in a certain date range
+     *
+     * @param studentDataList The List of Students to be included in the chart
+     * @param chartType       The type of chart, as in the date it covers
+     * @return A TreeMap Char
+     */
+    public static Chart contributionTreeMapChart(List<StudentData> studentDataList, String chartType) {
         Chart chart = new Chart(ChartType.TREEMAP);
 
         Configuration configuration = chart.getConfiguration();
@@ -158,10 +196,25 @@ public class Charts {
         return chart;
     }
 
-    public static Chart contributionTreemapChart(String chartType) {
-        return contributionTreemapChart(MySQLMethods.getStudentData(chartType), chartType);
+    /**
+     * Generates a TreeMap chart to help divide which students contributed the most in a certain date range
+     * <p>
+     * Automatically gets the Student Hour data based on the Chart Type Provided
+     *
+     * @param chartType The type of chart, as in the date it covers
+     * @return A TreeMap Char
+     */
+    public static Chart contributionTreeMapChart(String chartType) {
+        return contributionTreeMapChart(MySQLMethods.getStudentData(chartType), chartType);
     }
 
+    /**
+     * Generates Data from each of the students and places it in the respective categories int the TreeMap Chart
+     *
+     * @param studentDataList The List of Students and their hours in the range
+     * @param chartType       The range of time for the chart to determine how many hours are good vs bad
+     * @return Configured Data for the TreeMap Chart to use
+     */
     private static TreeSeries createTreeSeries(List<StudentData> studentDataList, String chartType) {
         TreeSeries series = new TreeSeries();
 
@@ -205,6 +258,12 @@ public class Charts {
         return series;
     }
 
+    /**
+     * Generates a bar graph with student's Community Service Category Goals
+     *
+     * @param studentDataList The List of Students
+     * @return A Bar Graph
+     */
     public static Chart barGraphCommunityServiceCategoryGoals(List<StudentData> studentDataList) {
         Chart chart = new Chart();
 
@@ -220,18 +279,15 @@ public class Charts {
         x.setCategories("CSA Community (50 Hours)", "CSA Service (200 Hours)", "CSA Achievement (500 Hours)");
         configuration.addxAxis(x);
 
-        YAxis y = new YAxis();
-        y.setMin(0);
-        y.setTitle("Number of Students");
-        configuration.addyAxis(y);
-
-        Tooltip tooltip = new Tooltip();
-        tooltip.setShared(true);
-        configuration.setTooltip(tooltip);
-
-        return chart;
+        return completeChart(chart, configuration);
     }
 
+    /**
+     * Adds data to the Goals Bar Graph
+     *
+     * @param configuration   The Configuration of the Bar Graph
+     * @param studentDataList The List of Students
+     */
     private static void addGoalsBar(Configuration configuration, List<StudentData> studentDataList) {
         List<Number> activeStudents = Arrays.asList(0, 0, 0);
         List<Number> inactiveStudents = Arrays.asList(0, 0, 0);
@@ -249,6 +305,14 @@ public class Charts {
         configuration.addSeries(new ListSeries("Total Students", totalStudents));
     }
 
+    /**
+     * Generates a Bar Graph for the number of Community Service Award's achieved by students.
+     * <p>
+     * In this graph, if a student achieved a higher award, they are ignored in the lower award.
+     *
+     * @param studentDataList The List of Students
+     * @return A Bar Graph
+     */
     public static Chart barGraphCommunityServiceCategoryAchieved(List<StudentData> studentDataList) {
         Chart chart = new Chart();
 
@@ -263,19 +327,15 @@ public class Charts {
         x.setCrosshair(new Crosshair());
         x.setCategories("None", "CSA Community (50 Hours)", "CSA Service (200 Hours)", "CSA Achievement (500 Hours)");
         configuration.addxAxis(x);
-
-        YAxis y = new YAxis();
-        y.setMin(0);
-        y.setTitle("Number of Students");
-        configuration.addyAxis(y);
-
-        Tooltip tooltip = new Tooltip();
-        tooltip.setShared(true);
-        configuration.setTooltip(tooltip);
-
-        return chart;
+        return completeChart(chart, configuration);
     }
 
+    /**
+     * Generates data division for the Achievement Bar Graph
+     *
+     * @param configuration   The Bar Graphs configuration type
+     * @param studentDataList The Student Data
+     */
     private static void addCurrentBar(Configuration configuration, List<StudentData> studentDataList) {
         List<Number> activeStudents = Arrays.asList(0, 0, 0, 0);
         List<Number> inactiveStudents = Arrays.asList(0, 0, 0, 0);
@@ -293,6 +353,33 @@ public class Charts {
         configuration.addSeries(new ListSeries("Total Students", totalStudents));
     }
 
+    /**
+     * This completes the y axis and tooltip for the Bar Graphs
+     *
+     * @param chart         The Chart
+     * @param configuration The Chart's configuration
+     * @return The Final Chart with Configuration
+     */
+    private static Chart completeChart(Chart chart, Configuration configuration) {
+        YAxis y = new YAxis();
+        y.setMin(0);
+        y.setTitle("Number of Students");
+        configuration.addyAxis(y);
+
+        Tooltip tooltip = new Tooltip();
+        tooltip.setShared(true);
+        configuration.setTooltip(tooltip);
+
+        return chart;
+    }
+
+    /**
+     * A Pie Chart to show the number of student's who achieved their goals vs the number of those who didn't
+     *
+     * @param list  All of the students
+     * @param title The title of the chart
+     * @return The Pie Chart of Divisions
+     */
     public static Chart achievedGoalPieChart(List<StudentData> list, String title) {
         Chart chart = new Chart(ChartType.PIE);
 
@@ -325,6 +412,13 @@ public class Charts {
         return chart;
     }
 
+    /**
+     * Shows the different goals each student has in a Pie Chart format
+     *
+     * @param list  The list of students
+     * @param title The title of the chart
+     * @return The Pie Chart
+     */
     public static Chart goalDivisionChart(List<StudentData> list, String title) {
         Chart chart = new Chart(ChartType.PIE);
 
@@ -348,6 +442,12 @@ public class Charts {
         return chart;
     }
 
+    /**
+     * Adds Data to the Goal Pie Chart
+     *
+     * @param studentDataList The List of Students
+     * @return The Data for the Pie Chart
+     */
     private static DataSeries goalsPie(List<StudentData> studentDataList) {
         int community = 0, service = 0, achievement = 0;
 
@@ -366,6 +466,13 @@ public class Charts {
         return series;
     }
 
+    /**
+     * A Pie Chart to show the division between the currently achieved goals of students
+     *
+     * @param list  The Students
+     * @param title The Title of the Chart
+     * @return The Pie Chart
+     */
     public static Chart currentDivisionChart(List<StudentData> list, String title) {
         Chart chart = new Chart(ChartType.PIE);
 
@@ -389,6 +496,12 @@ public class Charts {
         return chart;
     }
 
+    /**
+     * Formats the data from the student data list to work in a Pie Chart
+     *
+     * @param studentDataList The Student Data List
+     * @return A DataSeries for the Pie Chart
+     */
     private static DataSeries pieCurrent(List<StudentData> studentDataList) {
         int[] csaCategory = new int[4];
 
@@ -406,6 +519,12 @@ public class Charts {
         return series;
     }
 
+    /**
+     * A simple rounding method to round to the nearest integer.
+     *
+     * @param toRound The Double that needs to be rounded
+     * @return The Rounded Integer
+     */
     private static int round(double toRound) {
         toRound += 0.5;
         return (int) toRound;

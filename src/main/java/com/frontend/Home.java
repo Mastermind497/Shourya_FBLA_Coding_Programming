@@ -21,16 +21,18 @@ import com.vaadin.flow.router.Route;
 
 /**
  * Home is the home view for the App.
+ *
  * This view has a brief introduction to the project and allows navigation to every
  * other part of the app.
  *
  * @author Shourya Bansal
  */
 @Route(value = "", layout = MainView.class)
-
 public class Home extends VerticalLayout {
 
-    //Creates the Home Screen
+    /**
+     * Creates the Home Screen
+     */
     public Home() {
         H1 header = new H1("Welcome to FBLA Genie");
         HorizontalLayout headerLayout = new HorizontalLayout(header);
