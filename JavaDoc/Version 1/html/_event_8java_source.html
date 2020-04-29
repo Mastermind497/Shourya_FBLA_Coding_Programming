@@ -70,17 +70,36 @@ $(function() {
 <div class="title">Event.java</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>com.Backend;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> java.text.ParseException;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> java.text.SimpleDateFormat;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span> java.time.LocalDate;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span> java.util.Comparator;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">import</span> <span class="keyword">static</span> com.Backend.MySQLMethods.addStudentHours;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="classcom_1_1_backend_1_1_event.html">   10</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1_backend_1_1_event.html">Event</a> <span class="keyword">extends</span> <a class="code" href="classcom_1_1_backend_1_1_student.html">Student</a> implements Comparable&lt;Event&gt;, Comparator&lt;Event&gt; {</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">private</span> String eventName;</div>
+<div class="fragment">
+ <div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>com.backend;
+ </div>
+ <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
+ <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span>
+  java.text.ParseException;
+ </div>
+ <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span>
+  java.text.SimpleDateFormat;
+ </div>
+ <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span>
+  java.time.LocalDate;
+ </div>
+ <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span>
+  java.util.Comparator;
+ </div>
+ <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+ <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">import</span> <span
+         class="keyword">static</span> com.backend.MySQLMethods.addStudentHours;
+ </div>
+ <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+ <div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="classcom_1_1_backend_1_1_event.html">   10</a></span>&#160;<span
+         class="keyword">public</span> <span class="keyword">class </span><a class="code"
+                                                                             href="classcom_1_1_backend_1_1_event.html">Event</a>
+  <span class="keyword">extends</span> <a class="code" href="classcom_1_1_backend_1_1_student.html">Student</a>
+  implements Comparable&lt;Event&gt;, Comparator&lt;Event&gt; {
+ </div>
+ <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; <span class="keyword">private</span>
+  String eventName;
+ </div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">double</span> hours;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">private</span> <a class="code" href="classcom_1_1_backend_1_1_date.html">Date</a> date;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
@@ -199,23 +218,43 @@ $(function() {
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    }</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    @Override</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">int</span> compareTo(<a class="code" href="classcom_1_1_backend_1_1_event.html">Event</a> o) {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="keywordflow">return</span> this.date.compareTo(o.getDate());</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    }</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    @Override</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">int</span> compare(<a class="code" href="classcom_1_1_backend_1_1_event.html">Event</a> o1, <a class="code" href="classcom_1_1_backend_1_1_event.html">Event</a> o2) {</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="keywordflow">return</span> o1.getDate().compareTo(o2.getDate());</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    }</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;}</div>
+ <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; <span class="keyword">public</span>
+  <span class="keywordtype">int</span> compareTo(<a class="code" href="classcom_1_1_backend_1_1_event.html">Event</a> o)
+  {
+ </div>
+ <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; <span class="keywordflow">return</span>
+  this.date.compareTo(o.getDate());
+ </div>
+ <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; }</div>
+ <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+ <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; @Override</div>
+ <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; <span class="keyword">public</span>
+  <span class="keywordtype">int</span> compare(<a class="code" href="classcom_1_1_backend_1_1_event.html">Event</a> o1,
+  <a class="code" href="classcom_1_1_backend_1_1_event.html">Event</a> o2) {
+ </div>
+ <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; <span class="keywordflow">return</span>
+  o1.getDate().compareTo(o2.getDate());
+ </div>
+ <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; }</div>
+ <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasscom_1_1_backend_1_1_event_html"><div class="ttname"><a href="classcom_1_1_backend_1_1_event.html">com.Backend.Event</a></div><div class="ttdef"><b>Definition:</b> <a href="_event_8java_source.html#l00010">Event.java:10</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_student_html"><div class="ttname"><a href="classcom_1_1_backend_1_1_student.html">com.Backend.Student</a></div><div class="ttdef"><b>Definition:</b> <a href="_student_8java_source.html#l00007">Student.java:7</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_date_html"><div class="ttname"><a href="classcom_1_1_backend_1_1_date.html">com.Backend.Date</a></div><div class="ttdef"><b>Definition:</b> <a href="_date_8java_source.html#l00011">Date.java:11</a></div></div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_event_html">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_event.html">com.backend.Event</a></div>
+ <div class="ttdef"><b>Definition:</b> <a href="_event_8java_source.html#l00010">Event.java:10</a></div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_student_html">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_student.html">com.backend.Student</a></div>
+ <div class="ttdef"><b>Definition:</b> <a href="_student_8java_source.html#l00007">Student.java:7</a></div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_date_html">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_date.html">com.backend.Date</a></div>
+ <div class="ttdef"><b>Definition:</b> <a href="_date_8java_source.html#l00011">Date.java:11</a></div>
+</div>
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
+<hr class="footer"/>
+<address class="footer"><small>
+ Generated by &#160;<a href="http://www.doxygen.org/index.html">
+ <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
 </body>

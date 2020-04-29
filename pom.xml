@@ -18,7 +18,7 @@
 
         <drivers.dir>${project.basedir}/drivers</drivers.dir>
         <drivers.downloader.phase>pre-integration-test</drivers.downloader.phase>
-        <start-class>com.Frontend.Application</start-class>
+        <start-class>com.frontend.Application</start-class>
     </properties>
 
     <parent>

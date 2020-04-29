@@ -70,17 +70,36 @@ $(function() {
 <div class="title">ConfigureUIServiceInitListener.java</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>com.Frontend.Security;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> com.Frontend.Login.LoginView;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> com.vaadin.flow.component.UI;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span> com.vaadin.flow.router.BeforeEnterEvent;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span> com.vaadin.flow.server.ServiceInitEvent;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">import</span> com.vaadin.flow.server.VaadinServiceInitListener;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">import</span> org.springframework.stereotype.Component;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;@Component</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classcom_1_1_frontend_1_1_security_1_1_configure_u_i_service_init_listener.html">   11</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1_frontend_1_1_security_1_1_configure_u_i_service_init_listener.html">ConfigureUIServiceInitListener</a> <span class="keyword">implements</span> VaadinServiceInitListener {</div>
+<div class="fragment">
+ <div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>com.frontend.Security;
+ </div>
+ <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
+ <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span>
+  com.frontend.Login.LoginView;
+ </div>
+ <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span>
+  com.vaadin.flow.component.UI;
+ </div>
+ <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span>
+  com.vaadin.flow.router.BeforeEnterEvent;
+ </div>
+ <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span>
+  com.vaadin.flow.server.ServiceInitEvent;
+ </div>
+ <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">import</span>
+  com.vaadin.flow.server.VaadinServiceInitListener;
+ </div>
+ <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">import</span>
+  org.springframework.stereotype.Component;
+ </div>
+ <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+ <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;@Component</div>
+ <div class="line"><a name="l00011"></a><span class="lineno"><a class="line"
+                                                                href="classcom_1_1_frontend_1_1_security_1_1_configure_u_i_service_init_listener.html">   11</a></span>&#160;<span
+         class="keyword">public</span> <span class="keyword">class </span><a class="code"
+                                                                             href="classcom_1_1_frontend_1_1_security_1_1_configure_u_i_service_init_listener.html">ConfigureUIServiceInitListener</a>
+  <span class="keyword">implements</span> VaadinServiceInitListener {
+ </div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    @Override</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> serviceInit(ServiceInitEvent event) {</div>
@@ -88,23 +107,46 @@ $(function() {
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keyword">final</span> UI ui = uiEvent.getUI();</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            ui.addBeforeEnterListener(this::authenticateNavigation);</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        });</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    }</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> authenticateNavigation(BeforeEnterEvent event) {</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classcom_1_1_frontend_1_1_login_1_1_login_view.html">LoginView</a>.class.equals(event.getNavigationTarget())</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                &amp;&amp; !<a class="code" href="classcom_1_1_frontend_1_1_security_1_1_security_utils.html">SecurityUtils</a>.isUserLoggedIn()) { <span class="comment">//</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <span class="keyword">event</span>.rerouteTo(<a class="code" href="classcom_1_1_frontend_1_1_login_1_1_login_view.html">LoginView</a>.class);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        }</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    }</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
+ <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; }</div>
+ <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+ <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; <span class="keyword">private</span>
+  <span class="keywordtype">void</span> authenticateNavigation(BeforeEnterEvent event) {
+ </div>
+ <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; <span class="keywordflow">if</span> (!<a
+         class="code" href="classcom_1_1_frontend_1_1_login_1_1_login_view.html">LoginView</a>.class.equals(event.getNavigationTarget())
+ </div>
+ <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; &amp;&amp; !<a class="code"
+                                                                                               href="classcom_1_1_frontend_1_1_security_1_1_security_utils.html">SecurityUtils</a>.isUserLoggedIn())
+  { <span class="comment">//</span></div>
+ <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; <span class="keyword">event</span>.rerouteTo(<a
+         class="code" href="classcom_1_1_frontend_1_1_login_1_1_login_view.html">LoginView</a>.class);
+ </div>
+ <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; }</div>
+ <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; }</div>
+ <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasscom_1_1_frontend_1_1_security_1_1_configure_u_i_service_init_listener_html"><div class="ttname"><a href="classcom_1_1_frontend_1_1_security_1_1_configure_u_i_service_init_listener.html">com.Frontend.Security.ConfigureUIServiceInitListener</a></div><div class="ttdef"><b>Definition:</b> <a href="_configure_u_i_service_init_listener_8java_source.html#l00011">ConfigureUIServiceInitListener.java:11</a></div></div>
-<div class="ttc" id="aclasscom_1_1_frontend_1_1_login_1_1_login_view_html"><div class="ttname"><a href="classcom_1_1_frontend_1_1_login_1_1_login_view.html">com.Frontend.Login.LoginView</a></div><div class="ttdef"><b>Definition:</b> <a href="_login_view_8java_source.html#l00016">LoginView.java:16</a></div></div>
-<div class="ttc" id="aclasscom_1_1_frontend_1_1_security_1_1_security_utils_html"><div class="ttname"><a href="classcom_1_1_frontend_1_1_security_1_1_security_utils.html">com.Frontend.Security.SecurityUtils</a></div><div class="ttdef"><b>Definition:</b> <a href="_security_utils_8java_source.html#l00012">SecurityUtils.java:12</a></div></div>
+<div class="ttc" id="aclasscom_1_1_frontend_1_1_security_1_1_configure_u_i_service_init_listener_html">
+ <div class="ttname"><a href="classcom_1_1_frontend_1_1_security_1_1_configure_u_i_service_init_listener.html">com.frontend.Security.ConfigureUIServiceInitListener</a>
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_configure_u_i_service_init_listener_8java_source.html#l00011">ConfigureUIServiceInitListener.java:11</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_frontend_1_1_login_1_1_login_view_html">
+ <div class="ttname"><a href="classcom_1_1_frontend_1_1_login_1_1_login_view.html">com.frontend.Login.LoginView</a>
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_login_view_8java_source.html#l00016">LoginView.java:16</a></div>
+</div>
+<div class="ttc" id="aclasscom_1_1_frontend_1_1_security_1_1_security_utils_html">
+ <div class="ttname"><a href="classcom_1_1_frontend_1_1_security_1_1_security_utils.html">com.frontend.Security.SecurityUtils</a>
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_security_utils_8java_source.html#l00012">SecurityUtils.java:12</a>
+ </div>
+</div>
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
+<hr class="footer"/>
+<address class="footer"><small>
+ Generated by &#160;<a href="http://www.doxygen.org/index.html">
+ <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
 </body>

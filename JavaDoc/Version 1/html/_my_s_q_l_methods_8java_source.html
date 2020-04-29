@@ -70,17 +70,37 @@ $(function() {
 <div class="title">MySQLMethods.java</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>com.Backend;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> java.sql.*;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> java.util.ArrayList;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span> java.util.Calendar;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span> java.util.StringTokenizer;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classcom_1_1_backend_1_1_my_s_q_l_methods.html">   14</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1_backend_1_1_my_s_q_l_methods.html">MySQLMethods</a> {</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="comment">//Login Credentials ot create/edit on MySQL</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String username = <span class="stringliteral">&quot;java&quot;</span>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String unlocker = <span class="stringliteral">&quot;password&quot;</span>;</div>
+<div class="fragment">
+ <div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>com.backend;
+ </div>
+ <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
+ <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span>
+  java.sql.*;
+ </div>
+ <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span>
+  java.util.ArrayList;
+ </div>
+ <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span>
+  java.util.Calendar;
+ </div>
+ <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span>
+  java.util.StringTokenizer;
+ </div>
+ <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+ <div class="line"><a name="l00014"></a><span class="lineno"><a class="line"
+                                                                href="classcom_1_1_backend_1_1_my_s_q_l_methods.html">   14</a></span>&#160;<span
+         class="keyword">public</span> <span class="keyword">class </span><a class="code"
+                                                                             href="classcom_1_1_backend_1_1_my_s_q_l_methods.html">MySQLMethods</a>
+  {
+ </div>
+ <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; <span class="comment">//Login Credentials ot create/edit on MySQL</span>
+ </div>
+ <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; <span class="keyword">private</span>
+  <span class="keyword">static</span> <span class="keyword">final</span> String username = <span class="stringliteral">&quot;java&quot;</span>;
+ </div>
+ <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; <span class="keyword">private</span>
+  <span class="keyword">static</span> <span class="keyword">final</span> String unlocker = <span class="stringliteral">&quot;password&quot;</span>;
+ </div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="comment">//The Driver</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String Driver = <span class="stringliteral">&quot;com.mysql.cj.jdbc.Driver&quot;</span>;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String tableName = <span class="stringliteral">&quot;tracker&quot;</span>;</div>
@@ -1130,57 +1150,301 @@ $(function() {
 <div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;    }</div>
 <div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160; </div>
 <div class="line"><a name="l01358"></a><span class="lineno"><a class="line" href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#aabb08df7c535245406ff04448228e019"> 1358</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">double</span> <a class="code" href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#aabb08df7c535245406ff04448228e019">round</a>(<span class="keywordtype">double</span> input) {</div>
-<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160;        <span class="keywordtype">int</span> stageOne = (int) (Math.round(input * 100));</div>
-<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;        <span class="keywordflow">return</span> (<span class="keywordtype">double</span>) (stageOne) / 100;</div>
-<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;    }</div>
-<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160; </div>
-<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> setUp() {</div>
-<div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160;        <a class="code" href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a205c4c5bfa2915473f531da52cf289de">createDatabase</a>();</div>
-<div class="line"><a name="l01365"></a><span class="lineno"> 1365</span>&#160;        <a class="code" href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a798fdb856edcecfecb44e6647ed9dca2">createTable</a>();</div>
-<div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160;    }</div>
-<div class="line"><a name="l01367"></a><span class="lineno"> 1367</span>&#160;}</div>
+ <div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160; <span class="keywordtype">int</span>
+  stageOne = (int) (Math.round(input * 100));
+ </div>
+ <div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160; <span class="keywordflow">return</span>
+  (<span class="keywordtype">double</span>) (stageOne) / 100;
+ </div>
+ <div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160; }</div>
+ <div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;</div>
+ <div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160; <span class="keyword">public</span>
+  <span class="keyword">static</span> <span class="keywordtype">void</span> setUp() {
+ </div>
+ <div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160; <a class="code"
+                                                                                   href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a205c4c5bfa2915473f531da52cf289de">createDatabase</a>();
+ </div>
+ <div class="line"><a name="l01365"></a><span class="lineno"> 1365</span>&#160; <a class="code"
+                                                                                   href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a798fdb856edcecfecb44e6647ed9dca2">createTable</a>();
+ </div>
+ <div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160; }</div>
+ <div class="line"><a name="l01367"></a><span class="lineno"> 1367</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a5c6c2e3a8ba018317ea380854e6d7172"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a5c6c2e3a8ba018317ea380854e6d7172">com.Backend.MySQLMethods.addStudentHours</a></div><div class="ttdeci">static void addStudentHours(String firstName, String lastName, int studentID, String eventName, double hours, int year, int month, int day)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00236">MySQLMethods.java:236</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a205c4c5bfa2915473f531da52cf289de"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a205c4c5bfa2915473f531da52cf289de">com.Backend.MySQLMethods.createDatabase</a></div><div class="ttdeci">static void createDatabase()</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00042">MySQLMethods.java:42</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a3c80d406f43ca47926dabeba719a5ffc"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a3c80d406f43ca47926dabeba719a5ffc">com.Backend.MySQLMethods.selectStudentEvent</a></div><div class="ttdeci">static String selectStudentEvent(String firstName, String lastName, int studentID, String eventName)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01023">MySQLMethods.java:1023</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_student_data_html"><div class="ttname"><a href="classcom_1_1_backend_1_1_student_data.html">com.Backend.StudentData</a></div><div class="ttdef"><b>Definition:</b> <a href="_student_data_8java_source.html#l00011">StudentData.java:11</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_abf4c953526e8f2af3ebb4b09fd74bc65"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#abf4c953526e8f2af3ebb4b09fd74bc65">com.Backend.MySQLMethods.selectTrackerString</a></div><div class="ttdeci">static String selectTrackerString(String firstName, String lastName, int studentID, String data)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00482">MySQLMethods.java:482</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a233e5fe34d8afeea1af8a6954956c604"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a233e5fe34d8afeea1af8a6954956c604">com.Backend.MySQLMethods.selectTrackerShort</a></div><div class="ttdeci">static short selectTrackerShort(String firstName, String lastName, int studentID, String data)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00566">MySQLMethods.java:566</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a4fdf2268b67ba192a02545d727916bac"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a4fdf2268b67ba192a02545d727916bac">com.Backend.MySQLMethods.createStudentTable</a></div><div class="ttdeci">static void createStudentTable(String firstName, String lastName, int studentID)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00140">MySQLMethods.java:140</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_ae4c8863305082e3a864edb04ed1f587c"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#ae4c8863305082e3a864edb04ed1f587c">com.Backend.MySQLMethods.selectEventHours</a></div><div class="ttdeci">static double selectEventHours(String firstName, String lastName, int studentID, String eventName)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01061">MySQLMethods.java:1061</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a597fbd83b86a4b05b21e4969ed199638"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a597fbd83b86a4b05b21e4969ed199638">com.Backend.MySQLMethods.selectTrackerAsStudent</a></div><div class="ttdeci">static StudentData selectTrackerAsStudent(Student student)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00766">MySQLMethods.java:766</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_aabb08df7c535245406ff04448228e019"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#aabb08df7c535245406ff04448228e019">com.Backend.MySQLMethods.round</a></div><div class="ttdeci">static double round(double input)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01358">MySQLMethods.java:1358</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a76d92aeb0764cf82e0f467556591f219"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a76d92aeb0764cf82e0f467556591f219">com.Backend.MySQLMethods.selectTrackerBoolean</a></div><div class="ttdeci">static boolean selectTrackerBoolean(String firstName, String lastName, int studentID, String data)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00603">MySQLMethods.java:603</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_aca1443e8c99a90f75302c5afe2f6dfae"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#aca1443e8c99a90f75302c5afe2f6dfae">com.Backend.MySQLMethods.selectStudentEvents</a></div><div class="ttdeci">static String[] selectStudentEvents(String firstName, String lastName, int studentID)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00925">MySQLMethods.java:925</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_aa7a005601454fb2af8e6193bcd88d678"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#aa7a005601454fb2af8e6193bcd88d678">com.Backend.MySQLMethods.createStudent</a></div><div class="ttdeci">static void createStudent(String firstName, String lastName, int studentID, short grade, String communityServiceCategory, String email, short yearsDone)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00181">MySQLMethods.java:181</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a5b381bcc3760ecc7a236955ad918725d"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a5b381bcc3760ecc7a236955ad918725d">com.Backend.MySQLMethods.makeName</a></div><div class="ttdeci">static String makeName(String firstName, String lastName, int studentID)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01274">MySQLMethods.java:1274</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_event_html"><div class="ttname"><a href="classcom_1_1_backend_1_1_event.html">com.Backend.Event</a></div><div class="ttdef"><b>Definition:</b> <a href="_event_8java_source.html#l00010">Event.java:10</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_student_html"><div class="ttname"><a href="classcom_1_1_backend_1_1_student.html">com.Backend.Student</a></div><div class="ttdef"><b>Definition:</b> <a href="_student_8java_source.html#l00007">Student.java:7</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a1802bb8bad09261e7d43c501a7434750"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a1802bb8bad09261e7d43c501a7434750">com.Backend.MySQLMethods.updateEvent</a></div><div class="ttdeci">static void updateEvent(String firstName, String lastName, int studentID, String dataType, String newData, String eventName)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01171">MySQLMethods.java:1171</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_ab00e444fbb8c4df58038f4dd6176ee85"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#ab00e444fbb8c4df58038f4dd6176ee85">com.Backend.MySQLMethods.selectTracker</a></div><div class="ttdeci">static String selectTracker(String firstName, String lastName, int studentID)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00676">MySQLMethods.java:676</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a8ead676b49214545a242e24cf151bc30"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a8ead676b49214545a242e24cf151bc30">com.Backend.MySQLMethods.selectPass</a></div><div class="ttdeci">static String selectPass(String username)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00358">MySQLMethods.java:358</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_acfbbf4ab32dd003e590be4a0672c1b4b"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#acfbbf4ab32dd003e590be4a0672c1b4b">com.Backend.MySQLMethods.selectTrackerDate</a></div><div class="ttdeci">static String selectTrackerDate(String firstName, String lastName, int studentID, String data)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00640">MySQLMethods.java:640</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a60dfa8d499caaf1d02f83164cd8ef122"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a60dfa8d499caaf1d02f83164cd8ef122">com.Backend.MySQLMethods.updateTracker</a></div><div class="ttdeci">static void updateTracker(String firstName, String lastName, int studentID, String dataType, String newData)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01098">MySQLMethods.java:1098</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a900c503779292368598d37261b3f8f61"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a900c503779292368598d37261b3f8f61">com.Backend.MySQLMethods.addStudentHours</a></div><div class="ttdeci">static void addStudentHours(Student student, String eventName, double hours, int year, int month, int day)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00284">MySQLMethods.java:284</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a8fd02056929c18505992872c523fb3c2"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a8fd02056929c18505992872c523fb3c2">com.Backend.MySQLMethods.numberOfRows</a></div><div class="ttdeci">static int numberOfRows(String tableName)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01309">MySQLMethods.java:1309</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a1c57a43b8c902b87fd6a614b2d817e24"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a1c57a43b8c902b87fd6a614b2d817e24">com.Backend.MySQLMethods.changeName</a></div><div class="ttdeci">static String changeName(String nameIn)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01242">MySQLMethods.java:1242</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a97b85eaf30b3405d526d38c18c888642"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a97b85eaf30b3405d526d38c18c888642">com.Backend.MySQLMethods.addUserPass</a></div><div class="ttdeci">static void addUserPass(String username, String hashedPassword)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00331">MySQLMethods.java:331</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_ac166c1031b7a0e424ce0546b829c7bc9"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#ac166c1031b7a0e424ce0546b829c7bc9">com.Backend.MySQLMethods.selectTrackerInt</a></div><div class="ttdeci">static int selectTrackerInt(String firstName, String lastName, int studentID, String data)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00446">MySQLMethods.java:446</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a7f78c07dc434e4023a47d9dab7492f83"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a7f78c07dc434e4023a47d9dab7492f83">com.Backend.MySQLMethods.changeName</a></div><div class="ttdeci">static String changeName(String firstName, String lastName)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01262">MySQLMethods.java:1262</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_aed009d0b504622a0256d61de4a4f6129"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#aed009d0b504622a0256d61de4a4f6129">com.Backend.MySQLMethods.selectTrackerDouble</a></div><div class="ttdeci">static double selectTrackerDouble(String firstName, String lastName, int studentID, String data)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00529">MySQLMethods.java:529</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a19734fb3e32ab26231beceb79cdea359"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a19734fb3e32ab26231beceb79cdea359">com.Backend.MySQLMethods.selectTrackerAsStudent</a></div><div class="ttdeci">static StudentData selectTrackerAsStudent(String firstName, String lastName, int studentID)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00720">MySQLMethods.java:720</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a1f0848f8d6fd6a461defcabc2bec2ba5"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a1f0848f8d6fd6a461defcabc2bec2ba5">com.Backend.MySQLMethods.selectFullTracker</a></div><div class="ttdeci">static ArrayList&lt; StudentData &gt; selectFullTracker()</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00811">MySQLMethods.java:811</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a6640581d6284559fde2134638c2ee3cd"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a6640581d6284559fde2134638c2ee3cd">com.Backend.MySQLMethods.makeName</a></div><div class="ttdeci">static String makeName(Student student)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01284">MySQLMethods.java:1284</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html">com.Backend.MySQLMethods</a></div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00014">MySQLMethods.java:14</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a798fdb856edcecfecb44e6647ed9dca2"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a798fdb856edcecfecb44e6647ed9dca2">com.Backend.MySQLMethods.createTable</a></div><div class="ttdeci">static void createTable()</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00068">MySQLMethods.java:68</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a5c75432230abba1728dac787d1d74635"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a5c75432230abba1728dac787d1d74635">com.Backend.MySQLMethods.selectStudentEventsAsEvent</a></div><div class="ttdeci">static ArrayList&lt; Event &gt; selectStudentEventsAsEvent(Student student)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01009">MySQLMethods.java:1009</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a420f3b13b4cfbdbc37b0dfd05c80e040"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a420f3b13b4cfbdbc37b0dfd05c80e040">com.Backend.MySQLMethods.selectStudentEventsAsEvent</a></div><div class="ttdeci">static ArrayList&lt; Event &gt; selectStudentEventsAsEvent(String firstName, String lastName, int studentID)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00969">MySQLMethods.java:969</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a614142bb55a4fcdd2811d70b3de6c16b"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a614142bb55a4fcdd2811d70b3de6c16b">com.Backend.MySQLMethods.selectUsers</a></div><div class="ttdeci">static ArrayList&lt; String &gt; selectUsers()</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00399">MySQLMethods.java:399</a></div></div>
-<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a8a6876f5d8c35ed9a4aeed2d26cfe37c"><div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a8a6876f5d8c35ed9a4aeed2d26cfe37c">com.Backend.MySQLMethods.updateToCurrentDate</a></div><div class="ttdeci">static void updateToCurrentDate(String firstName, String lastName, int studentID)</div><div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01341">MySQLMethods.java:1341</a></div></div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a5c6c2e3a8ba018317ea380854e6d7172">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a5c6c2e3a8ba018317ea380854e6d7172">com.backend.MySQLMethods.addStudentHours</a>
+ </div>
+ <div class="ttdeci">static void addStudentHours(String firstName, String lastName, int studentID, String eventName,
+  double hours, int year, int month, int day)
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00236">MySQLMethods.java:236</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a205c4c5bfa2915473f531da52cf289de">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a205c4c5bfa2915473f531da52cf289de">com.backend.MySQLMethods.createDatabase</a>
+ </div>
+ <div class="ttdeci">static void createDatabase()</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00042">MySQLMethods.java:42</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a3c80d406f43ca47926dabeba719a5ffc">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a3c80d406f43ca47926dabeba719a5ffc">com.backend.MySQLMethods.selectStudentEvent</a>
+ </div>
+ <div class="ttdeci">static String selectStudentEvent(String firstName, String lastName, int studentID, String
+  eventName)
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01023">MySQLMethods.java:1023</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_student_data_html">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_student_data.html">com.backend.StudentData</a></div>
+ <div class="ttdef"><b>Definition:</b> <a href="_student_data_8java_source.html#l00011">StudentData.java:11</a></div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_abf4c953526e8f2af3ebb4b09fd74bc65">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#abf4c953526e8f2af3ebb4b09fd74bc65">com.backend.MySQLMethods.selectTrackerString</a>
+ </div>
+ <div class="ttdeci">static String selectTrackerString(String firstName, String lastName, int studentID, String data)
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00482">MySQLMethods.java:482</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a233e5fe34d8afeea1af8a6954956c604">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a233e5fe34d8afeea1af8a6954956c604">com.backend.MySQLMethods.selectTrackerShort</a>
+ </div>
+ <div class="ttdeci">static short selectTrackerShort(String firstName, String lastName, int studentID, String data)
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00566">MySQLMethods.java:566</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a4fdf2268b67ba192a02545d727916bac">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a4fdf2268b67ba192a02545d727916bac">com.backend.MySQLMethods.createStudentTable</a>
+ </div>
+ <div class="ttdeci">static void createStudentTable(String firstName, String lastName, int studentID)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00140">MySQLMethods.java:140</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_ae4c8863305082e3a864edb04ed1f587c">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#ae4c8863305082e3a864edb04ed1f587c">com.backend.MySQLMethods.selectEventHours</a>
+ </div>
+ <div class="ttdeci">static double selectEventHours(String firstName, String lastName, int studentID, String
+  eventName)
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01061">MySQLMethods.java:1061</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a597fbd83b86a4b05b21e4969ed199638">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a597fbd83b86a4b05b21e4969ed199638">com.backend.MySQLMethods.selectTrackerAsStudent</a>
+ </div>
+ <div class="ttdeci">static StudentData selectTrackerAsStudent(Student student)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00766">MySQLMethods.java:766</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_aabb08df7c535245406ff04448228e019">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#aabb08df7c535245406ff04448228e019">com.backend.MySQLMethods.round</a>
+ </div>
+ <div class="ttdeci">static double round(double input)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01358">MySQLMethods.java:1358</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a76d92aeb0764cf82e0f467556591f219">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a76d92aeb0764cf82e0f467556591f219">com.backend.MySQLMethods.selectTrackerBoolean</a>
+ </div>
+ <div class="ttdeci">static boolean selectTrackerBoolean(String firstName, String lastName, int studentID, String
+  data)
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00603">MySQLMethods.java:603</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_aca1443e8c99a90f75302c5afe2f6dfae">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#aca1443e8c99a90f75302c5afe2f6dfae">com.backend.MySQLMethods.selectStudentEvents</a>
+ </div>
+ <div class="ttdeci">static String[] selectStudentEvents(String firstName, String lastName, int studentID)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00925">MySQLMethods.java:925</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_aa7a005601454fb2af8e6193bcd88d678">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#aa7a005601454fb2af8e6193bcd88d678">com.backend.MySQLMethods.createStudent</a>
+ </div>
+ <div class="ttdeci">static void createStudent(String firstName, String lastName, int studentID, short grade, String
+  communityServiceCategory, String email, short yearsDone)
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00181">MySQLMethods.java:181</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a5b381bcc3760ecc7a236955ad918725d">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a5b381bcc3760ecc7a236955ad918725d">com.backend.MySQLMethods.makeName</a>
+ </div>
+ <div class="ttdeci">static String makeName(String firstName, String lastName, int studentID)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01274">MySQLMethods.java:1274</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_event_html">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_event.html">com.backend.Event</a></div>
+ <div class="ttdef"><b>Definition:</b> <a href="_event_8java_source.html#l00010">Event.java:10</a></div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_student_html">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_student.html">com.backend.Student</a></div>
+ <div class="ttdef"><b>Definition:</b> <a href="_student_8java_source.html#l00007">Student.java:7</a></div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a1802bb8bad09261e7d43c501a7434750">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a1802bb8bad09261e7d43c501a7434750">com.backend.MySQLMethods.updateEvent</a>
+ </div>
+ <div class="ttdeci">static void updateEvent(String firstName, String lastName, int studentID, String dataType, String
+  newData, String eventName)
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01171">MySQLMethods.java:1171</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_ab00e444fbb8c4df58038f4dd6176ee85">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#ab00e444fbb8c4df58038f4dd6176ee85">com.backend.MySQLMethods.selectTracker</a>
+ </div>
+ <div class="ttdeci">static String selectTracker(String firstName, String lastName, int studentID)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00676">MySQLMethods.java:676</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a8ead676b49214545a242e24cf151bc30">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a8ead676b49214545a242e24cf151bc30">com.backend.MySQLMethods.selectPass</a>
+ </div>
+ <div class="ttdeci">static String selectPass(String username)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00358">MySQLMethods.java:358</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_acfbbf4ab32dd003e590be4a0672c1b4b">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#acfbbf4ab32dd003e590be4a0672c1b4b">com.backend.MySQLMethods.selectTrackerDate</a>
+ </div>
+ <div class="ttdeci">static String selectTrackerDate(String firstName, String lastName, int studentID, String data)
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00640">MySQLMethods.java:640</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a60dfa8d499caaf1d02f83164cd8ef122">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a60dfa8d499caaf1d02f83164cd8ef122">com.backend.MySQLMethods.updateTracker</a>
+ </div>
+ <div class="ttdeci">static void updateTracker(String firstName, String lastName, int studentID, String dataType, String
+  newData)
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01098">MySQLMethods.java:1098</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a900c503779292368598d37261b3f8f61">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a900c503779292368598d37261b3f8f61">com.backend.MySQLMethods.addStudentHours</a>
+ </div>
+ <div class="ttdeci">static void addStudentHours(Student student, String eventName, double hours, int year, int month,
+  int day)
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00284">MySQLMethods.java:284</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a8fd02056929c18505992872c523fb3c2">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a8fd02056929c18505992872c523fb3c2">com.backend.MySQLMethods.numberOfRows</a>
+ </div>
+ <div class="ttdeci">static int numberOfRows(String tableName)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01309">MySQLMethods.java:1309</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a1c57a43b8c902b87fd6a614b2d817e24">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a1c57a43b8c902b87fd6a614b2d817e24">com.backend.MySQLMethods.changeName</a>
+ </div>
+ <div class="ttdeci">static String changeName(String nameIn)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01242">MySQLMethods.java:1242</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a97b85eaf30b3405d526d38c18c888642">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a97b85eaf30b3405d526d38c18c888642">com.backend.MySQLMethods.addUserPass</a>
+ </div>
+ <div class="ttdeci">static void addUserPass(String username, String hashedPassword)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00331">MySQLMethods.java:331</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_ac166c1031b7a0e424ce0546b829c7bc9">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#ac166c1031b7a0e424ce0546b829c7bc9">com.backend.MySQLMethods.selectTrackerInt</a>
+ </div>
+ <div class="ttdeci">static int selectTrackerInt(String firstName, String lastName, int studentID, String data)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00446">MySQLMethods.java:446</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a7f78c07dc434e4023a47d9dab7492f83">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a7f78c07dc434e4023a47d9dab7492f83">com.backend.MySQLMethods.changeName</a>
+ </div>
+ <div class="ttdeci">static String changeName(String firstName, String lastName)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01262">MySQLMethods.java:1262</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_aed009d0b504622a0256d61de4a4f6129">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#aed009d0b504622a0256d61de4a4f6129">com.backend.MySQLMethods.selectTrackerDouble</a>
+ </div>
+ <div class="ttdeci">static double selectTrackerDouble(String firstName, String lastName, int studentID, String data)
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00529">MySQLMethods.java:529</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a19734fb3e32ab26231beceb79cdea359">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a19734fb3e32ab26231beceb79cdea359">com.backend.MySQLMethods.selectTrackerAsStudent</a>
+ </div>
+ <div class="ttdeci">static StudentData selectTrackerAsStudent(String firstName, String lastName, int studentID)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00720">MySQLMethods.java:720</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a1f0848f8d6fd6a461defcabc2bec2ba5">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a1f0848f8d6fd6a461defcabc2bec2ba5">com.backend.MySQLMethods.selectFullTracker</a>
+ </div>
+ <div class="ttdeci">static ArrayList&lt; StudentData &gt; selectFullTracker()</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00811">MySQLMethods.java:811</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a6640581d6284559fde2134638c2ee3cd">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a6640581d6284559fde2134638c2ee3cd">com.backend.MySQLMethods.makeName</a>
+ </div>
+ <div class="ttdeci">static String makeName(Student student)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01284">MySQLMethods.java:1284</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html">com.backend.MySQLMethods</a></div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00014">MySQLMethods.java:14</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a798fdb856edcecfecb44e6647ed9dca2">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a798fdb856edcecfecb44e6647ed9dca2">com.backend.MySQLMethods.createTable</a>
+ </div>
+ <div class="ttdeci">static void createTable()</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00068">MySQLMethods.java:68</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a5c75432230abba1728dac787d1d74635">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a5c75432230abba1728dac787d1d74635">com.backend.MySQLMethods.selectStudentEventsAsEvent</a>
+ </div>
+ <div class="ttdeci">static ArrayList&lt; Event &gt; selectStudentEventsAsEvent(Student student)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01009">MySQLMethods.java:1009</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a420f3b13b4cfbdbc37b0dfd05c80e040">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a420f3b13b4cfbdbc37b0dfd05c80e040">com.backend.MySQLMethods.selectStudentEventsAsEvent</a>
+ </div>
+ <div class="ttdeci">static ArrayList&lt; Event &gt; selectStudentEventsAsEvent(String firstName, String lastName, int
+  studentID)
+ </div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00969">MySQLMethods.java:969</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a614142bb55a4fcdd2811d70b3de6c16b">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a614142bb55a4fcdd2811d70b3de6c16b">com.backend.MySQLMethods.selectUsers</a>
+ </div>
+ <div class="ttdeci">static ArrayList&lt; String &gt; selectUsers()</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l00399">MySQLMethods.java:399</a>
+ </div>
+</div>
+<div class="ttc" id="aclasscom_1_1_backend_1_1_my_s_q_l_methods_html_a8a6876f5d8c35ed9a4aeed2d26cfe37c">
+ <div class="ttname"><a href="classcom_1_1_backend_1_1_my_s_q_l_methods.html#a8a6876f5d8c35ed9a4aeed2d26cfe37c">com.backend.MySQLMethods.updateToCurrentDate</a>
+ </div>
+ <div class="ttdeci">static void updateToCurrentDate(String firstName, String lastName, int studentID)</div>
+ <div class="ttdef"><b>Definition:</b> <a href="_my_s_q_l_methods_8java_source.html#l01341">MySQLMethods.java:1341</a>
+ </div>
+</div>
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
+<hr class="footer"/>
+<address class="footer"><small>
+ Generated by &#160;<a href="http://www.doxygen.org/index.html">
+ <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
 </body>
