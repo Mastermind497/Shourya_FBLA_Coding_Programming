@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * A Class to Use for Percent Data Types
  */
-public class Percent extends Number {
+public class Percent extends Number implements Cloneable {
 
     /**
      * The Percentage in BigDecimal Form
@@ -105,5 +105,10 @@ public class Percent extends Number {
     @Override
     public double doubleValue() {
         return percent.doubleValue();
+    }
+
+    @Override
+    protected Percent clone() throws CloneNotSupportedException {
+        return (Percent) super.clone();
     }
 }

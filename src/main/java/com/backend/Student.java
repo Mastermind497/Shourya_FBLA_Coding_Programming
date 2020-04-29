@@ -7,7 +7,7 @@ import com.vaadin.flow.component.notification.Notification;
  * <p>
  * The Parent of StudentData and Event
  */
-public class Student {
+public class Student implements Cloneable {
     /**
      * The First Name of the Student
      */
@@ -183,5 +183,10 @@ public class Student {
         } else {
             return "Create New Student";
         }
+    }
+
+    @Override
+    protected Student clone() throws CloneNotSupportedException {
+        return (Student) super.clone();
     }
 }

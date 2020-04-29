@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
  * @author Shourya Bansal
  * @see Student
  */
-public class StudentData extends Student {
+public class StudentData extends Student implements Cloneable {
     /**
      * The Date any of this student's data was last edited
      */
@@ -608,5 +608,10 @@ public class StudentData extends Student {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected StudentData clone() throws CloneNotSupportedException {
+        return (StudentData) super.clone();
     }
 }
