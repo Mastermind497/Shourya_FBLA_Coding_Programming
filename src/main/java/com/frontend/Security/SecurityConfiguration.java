@@ -11,9 +11,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-
-@EnableWebSecurity //
-@Configuration //
+/**
+ * Configures security with username, password, and different redirection options
+ */
+@EnableWebSecurity
+@Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final String LOGIN_PROCESSING_URL = "/login";
@@ -23,20 +25,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable() //
-                .requestCache().requestCache(new CustomRequestCache()) //
-                .and().authorizeRequests() //
-                .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll() //
+        http.csrf().disable()
+                .requestCache().requestCache(new CustomRequestCache())
+                .and().authorizeRequests()
+                .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
 
-                .anyRequest().authenticated() //
+                .anyRequest().authenticated()
 
-                .and().formLogin() //
+                .and().formLogin()
                 .loginPage(LOGIN_URL).permitAll()
-                .loginProcessingUrl(LOGIN_PROCESSING_URL) //
+                .loginProcessingUrl(LOGIN_PROCESSING_URL)
                 .failureUrl(LOGIN_FAILURE_URL)
-                .and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL); //
+                .and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL);
     }
 
+    /**
+     * Configures the Login Information and credentials to the app.
+     * <p>
+     * Currently using temporary security for demonstration purposes.
+     */
     @Bean
     @Override
     /*
@@ -53,6 +60,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new InMemoryUserDetailsManager(user);
     }
 
+    /**
+     * Creates a configuration which allows usage of certain things while offline
+     */
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(

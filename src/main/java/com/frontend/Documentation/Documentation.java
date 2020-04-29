@@ -13,5 +13,6 @@ public class Documentation extends VerticalLayout {
     public Documentation() {
         removeAll();
         add(new H1("The Documentation"));
+        setAlignItems(Alignment.CENTER);
     }
 }

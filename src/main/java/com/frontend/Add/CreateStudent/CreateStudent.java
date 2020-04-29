@@ -9,8 +9,8 @@ import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -26,12 +26,21 @@ import com.vaadin.flow.router.Route;
 
 import static com.backend.MySQLMethods.selectTrackerString;
 
+/**
+ * The Class Used to Allow a User to Add a New Student to their List of Students
+ */
 @Route(value = "create-student", layout = MainView.class)
 @PageTitle("Create a Student | FBLA Genie")
 public class CreateStudent extends VerticalLayout {
     private static int count = 0;
 
+    /**
+     * The Overall Path to create a new Student
+     */
     public CreateStudent() {
+        removeAll();
+        H1 header = new H1("Add a Student");
+        add(header);
         //Creates a Horizontal Layout to decrease maximum width
         HorizontalLayout full = new HorizontalLayout();
 
@@ -49,7 +58,7 @@ public class CreateStudent extends VerticalLayout {
                 new ResponsiveStep("40em", 3));
 
 
-        //Makes Labels for Different Input Fields
+        /* Make Different Input Fields */
         TextField firstNameField = new TextField("First Name");
         firstNameField.setPlaceholder("John");
         firstNameField.setValueChangeMode(ValueChangeMode.EAGER);
@@ -66,31 +75,24 @@ public class CreateStudent extends VerticalLayout {
         gradeField.setPlaceholder("10");
         gradeField.setValueChangeMode(ValueChangeMode.EAGER);
 
-        //Button Group
-
-        Select<String> communityServiceCategoryField = new Select<>();
-        communityServiceCategoryField.setItems("CSA Community (50 Hours)", "CSA Service (200 Hours)",
-                "CSA Achievement (500 Hours)");
-        communityServiceCategoryField.setPlaceholder("Community Service Category");
-        communityServiceCategoryField.setLabel("Community Service Category");
-
         EmailField emailField = new EmailField("Email");
         emailField.setPlaceholder("john.doe@highschoolstudent.org");
         emailField.setClearButtonVisible(true);
         emailField.setErrorMessage("Please enter a valid email address");
         emailField.setValueChangeMode(ValueChangeMode.EAGER);
-        //Makes sure there is an @ symbol in the email
-//        emailField.addValueChangeListener(onChange -> {
-//            if (!onChange.getValue().contains("@")) {
-//                emailField.setErrorMessage("Not a Valid Email Address");
-//            }
-//        });
+
+        /* Creates a Dropdown to Choose the Community Service Award Category Goal */
+        Select<String> communityServiceCategoryField = new Select<>();
+        communityServiceCategoryField.setItems("CSA Community (50 Hours)", "CSA Service (200 Hours)",
+                "CSA Achievement (500 Hours)");
+        communityServiceCategoryField.setPlaceholder("CSA Community (50 Hours)");
+        communityServiceCategoryField.setLabel("Community Service Category");
 
         //Will state number of years
         Div numberOfYears = new Div();
         numberOfYears.setText("Current Number of Years: " + count);
 
-        //Vertically Aligned Checkboxes
+        //Vertically Aligned Checkboxes for years done
         VerticalLayout checkBoxes = new VerticalLayout();
         Checkbox freshman = new Checkbox("9th Grade");
         freshman.addValueChangeListener(event -> {
@@ -152,10 +154,11 @@ public class CreateStudent extends VerticalLayout {
         addStudentForm.add(checkBoxes, 1);
         addStudentForm.add(numberOfYears, 1);
 
+        //Adds the Form to the layout, keeping padding and spacing to keep things looking clean and cozy
         full.add(addStudentForm);
         full.setSpacing(true);
         full.setMargin(true);
-        full.setAlignItems(FlexComponent.Alignment.CENTER);
+        full.setAlignItems(Alignment.CENTER);
 
         //Button Bar
         HorizontalLayout actions = new HorizontalLayout();
@@ -164,9 +167,11 @@ public class CreateStudent extends VerticalLayout {
         actions.add(save, reset);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         reset.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        actions.setAlignItems(FlexComponent.Alignment.CENTER);
-        actions.setAlignSelf(FlexComponent.Alignment.CENTER);
+        actions.setAlignItems(Alignment.CENTER);
+        actions.setAlignSelf(Alignment.CENTER);
+        save.addClickShortcut(Key.ENTER);
 
+        /* Binds Data Entered to Fields */
         binder.forField(firstNameField)
                 .withValidator(new StringLengthValidator(
                         "Please enter the first name", 1, null))
@@ -184,7 +189,10 @@ public class CreateStudent extends VerticalLayout {
 
         binder.forField(emailField)
                 .withValidator(new StringLengthValidator(
-                        "Please enter the email address", 1, null))
+                        "Please enter the email address", 5, null))
+                .bind(StudentData::getEmail, StudentData::setEmail);
+        binder.forField(emailField)
+                .withValidator(s -> s.indexOf("@") != 0, "Not a Valid Email Address") //Makes sure an email address is valid
                 .bind(StudentData::getEmail, StudentData::setEmail);
 
         binder.forField(gradeField)
@@ -217,8 +225,6 @@ public class CreateStudent extends VerticalLayout {
                 Notification.show("There was an error. Please Try Again");
             }
         });
-        //ENTER Key also activated SAVE
-        save.addClickShortcut(Key.ENTER);
 
         reset.addClickListener(event -> {
             // clear fields by setting null
@@ -229,15 +235,11 @@ public class CreateStudent extends VerticalLayout {
         setAlignItems(Alignment.CENTER);
     }
 
-    public static void addToCount() {
+    private static void addToCount() {
         count++;
     }
 
-    public static void removeFromCount() {
+    private static void removeFromCount() {
         count--;
-    }
-
-    public static int getCount() {
-        return count;
     }
 }
