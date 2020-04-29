@@ -4,6 +4,7 @@ import com.backend.*;
 import com.frontend.Charts;
 import com.frontend.MainView;
 import com.vaadin.flow.component.Html;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.board.Board;
 import com.vaadin.flow.component.board.Row;
 import com.vaadin.flow.component.button.Button;
@@ -27,12 +28,24 @@ import java.util.List;
 
 import static com.backend.MySQLMethods.round;
 
+/**
+ * The main class for Generating Reports
+ */
 @Route(value = "report", layout = MainView.class)
 @PageTitle("FBLA Genie | Generate Reports")
 public class Reports extends VerticalLayout {
-    final Button groupReport = new Button("Generate Group Reports", buttonClickEvent -> generateGroupReport());
+    /**
+     * The General Button which moves the the Individual Report Field
+     */
     final Button individualReport = new Button("Generate Individual Reports", buttonClickEvent -> generateIndividualReport());
+    /**
+     * The General Button which moves to the Group Report Field
+     */
+    final Button groupReport = new Button("Generate Group Reports", buttonClickEvent -> generateGroupReport());
 
+    /**
+     * Creates a form which allows the option between generating a group and individual report
+     */
     public Reports() {
         removeAll();
 
@@ -68,6 +81,62 @@ public class Reports extends VerticalLayout {
         return div;
     }
 
+    /**
+     * Prints out two lines in the data board to symbolize the next section
+     *
+     * @param dataBoard The databoard with the data
+     */
+    public static void nextSection(Board dataBoard) {
+        //Adding two lines to signify the end of a section
+        dataBoard.addRow(new Html("<hr>"));
+        dataBoard.addRow(new Html("<hr>"));
+    }
+
+    /**
+     * Calculates the hours remaining for a student to reach his or her community service goal
+     *
+     * @param student The Student who is being analyzed
+     * @return A String containing formatted hours to go
+     */
+    private String getHoursRemaining(StudentData student) {
+        String category = student.getCommunityServiceCategory();
+        double hours = student.getCommunityServiceHours();
+        if (category.contains("50")) {
+            if (hours >= 50) return "Goal Reached! Next Goal: CSA Service (200 Hours)";
+            else return (50 - hours) + " Hours To Go";
+        } else if (category.contains("200")) {
+            if (hours >= 200) return "Goal Reached! Next Goal: CSA Achievement (500 Hours)";
+            else return (200 - hours) + " Hours To Go";
+        } else {
+            assert category.contains("500");
+            if (hours >= 500) return "Completed the Highest Goal! Congratulations!";
+            else return (500 - hours) + "To Go";
+        }
+    }
+
+    /**
+     * Makes a bulleted list, primarily used for the inactive students list in the Group Reports
+     *
+     * @param label The label of the List
+     * @param list  The bulleted items in the list
+     * @return A Div containing the Bulleted List
+     */
+    public static Div makeBulletList(String label, List<StudentData> list) {
+        Html header = new Html("<h4 style = \"color:#800517\">" + label + "</h4>");
+        StringBuilder html = new StringBuilder("<ul style = \"color:#c11b17\">");
+        for (StudentData s : list) {
+            html.append("<li>").append(s).append("</li>");
+        }
+        html.append("</ul>");
+        Html bullet = new Html(String.valueOf(html));
+        Div div = new Div(header);
+        div.add(bullet);
+        return div;
+    }
+
+    /**
+     * Creates a form to configure an individual student report
+     */
     public void generateIndividualReport() {
         removeAll();
         FormLayout form = new FormLayout();
@@ -150,6 +219,7 @@ public class Reports extends VerticalLayout {
                 individualReport(selectedStudent[0], Date.optionToDate(startingDateOption[0]));
             }
         });
+        save.addClickShortcut(Key.ENTER);
 
         reset.addClickListener(e -> {
             studentSelect.setValue(null);
@@ -160,47 +230,9 @@ public class Reports extends VerticalLayout {
         add(form, actions);
     }
 
-    public static void nextSection(Board dataBoard) {
-        //Adding two lines to signify the end of a section
-        dataBoard.addRow(new Html("<hr>"));
-        dataBoard.addRow(new Html("<hr>"));
-    }
-
-    public static Div makeBulletList(String label, List<StudentData> list) {
-        Html header = new Html("<h4 style = \"color:#800517\">" + label + "</h4>");
-        StringBuilder html = new StringBuilder("<ul style = \"color:#c11b17\">");
-        for (StudentData s : list) {
-            html.append("<li>").append(s).append("</li>");
-        }
-        html.append("</ul>");
-        Html bullet = new Html(String.valueOf(html));
-        Div div = new Div(header);
-        div.add(bullet);
-        return div;
-    }
-
     /**
-     * Calculates the hours remaining for a student to reach his or her community service goal
-     *
-     * @param student The Student who is being analyzed
-     * @return A String containing formatted hours to go
+     * Creates the form to Generate the group report
      */
-    private String getHoursRemaining(StudentData student) {
-        String category = student.getCommunityServiceCategory();
-        double hours = student.getCommunityServiceHours();
-        if (category.contains("50")) {
-            if (hours >= 50) return "Goal Reached! Next Goal: CSA Service (200 Hours)";
-            else return (50 - hours) + " Hours To Go";
-        } else if (category.contains("200")) {
-            if (hours >= 200) return "Goal Reached! Next Goal: CSA Achievement (500 Hours)";
-            else return (200 - hours) + " Hours To Go";
-        } else {
-            assert category.contains("500");
-            if (hours >= 500) return "Completed the Highest Goal! Congratulations!";
-            else return (500 - hours) + "To Go";
-        }
-    }
-
     public void generateGroupReport() {
         removeAll();
         FormLayout form = new FormLayout();
@@ -224,6 +256,12 @@ public class Reports extends VerticalLayout {
         setAlignSelf(Alignment.CENTER);
     }
 
+    /**
+     * Using the given constraints, generate an individual report
+     *
+     * @param student      The Student of the Report
+     * @param startingDate The report's starting date
+     */
     public void individualReport(Student student, Date startingDate) {
         removeAll();
         StudentData dataOfStudent = student.getStudentData();
@@ -345,8 +383,14 @@ public class Reports extends VerticalLayout {
         add(dataBoard);
     }
 
+    /**
+     * The group report after it has been configured
+     *
+     * @param option The range of time
+     */
     public void groupReport(String option) {
         removeAll();
+        add(new H1("Group Report: " + option));
         Board dataBoard = new Board();
         //This list contains all of the students in the chapter for easy reference for the rest of the report
         List<StudentData> studentDataList = MySQLMethods.getStudentData();
