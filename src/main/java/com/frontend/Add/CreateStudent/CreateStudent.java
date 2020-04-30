@@ -10,7 +10,9 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -211,6 +213,13 @@ public class CreateStudent extends VerticalLayout {
         save.addClickListener(event -> {
             if (count < 1) {
                 Notification.show("Years Done Can not be Less Than 1");
+            } else if (!(emailField.getValue().contains("@") && emailField.getValue().contains("."))) {
+                Notification invalid = new Notification();
+                invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                Label failed = new Label("Not A Valid Email");
+                invalid.add(failed);
+                invalid.setDuration(3000);
+                invalid.open();
             } else if (binder.writeBeanIfValid(student)) {
                 if (selectTrackerString(student.getFirstName(), student.getLastName(), student.getStudentID(), "firstName") == null) {
                     student.setYearsDone((short) count);

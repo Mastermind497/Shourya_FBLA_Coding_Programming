@@ -183,6 +183,7 @@ public class Reports extends VerticalLayout {
                 });
                 startDate.setMax(LocalDate.now());
                 startDate.setWidth("20em");
+                startDate.setRequiredIndicatorVisible(true);
                 datePicker.add(startDate);
             } else if (onChange.getValue().contains("General")) {
                 startingDate[0] = null;
@@ -192,6 +193,7 @@ public class Reports extends VerticalLayout {
                 rangeSelector.setValue(Charts.ALL_TIME_CHART);
                 rangeSelector.setRequired(true);
                 rangeSelector.setWidth("20em");
+                rangeSelector.setRequiredIndicatorVisible(true);
                 datePicker.add(rangeSelector);
             }
             datePicker.setAlignItems(Alignment.START);
