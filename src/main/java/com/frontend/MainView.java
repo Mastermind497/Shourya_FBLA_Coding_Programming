@@ -13,6 +13,7 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -25,6 +26,9 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.lumo.Lumo;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /* FIXME
@@ -66,6 +70,8 @@ public class MainView extends AppLayout {
         tabs.add(getAvailableTabs());
         tabs.setFlexGrowForEnclosedTabs(1);
 
+        Image image = new Image("https://github.com/Mastermind497/Shourya_FBLA/raw/master/logo/Logo.png", "Logo");
+
         H2 appName = new H2("FLBA Genie");
 
         //A Button for Toggling Dark Mode
@@ -89,6 +95,7 @@ public class MainView extends AppLayout {
 
         //Adds component to Vertical Layout
         verticalLayout.setSizeFull();
+        verticalLayout.add(image);
         verticalLayout.add(appName);
         verticalLayout.add(toggleButton);
         verticalLayout.add(tabs);
@@ -101,6 +108,20 @@ public class MainView extends AppLayout {
 
         addToNavbar(verticalLayout);
         this.setDrawerOpened(false);
+    }
+
+    private InputStream getImageInputStream(String name) {
+        String value = name;
+        if (value == null) {
+            value = "";
+        }
+        String svg = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>"
+                + "<svg  xmlns='http://www.w3.org/2000/svg' "
+                + "xmlns:xlink='http://www.w3.org/1999/xlink'>"
+                + "<rect x='10' y='10' height='100' width='100' "
+                + "style=' fill: #90C3D4'/><text x='30' y='30' fill='red'>"
+                + value + "</text>" + "</svg>";
+        return new ByteArrayInputStream(svg.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
