@@ -204,6 +204,16 @@ public class Reports extends VerticalLayout {
         form.add(studentSelect, 2);
         form.add(dateOption, 1);
 
+        HorizontalLayout full = new HorizontalLayout();
+        //Adds the form to the layout
+        full.add(form);
+        full.setSpacing(true);
+        full.setMargin(true);
+        full.setAlignItems(Alignment.CENTER);
+        full.setAlignSelf(Alignment.CENTER);
+        full.setJustifyContentMode(JustifyContentMode.CENTER);
+        full.setWidth("75%");
+
         HorizontalLayout actions = new HorizontalLayout();
         Button save = new Button("Save");
         Button reset = new Button("Reset");
@@ -211,8 +221,8 @@ public class Reports extends VerticalLayout {
         actions.setWidthFull();
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         reset.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        actions.setAlignItems(FlexComponent.Alignment.CENTER);
-        actions.setAlignSelf(FlexComponent.Alignment.CENTER);
+        actions.setAlignItems(Alignment.CENTER);
+        actions.setAlignSelf(Alignment.CENTER);
 
         save.addClickListener(e -> {
             try {
@@ -229,7 +239,7 @@ public class Reports extends VerticalLayout {
         });
 
         actions.setJustifyContentMode(JustifyContentMode.CENTER);
-        add(form, actions);
+        add(full, actions);
     }
 
     /**
