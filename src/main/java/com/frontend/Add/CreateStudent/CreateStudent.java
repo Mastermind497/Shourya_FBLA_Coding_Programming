@@ -194,7 +194,10 @@ public class CreateStudent extends VerticalLayout {
                         "Please enter the email address", 5, null))
                 .bind(StudentData::getEmail, StudentData::setEmail);
         binder.forField(emailField)
-                .withValidator(s -> s.indexOf("@") != 0, "Not a Valid Email Address") //Makes sure an email address is valid
+                .withValidator(s -> s.contains("@"), "Not a Valid Email Address") //Makes sure an email address is valid
+                .bind(StudentData::getEmail, StudentData::setEmail);
+        binder.forField(emailField)
+                .withValidator(s -> s.contains("."), "Not a Valid Email Address") //Makes sure an email address is valid
                 .bind(StudentData::getEmail, StudentData::setEmail);
 
         binder.forField(gradeField)
@@ -212,7 +215,12 @@ public class CreateStudent extends VerticalLayout {
         //add listeners for the buttons
         save.addClickListener(event -> {
             if (count < 1) {
-                Notification.show("Years Done Can not be Less Than 1");
+                Notification invalid = new Notification();
+                invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                Label failed = new Label("Years Done Can Not Be Less Than 1");
+                invalid.add(failed);
+                invalid.setDuration(3000);
+                invalid.open();
             } else if (!(emailField.getValue().contains("@") && emailField.getValue().contains("."))) {
                 Notification invalid = new Notification();
                 invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
@@ -220,18 +228,34 @@ public class CreateStudent extends VerticalLayout {
                 invalid.add(failed);
                 invalid.setDuration(3000);
                 invalid.open();
+                emailField.setErrorMessage("Not A Valid Email Address");
             } else if (binder.writeBeanIfValid(student)) {
                 if (selectTrackerString(student.getFirstName(), student.getLastName(), student.getStudentID(), "firstName") == null) {
                     student.setYearsDone((short) count);
                     student.createStudent();
-                    Notification.show("Your data is being processed");
+                    Notification.show("Your data is being processed...");
                     binder.readBean(null);
-                    Notification.show("Your data has been processed!");
+                    Notification invalid = new Notification();
+                    invalid.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                    Label failed = new Label("The Student Was Successfully Added!");
+                    invalid.add(failed);
+                    invalid.setDuration(3000);
+                    invalid.open();
                 } else {
-                    Notification.show("A Student with those details already exists");
+                    Notification invalid = new Notification();
+                    invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    Label failed = new Label("A Student With Those Details Already Exists");
+                    invalid.add(failed);
+                    invalid.setDuration(3000);
+                    invalid.open();
                 }
             } else {
-                Notification.show("There was an error. Please Try Again");
+                Notification invalid = new Notification();
+                invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                Label failed = new Label("An Unidentifiable Error Occurred. Please Try Again.");
+                invalid.add(failed);
+                invalid.setDuration(3000);
+                invalid.open();
             }
         });
 

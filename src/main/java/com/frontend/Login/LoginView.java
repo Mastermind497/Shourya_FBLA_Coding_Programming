@@ -1,6 +1,6 @@
 package com.frontend.Login;
 
-import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -36,8 +36,11 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
         login.setAction("login");
 
+        Image logo = new Image("https://github.com/Mastermind497/Shourya_FBLA/raw/master/logo/Logo.png", "Logo");
+        logo.setHeight("24em");
+
         add(
-                new H1("FBLA Genie"),
+                logo,
                 login
         );
     }

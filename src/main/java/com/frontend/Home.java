@@ -1,8 +1,8 @@
 package com.frontend;
 
+import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H5;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
@@ -34,12 +34,24 @@ public class Home extends VerticalLayout {
      * Creates the Home Screen
      */
     public Home() {
-        H1 header = new H1("Welcome to FBLA Genie");
-        HorizontalLayout headerLayout = new HorizontalLayout(header);
-        headerLayout.setAlignItems(Alignment.CENTER);
-        add(headerLayout);
+        H1 header = new H1("Welcome to FBLA Genie!");
 
-        add(new H5("This application is meant to make your life as a member of an FBLA Chapter much easier. This should " +
-                "help in organization, hour management, and Community Service Award Management"));
+        Image logo = new Image("https://github.com/Mastermind497/Shourya_FBLA/raw/master/logo/Logo.png", "Logo");
+        logo.setHeight("30em");
+
+        add(header);
+        add(logo);
+        setHorizontalComponentAlignment(Alignment.CENTER, header, logo);
+
+        Html introInfo = new Html(
+                "<p style='font-size:200%'>FBLA Genie is an Application designed for the FBLA Coding and Programming Competitive Event. " +
+                        "It stores student information for everyone in an FBLA Chapter and makes organization of Hours, Community Service Award Category, " +
+                        "Activity, as well as Analysis of all data, Easier!</p>"
+        );
+
+        add(introInfo);
+
+        Html getStarted = new Html("<h2>Want to Get Started? <a href='documentation'>Check Out the Documentation, Tutorials, and Frequently Asked Questions!</a></h2>");
+        add(getStarted);
     }
 }
