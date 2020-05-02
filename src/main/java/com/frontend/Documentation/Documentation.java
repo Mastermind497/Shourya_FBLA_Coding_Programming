@@ -31,6 +31,15 @@ public class Documentation extends VerticalLayout {
 
         add(downloads);
 
+        //FAQs
+        /* FIXME
+            * How Do I Get Started
+            * What is the process of creating a student?
+            * How do I add hours?
+            * How does creating a report work?
+            *
+         */
+
         setAlignItems(Alignment.CENTER);
     }
 
