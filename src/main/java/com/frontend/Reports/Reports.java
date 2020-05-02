@@ -21,6 +21,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
@@ -33,6 +34,7 @@ import static com.backend.MySQLMethods.round;
  */
 @Route(value = "report", layout = MainView.class)
 @PageTitle("FBLA Genie | Generate Reports")
+@PreserveOnRefresh
 public class Reports extends VerticalLayout {
     /**
      * The General Button which moves the the Individual Report Field
@@ -149,6 +151,7 @@ public class Reports extends VerticalLayout {
         Student[] selectedStudent = new Student[1];
         Date[] startingDate = new Date[1];
         String[] startingDateOption = new String[1];
+            startingDateOption[0] = Charts.ALL_TIME_CHART; //Standard Fallback value
 
         //Gets Student Data values and adds to a dropdown list
         List<Student> studentNames = MySQLMethods.getStudents();
@@ -181,7 +184,6 @@ public class Reports extends VerticalLayout {
                 });
                 startDate.setMax(LocalDate.now());
                 startDate.setWidth("20em");
-                startDate.setRequiredIndicatorVisible(true);
                 datePicker.add(startDate);
             } else if (onChange.getValue().contains("General")) {
                 startingDate[0] = null;
@@ -191,7 +193,6 @@ public class Reports extends VerticalLayout {
                 rangeSelector.setValue(Charts.ALL_TIME_CHART);
                 rangeSelector.setRequired(true);
                 rangeSelector.setWidth("20em");
-                rangeSelector.setRequiredIndicatorVisible(true);
                 datePicker.add(rangeSelector);
             }
             datePicker.setAlignItems(Alignment.START);
@@ -207,10 +208,8 @@ public class Reports extends VerticalLayout {
         //Adds the form to the layout
         full.add(form);
 //        full.setSpacing(true);
-        full.setAlignItems(Alignment.CENTER);
-        full.setAlignSelf(Alignment.CENTER);
-//        full.setJustifyContentMode(JustifyContentMode.CENTER);
-        full.setWidth("100%");
+        full.setJustifyContentMode(JustifyContentMode.CENTER);
+        full.setWidth("60em ");
 
         HorizontalLayout actions = new HorizontalLayout();
         Button save = new Button("Save");

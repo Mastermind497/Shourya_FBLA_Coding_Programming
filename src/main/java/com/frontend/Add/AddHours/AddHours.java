@@ -23,6 +23,7 @@ import com.vaadin.flow.data.validator.DoubleRangeValidator;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
@@ -34,6 +35,7 @@ import java.util.List;
 @Route(value = "add-hours", layout = MainView.class)
 //Uses the Layout from MainView.java wihtout having to recreate the entire thing
 @PageTitle("Add Student Hours | FBLA Genie")
+@PreserveOnRefresh
 public class AddHours extends VerticalLayout {
 
     /**

@@ -8,6 +8,7 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 
@@ -33,6 +34,7 @@ import com.vaadin.flow.router.RouterLink;
  * @author Shourya Bansal
  */
 @Route(value = "", layout = MainView.class)
+@PreserveOnRefresh
 public class Home extends VerticalLayout {
 
     /**

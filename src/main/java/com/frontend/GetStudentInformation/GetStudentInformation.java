@@ -19,6 +19,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.List;
  */
 @Route(value = "get-student-info", layout = MainView.class)
 @PageTitle("View and Edit Information | FBLA Genie")
+@PreserveOnRefresh
 public class GetStudentInformation extends VerticalLayout {
 
     /** The Main Grid of Student Data */

@@ -24,6 +24,7 @@ import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 
 import static com.backend.MySQLMethods.selectTrackerString;
@@ -33,6 +34,7 @@ import static com.backend.MySQLMethods.selectTrackerString;
  */
 @Route(value = "create-student", layout = MainView.class)
 @PageTitle("Create a Student | FBLA Genie")
+@PreserveOnRefresh
 public class CreateStudent extends VerticalLayout {
     private static int count = 0;
 

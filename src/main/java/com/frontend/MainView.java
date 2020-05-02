@@ -22,6 +22,7 @@ import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.dom.ThemeList;
 import com.vaadin.flow.router.HighlightConditions;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.lumo.Lumo;
@@ -47,6 +48,7 @@ import java.util.ArrayList;
         shortName = "FBLA Genie",
         description = "This is the Application made by Shourya Bansal for the FBLA Coding " +
                 "& Programming competition in the 2019-2020 school year")
+@PreserveOnRefresh
 public class MainView extends AppLayout {
     public static final Tab HOME_TAB = createTab(VaadinIcon.HOME, "Home", Home.class);
     public static final Tab ADD_STUDENT_TAB = createTab(VaadinIcon.FILE_ADD, "Add a Student", CreateStudent.class);
