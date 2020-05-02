@@ -13,7 +13,9 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -147,12 +149,24 @@ public class AddHours extends VerticalLayout {
         //add listeners for the buttons
         save.addClickListener(e -> {
             //Creates the event if it is a valid selection
+            Notification.show("Your data is being processed...");
             if (binder.writeBeanIfValid(event)) {
                 event.addEvent();
-                Notification.show("Your data is being processed");
-                binder.readBean(null);
-                Notification.show("Your data has been processed!");
-            } else Notification.show("There was an error. Please Try Again");
+                studentChoices.setValue(null);
+                Notification success = new Notification();
+                success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                Label succeeded = new Label("The Student Was Successfully Added!");
+                success.add(succeeded);
+                success.setDuration(3000);
+                success.open();
+            } else {
+                Notification invalid = new Notification();
+                invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                Label failed = new Label("There Was An Error. Please Try Again.");
+                invalid.add(failed);
+                invalid.setDuration(3000);
+                invalid.open();
+            }
         });
         //ENTER key also clicks save
         save.addClickShortcut(Key.ENTER);

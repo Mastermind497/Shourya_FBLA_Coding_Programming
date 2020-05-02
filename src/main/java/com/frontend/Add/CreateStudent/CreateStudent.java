@@ -243,6 +243,7 @@ public class CreateStudent extends VerticalLayout {
                     invalid.add(failed);
                     invalid.setDuration(3000);
                     invalid.open();
+                    communityServiceCategoryField.setInvalid(false);
                 } else {
                     Notification invalid = new Notification();
                     invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
