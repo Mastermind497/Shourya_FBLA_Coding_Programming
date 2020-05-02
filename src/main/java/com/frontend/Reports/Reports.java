@@ -145,8 +145,6 @@ public class Reports extends VerticalLayout {
                 new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
 
-        groupReport.setText("Generate Group Reports Instead");
-
         //Uses Size 1 Arrays To Allow Implementation in Lambda methods because they are effectively final
         Student[] selectedStudent = new Student[1];
         Date[] startingDate = new Date[1];
@@ -204,15 +202,15 @@ public class Reports extends VerticalLayout {
         form.add(studentSelect, 2);
         form.add(dateOption, 1);
 
+
         HorizontalLayout full = new HorizontalLayout();
         //Adds the form to the layout
         full.add(form);
-        full.setSpacing(true);
-        full.setMargin(true);
+//        full.setSpacing(true);
         full.setAlignItems(Alignment.CENTER);
         full.setAlignSelf(Alignment.CENTER);
-        full.setJustifyContentMode(JustifyContentMode.CENTER);
-        full.setWidth("75%");
+//        full.setJustifyContentMode(JustifyContentMode.CENTER);
+        full.setWidth("100%");
 
         HorizontalLayout actions = new HorizontalLayout();
         Button save = new Button("Save");
@@ -252,8 +250,6 @@ public class Reports extends VerticalLayout {
                 new ResponsiveStep("20em", 1),
                 new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
-
-        individualReport.setText("Generate Individual Reports Instead");
 
         Button selector = new Button("Generate Group Reports");
         selector.addThemeVariants(ButtonVariant.LUMO_PRIMARY);

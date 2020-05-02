@@ -15,6 +15,7 @@ import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
@@ -69,6 +70,9 @@ public class MainView extends AppLayout {
         Image logo = new Image("https://github.com/Mastermind497/Shourya_FBLA/raw/master/logo/Logo.png", "Logo");
         logo.setHeight("12em");
 
+        Button toGitHubPage = new Button("Go To GitHub Page");
+        toGitHubPage.addClickListener(buttonClickEvent -> UI.getCurrent().getPage().executeJs("window.open(\"https://github.com/Mastermind497/Shourya_FBLA\", \"_blank\", \"\");"));
+
         //A Button for Toggling Dark Mode
         final Button toggleButton = new Button("Dark Mode", VaadinIcon.MOON.create());
         toggleButton.addClickListener(click -> {
@@ -85,13 +89,14 @@ public class MainView extends AppLayout {
             }
         });
 
+        HorizontalLayout buttons = new HorizontalLayout(toGitHubPage, toggleButton);
         //Creates a Vertical Layout to store all the above components
         VerticalLayout verticalLayout = new VerticalLayout();
 
         //Adds component to Vertical Layout
         verticalLayout.setSizeFull();
         verticalLayout.add(logo);
-        verticalLayout.add(toggleButton);
+        verticalLayout.add(buttons);
         verticalLayout.add(tabs);
 
         //Aligns everything to the center
