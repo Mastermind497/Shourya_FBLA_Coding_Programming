@@ -99,6 +99,35 @@ public class GetStudentInformation extends VerticalLayout {
     }
 
     /**
+     * Allows the deleting of events in the View
+     *
+     * @param event               The event being deleted
+     * @param studentNotification The notification from where the event was selected
+     * @return A Button with the capability to delete an event
+     */
+    public Button deleteButton(Event event, Notification studentNotification) {
+        ConfirmDialog dialog = new ConfirmDialog("Confirm Delete",
+                String.format("Are you sure you want to delete %s, done by %s? This action cannot be undone", event.getEventName(), event.getFirstName() + " " + event.getLastName()),
+                "Delete", onDelete -> {
+            event.delete();
+            grid.setItems(MySQLMethods.getStudentData());
+            studentNotification.open();
+        },
+                "Cancel", cancelEvent -> {
+            onClose(cancelEvent);
+            studentNotification.open();
+        });
+        dialog.setConfirmButtonTheme("error primary");
+        @SuppressWarnings("unchecked")
+        Button button = new Button(VaadinIcon.TRASH.create(), buttonClickEvent -> {
+            dialog.open();
+            studentNotification.close();
+        });
+        button.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        return button;
+    }
+
+    /**
      * Closes the Dialog Box and Resets the table with the updated values of the Student
      *
      * @param cancelEvent The Event that the dialog box was cancelled
@@ -127,7 +156,7 @@ public class GetStudentInformation extends VerticalLayout {
             List<Component> arr = viewEvents(student.getStudent());
             Grid<StudentData> studentGrid = (Grid<StudentData>) arr.get(2);
             Grid<Event> events = (Grid<Event>) arr.get(0);
-            events.addComponentColumn(this::deleteButton).setHeader("Delete");
+            events.addComponentColumn(event -> deleteButton(event, fullData)).setHeader("Delete");
             events.setMultiSort(true);
             events.setMaxHeight("20em");
             VerticalLayout studentInfo = (VerticalLayout) arr.get(1);
@@ -228,29 +257,29 @@ public class GetStudentInformation extends VerticalLayout {
         GridPro<StudentData> grid = new GridPro<>();
         grid.setItems(studentData);
         grid.addEditColumn(StudentData::getFirstName, "name")
-                .text(StudentData::setFirstName)
+                .text(StudentData::updateFirstName)
                 .setHeader("First Name");
         grid.addEditColumn(StudentData::getLastName, "name")
-                .text(StudentData::setLastName)
+                .text(StudentData::updateLastName)
                 .setHeader("Last Name");
         grid.addEditColumn(StudentData::getStudentID, "idNumber")
-                .text(StudentData::setStudentID)
+                .text(StudentData::updateStudentID)
                 .setHeader("Student ID");
         grid.addEditColumn(StudentData::getGrade, "grade", "integer")
-                .text(StudentData::setGrade)
+                .text(StudentData::updateGrade)
                 .setHeader("Grade");
         grid.addEditColumn(StudentData::getCommunityServiceHours, "hours", "double")
-                .text(StudentData::setCommunityServiceHoursFromSelect)
+                .text(StudentData::updateCommunityServiceHours)
                 .setHeader("CS Hours");
         List<String> categoryOptions = new ArrayList<>(Arrays.asList("CSA Community (50 Hours)", "CSA Service (200 Hours)", "CSA Achievement (500 Hours)"));
         grid.addEditColumn(StudentData::getCommunityServiceCategory, "category")
-                .select(StudentData::setCommunityServiceCategory, categoryOptions)
+                .select(StudentData::updateCommunityServiceCategory, categoryOptions)
                 .setHeader("CS Category");
         grid.addEditColumn(StudentData::getEmail)
-                .text(StudentData::setEmail)
+                .text(StudentData::updateEmail)
                 .setHeader("Email");
         grid.addEditColumn(StudentData::getYearsDone, "years", "integer")
-                .text(StudentData::setYearsDone)
+                .text(StudentData::updateYearsDone)
                 .setHeader("Years Done");
         grid.addColumn(StudentData::getLastEdited, "date", "lastedited").setHeader("Last Edited");
 

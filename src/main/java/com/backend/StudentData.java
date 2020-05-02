@@ -204,22 +204,12 @@ public class StudentData extends Student implements Cloneable {
     }
 
     /**
-     * Sets the Grade Level of the Student, changing the backend database if necessary
+     * Sets the Grade Level of the Student
      *
      * @param grade The New Grade level
      */
     public void setGrade(int grade) {
-        if (this.grade == 0 || fromSelect) {
-            this.grade = (short) grade;
-        } else {
-            short finalGrade;
-            if (grade == 0) {
-                finalGrade = MySQLMethods.selectTrackerShort(getFirstName(), getLastName(), getStudentID(), "grade");
-            } else finalGrade = (short) grade;
-            assert finalGrade != 0;
-            updateQuery("grade", Short.toString(finalGrade));
-            this.grade = finalGrade;
-        }
+        this.grade = (short) grade;
     }
 
     /**
@@ -229,6 +219,30 @@ public class StudentData extends Student implements Cloneable {
      */
     public void setGrade(String grade) {
         setGrade(Integer.parseInt(grade));
+    }
+
+    /**
+     * Updates the backend while changing the student's grade
+     *
+     * @param grade The New Grade
+     */
+    public void updateGrade(int grade) {
+        short finalGrade;
+        if (grade == 0) {
+            finalGrade = MySQLMethods.selectTrackerShort(getFirstName(), getLastName(), getStudentID(), "grade");
+        } else finalGrade = (short) grade;
+        assert finalGrade != 0;
+        updateQuery("grade", Short.toString(finalGrade));
+        this.grade = finalGrade;
+    }
+
+    /**
+     * Updates the backend while changing the student's grade
+     *
+     * @param grade The New Grade
+     */
+    public void updateGrade(String grade) {
+        updateGrade(Integer.parseInt(grade));
     }
 
     /**
@@ -250,33 +264,31 @@ public class StudentData extends Student implements Cloneable {
     }
 
     /**
-     * Changes the number of Community Service Hours a student participated in, updating the backend if necessary
+     * Changes the number of Community Service Hours a student participated in
      *
      * @param communityServiceHours The new amount of community Service Hours
      */
     public void setCommunityServiceHours(double communityServiceHours) {
-        if (!fromSelect)
-            updateQuery("communityServiceHours", Double.toString(MySQLMethods.round(communityServiceHours)));
         this.communityServiceHours = MySQLMethods.round(communityServiceHours);
     }
 
     /**
-     * Changes the number of Community Service Hours a student participated in and updating the backend
+     * Updates the backend with a new number of Community Service Hours
      *
      * @param communityServiceHours The new amount of community Service Hours
      */
-    public void setCommunityServiceHoursFromSelect(double communityServiceHours) {
+    public void updateCommunityServiceHours(double communityServiceHours) {
         updateQuery("communityServiceHours", Double.toString(MySQLMethods.round(communityServiceHours)));
         this.communityServiceHours = MySQLMethods.round(communityServiceHours);
     }
 
     /**
-     * Changes the number of Community Service Hours a student participated in and updating the backend
+     * Updates the backend with a new number of Community Service Hours
      *
      * @param communityServiceHours The new amount of community Service Hours
      */
-    public void setCommunityServiceHoursFromSelect(String communityServiceHours) {
-        setCommunityServiceHoursFromSelect(Double.parseDouble(communityServiceHours));
+    public void updateCommunityServiceHours(String communityServiceHours) {
+        updateCommunityServiceHours(Double.parseDouble(communityServiceHours));
     }
 
     /**
@@ -289,26 +301,31 @@ public class StudentData extends Student implements Cloneable {
     }
 
     /**
-     * Changes the Community Service Award Category, updating the backend if necessary
+     * Changes the Community Service Award Category
      *
      * @param communityServiceCategoryIn The new Community Service Award Category
      */
     public void setCommunityServiceCategory(String communityServiceCategoryIn) {
-        if (this.communityServiceCategory == null) {
-            this.communityServiceCategory = communityServiceCategoryIn;
+        this.communityServiceCategory = communityServiceCategoryIn;
+    }
+
+    /**
+     * Updates the Community Service Award Category in the backend
+     *
+     * @param communityServiceCategoryIn The New Community Service Award Category Goal
+     */
+    public void updateCommunityServiceCategory(String communityServiceCategoryIn) {
+        String communityServiceCategoryUpper = communityServiceCategoryIn.toUpperCase();
+        String communityServiceCategory;
+        if (communityServiceCategoryUpper.contains("ACHIEVEMENT")) {
+            communityServiceCategory = "CSA Achievement (500 Hours)";
+        } else if (communityServiceCategoryUpper.contains("SERVICE")) {
+            communityServiceCategory = "CSA Service (200 Hours)";
         } else {
-            String communityServiceCategoryUpper = communityServiceCategoryIn.toUpperCase();
-            String communityServiceCategory;
-            if (communityServiceCategoryUpper.contains("ACHIEVEMENT")) {
-                communityServiceCategory = "CSA Achievement (500 Hours)";
-            } else if (communityServiceCategoryUpper.contains("SERVICE")) {
-                communityServiceCategory = "CSA Service (200 Hours)";
-            } else {
-                communityServiceCategory = "CSA Community (50 Hours)";
-            }
-            updateQuery("communityServiceCategory", communityServiceCategory);
-            this.communityServiceCategory = communityServiceCategory;
+            communityServiceCategory = "CSA Community (50 Hours)";
         }
+        updateQuery("communityServiceCategory", communityServiceCategory);
+        this.communityServiceCategory = communityServiceCategory;
     }
 
     /**
@@ -366,21 +383,26 @@ public class StudentData extends Student implements Cloneable {
     }
 
     /**
-     * Changes the student's email address, updating the backend if necessary
+     * Changes the student's email address
      *
      * @param email The New email address
      */
     public void setEmail(@NotNull final String email) {
-        if (this.email == null) {
-            this.email = email;
-        } else {
-            String finalEmail;
-            if (email == null) {
-                finalEmail = "";
-            } else finalEmail = email;
-            updateQuery("email", finalEmail);
-            this.email = finalEmail;
-        }
+        this.email = email;
+    }
+
+    /**
+     * Updates the student's email address in the backend
+     *
+     * @param email The new email address
+     */
+    public void updateEmail(String email) {
+        String finalEmail;
+        if (email == null) {
+            finalEmail = "None";
+        } else finalEmail = email;
+        updateQuery("email", finalEmail);
+        this.email = finalEmail;
     }
 
     /**
@@ -393,32 +415,44 @@ public class StudentData extends Student implements Cloneable {
     }
 
     /**
-     * Changes the value of the number of years a student has participated in FBLA, updating the
-     * database if necessary
+     * Changes the value of the number of years a student has participated in FBLA
      *
      * @param yearsDone The new number of years done
      */
     public void setYearsDone(@NotNull final short yearsDone) {
-        if (this.yearsDone == 0) {
-            this.yearsDone = yearsDone;
-        } else {
-            short finalYears;
-            if (email == null) {
-                finalYears = MySQLMethods.selectTrackerShort(getFirstName(), getLastName(), getStudentID(), "yearsDone");
-            } else finalYears = yearsDone;
-            updateQuery("yearsDone", Short.toString(finalYears));
-            this.yearsDone = finalYears;
-        }
+        this.yearsDone = yearsDone;
     }
 
     /**
-     * Changes the value of the number of years a student has participated in FBLA, updating the
-     * database if necessary
+     * Changes the value of the number of years a student has participated in FBLA
      *
      * @param yearsDone The new number of years done
      */
     public void setYearsDone(String yearsDone) {
         setYearsDone(Short.parseShort(yearsDone));
+    }
+
+    /**
+     * Updates the number of years a student has participated in the FBLA chapter in the backend database
+     *
+     * @param yearsDone The new number of years done
+     */
+    public void updateYearsDone(short yearsDone) {
+        short finalYears;
+        if (email == null) {
+            finalYears = MySQLMethods.selectTrackerShort(getFirstName(), getLastName(), getStudentID(), "yearsDone");
+        } else finalYears = yearsDone;
+        updateQuery("yearsDone", Short.toString(finalYears));
+        this.yearsDone = finalYears;
+    }
+
+    /**
+     * Updates the number of years a student has participated in the FBLA chapter in the backend database
+     *
+     * @param yearsDone The new number of years done
+     */
+    public void updateYearsDone(String yearsDone) {
+        updateYearsDone(Short.parseShort(yearsDone));
     }
 
     public boolean isFreshman() {
@@ -529,70 +563,53 @@ public class StudentData extends Student implements Cloneable {
     }
 
     /**
-     * Changes the Student's First Name, checking to see if the backend database must be changes as well
+     * Updates the first name in the backend database
      *
-     * @param firstName the new first name
+     * @param firstName The new First Name
      */
-    @Override
-    public void setFirstName(@NotNull final String firstName) {
-        if (getFirstName() == null) {
-            super.setFirstName(firstName);
-        } else {
-            String finalFirstName;
-            if (email == null) {
-                finalFirstName = "";
-            } else finalFirstName = firstName;
-            assert finalFirstName != null;
-            MySQLMethods.updateFirstName(getFirstName(), getLastName(), getStudentID(), finalFirstName);
-            super.setFirstName(finalFirstName);
-        }
+    public void updateFirstName(String firstName) {
+        String finalFirstName;
+        if (firstName == null) {
+            finalFirstName = "";
+        } else finalFirstName = firstName;
+        MySQLMethods.updateFirstName(getFirstName(), getLastName(), getStudentID(), finalFirstName);
+        setFirstName(firstName);
     }
 
     /**
-     * Changes the last name of a student and updates the database if necessary
+     * Updates the Last Name in the backend database
      *
-     * @param lastName the new Last Name
+     * @param lastName The new Last Name
      */
-    @Override
-    public void setLastName(@NotNull final String lastName) {
-        if (getLastName() == null) {
-            super.setLastName(lastName);
-        } else {
-            String finalLastName;
-            if (email == null) {
-                finalLastName = "";
-            } else finalLastName = lastName;
-            assert finalLastName != null;
-            MySQLMethods.updateLastName(getFirstName(), getLastName(), getStudentID(), lastName);
-            super.setLastName(finalLastName);
-        }
+    public void updateLastName(String lastName) {
+        String finalLastName;
+        if (lastName == null) {
+            finalLastName = "";
+        } else finalLastName = lastName;
+        MySQLMethods.updateLastName(getFirstName(), getLastName(), getStudentID(), lastName);
+        setLastName(finalLastName);
     }
 
     /**
-     * Changes the StudentID of a student, updating the database if necessary
+     * Updates the Student ID in the backend database
+     *
+     * @param studentID The new Student ID
+     */
+    public void updateStudentID(int studentID) {
+        int finalStudentID;
+        if (studentID == 0) {
+            finalStudentID = MySQLMethods.selectTrackerInt(getFirstName(), getLastName(), getStudentID(), "studentID");
+        } else finalStudentID = studentID;
+        MySQLMethods.updateStudentID(getFirstName(), getLastName(), getStudentID(), finalStudentID);
+    }
+
+    /**
+     * Updates the Student ID in the backend database
      *
      * @param studentID the new Student ID
      */
-    @Override
-    public void setStudentID(@NotNull final int studentID) {
-        if (getStudentID() != 0) {
-            int finalStudentID;
-            if (studentID == 0) {
-                finalStudentID = MySQLMethods.selectTrackerInt(getFirstName(), getLastName(), getStudentID(), "studentID");
-            } else finalStudentID = studentID;
-            assert !(finalStudentID == 0);
-            MySQLMethods.updateStudentID(getFirstName(), getLastName(), getStudentID(), studentID);
-        }
-        super.setStudentID(studentID);
-    }
-
-    /**
-     * Changes the StudentID of a student, updating the database if necessary
-     *
-     * @param studentID the new Student ID
-     */
-    public void setStudentID(String studentID) {
-        setStudentID(Integer.parseInt(studentID));
+    public void updateStudentID(String studentID) {
+        updateStudentID(Integer.parseInt(studentID));
     }
 
     /**
