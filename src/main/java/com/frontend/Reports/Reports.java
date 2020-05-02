@@ -17,6 +17,8 @@ import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -86,7 +88,7 @@ public class Reports extends VerticalLayout {
     /**
      * Prints out two lines in the data board to symbolize the next section
      *
-     * @param dataBoard The databoard with the data
+     * @param dataBoard The data board with the data
      */
     public static void nextSection(Board dataBoard) {
         //Adding two lines to signify the end of a section
@@ -141,6 +143,7 @@ public class Reports extends VerticalLayout {
      */
     public void generateIndividualReport() {
         removeAll();
+        groupReport.setText("Generate Group Report Instead");
         FormLayout form = new FormLayout();
         form.setResponsiveSteps(
                 new ResponsiveStep("20em", 1),
@@ -199,7 +202,7 @@ public class Reports extends VerticalLayout {
             form.add(datePicker, 2);
         });
 
-        form.add(groupReport, 1);
+        form.add(groupReport, 3);
         form.add(studentSelect, 2);
         form.add(dateOption, 1);
 
@@ -207,7 +210,6 @@ public class Reports extends VerticalLayout {
         HorizontalLayout full = new HorizontalLayout();
         //Adds the form to the layout
         full.add(form);
-//        full.setSpacing(true);
         full.setJustifyContentMode(JustifyContentMode.CENTER);
         full.setWidth("60em ");
 
@@ -221,18 +223,29 @@ public class Reports extends VerticalLayout {
         actions.setAlignItems(Alignment.CENTER);
         actions.setAlignSelf(Alignment.CENTER);
 
-        save.addClickListener(e -> {
+        save.addClickListener(buttonClickEvent -> {
+            Notification.show("Your selection is being processed...");
             try {
                 individualReport(selectedStudent[0], startingDate[0]);
-            } catch (NullPointerException npe) {
+            } catch (NullPointerException e) {
                 individualReport(selectedStudent[0], Date.optionToDate(startingDateOption[0]));
             }
+            Notification success = new Notification();
+            success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            Label succeeded = new Label("The Report Was Generated!");
+            success.add(succeeded);
+            success.setDuration(3000);
+            success.open();
         });
         save.addClickShortcut(Key.ENTER);
 
         reset.addClickListener(e -> {
             studentSelect.setValue(null);
-            form.remove(datePicker);
+            try {
+                form.remove(datePicker);
+            } catch (Exception exception) {
+                //Do Nothing because there never was datePicker
+            }
         });
 
         actions.setJustifyContentMode(JustifyContentMode.CENTER);
@@ -244,6 +257,7 @@ public class Reports extends VerticalLayout {
      */
     public void generateGroupReport() {
         removeAll();
+        individualReport.setText("Generate Individual Report Instead");
         FormLayout form = new FormLayout();
         form.setResponsiveSteps(
                 new ResponsiveStep("20em", 1),
@@ -257,7 +271,14 @@ public class Reports extends VerticalLayout {
         add(individualReport, rangeSelector, selector);
         selector.addClickListener(onClick -> {
             remove(selector);
+            Notification.show("Your selection is being processed...");
             groupReport(rangeSelector.getValue());
+            Notification success = new Notification();
+            success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            Label succeeded = new Label("The Report Was Generated!");
+            success.add(succeeded);
+            success.setDuration(3000);
+            success.open();
         });
         setAlignItems(Alignment.CENTER);
         setAlignSelf(Alignment.CENTER);
@@ -355,37 +376,39 @@ public class Reports extends VerticalLayout {
 
         //Adding double lines to indicate the end of a section
         nextSection(dataBoard);
-
         H1 eventDetails = new H1("Event Details");
         dataBoard.addRow(eventDetails);
-        Grid<Event> eventGrid = new Grid<>();
-        eventGrid.setItems(eventsList);
-        eventGrid.addColumn(Event::getEventName, "Name", "EventName").setHeader("Event Name");
-        eventGrid.addColumn(Event::getHours, "double", "hours").setHeader("Event Hours");
-        eventGrid.addColumn(Event::getDate, "Date").setHeader("Event Date");
 
-        //Adjusts Column Sizes Automatically based on data inside
-        for (Grid.Column<Event> al : eventGrid.getColumns()) {
-            al.setAutoWidth(true);
-        }
+        if (eventsList.size() > 0) {
+            Grid<Event> eventGrid = new Grid<>();
+            eventGrid.setItems(eventsList);
+            eventGrid.addColumn(Event::getEventName, "Name", "EventName").setHeader("Event Name");
+            eventGrid.addColumn(Event::getHours, "double", "hours").setHeader("Event Hours");
+            eventGrid.addColumn(Event::getDate, "Date").setHeader("Event Date");
 
-        eventGrid.setHeightByRows(true);
-        eventGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
-                GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+            //Adjusts Column Sizes Automatically based on data inside
+            for (Grid.Column<Event> al : eventGrid.getColumns()) {
+                al.setAutoWidth(true);
+            }
 
-        eventGrid.setMultiSort(true);
+            eventGrid.setHeightByRows(true);
+            eventGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
+                    GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
 
-        dataBoard.addRow(eventGrid);
-        if (Event.monthsInRange(eventsList.get(0).getDate(), eventsList.get(eventsList.size() - 1).getDate()) > 1) {
-            Button viewChart = new Button("Show Monthly Hour Graph");
-            Row questionRow = dataBoard.addRow(viewChart);
-            viewChart.addClickListener(onClick -> {
-                Chart hourLineGraph = Charts.monthLineGraph("Hours per Month", eventsList);
-                dataBoard.add(new Html("<hr>"));
-                dataBoard.add(hourLineGraph);
-                dataBoard.removeRow(questionRow);
-            });
-        }
+            eventGrid.setMultiSort(true);
+
+            dataBoard.addRow(eventGrid);
+            if (Event.monthsInRange(eventsList.get(0).getDate(), eventsList.get(eventsList.size() - 1).getDate()) > 1) {
+                Button viewChart = new Button("Show Monthly Hour Graph");
+                Row questionRow = dataBoard.addRow(viewChart);
+                viewChart.addClickListener(onClick -> {
+                    Chart hourLineGraph = Charts.monthLineGraph("Hours per Month", eventsList);
+                    dataBoard.add(new Html("<hr>"));
+                    dataBoard.add(hourLineGraph);
+                    dataBoard.removeRow(questionRow);
+                });
+            }
+        } else dataBoard.addRow(new H3("There are no events in the selected range"));
 
         add(dataBoard);
     }
