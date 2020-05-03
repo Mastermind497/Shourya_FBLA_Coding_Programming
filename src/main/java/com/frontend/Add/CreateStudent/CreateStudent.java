@@ -5,10 +5,10 @@ import com.frontend.MainView;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.checkbox.CheckboxGroup;
+import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
@@ -36,8 +36,6 @@ import static com.backend.MySQLMethods.selectTrackerString;
 @PageTitle("Create a Student | FBLA Genie")
 @PreserveOnRefresh
 public class CreateStudent extends VerticalLayout {
-    private static int count = 0;
-
     /**
      * The Overall Path to create a new Student
      */
@@ -92,53 +90,11 @@ public class CreateStudent extends VerticalLayout {
         communityServiceCategoryField.setPlaceholder("CSA Community (50 Hours)");
         communityServiceCategoryField.setLabel("Community Service Category");
 
-        //Will state number of years
-        Div numberOfYears = new Div();
-        numberOfYears.setText("Current Number of Years: " + count);
-
         //Vertically Aligned Checkboxes for years done
-        VerticalLayout checkBoxes = new VerticalLayout();
-        Checkbox freshman = new Checkbox("9th Grade");
-        freshman.addValueChangeListener(event -> {
-            if (freshman.getValue())
-                addToCount();
-            else if (!freshman.getValue()) {
-                removeFromCount();
-            }
-            numberOfYears.setText("Currently Selected Number of Years Done: " + count);
-        });
-        Checkbox sophomore = new Checkbox("10th Grade");
-        sophomore.addValueChangeListener(event -> {
-            if (sophomore.getValue())
-                addToCount();
-            else if (!sophomore.getValue()) {
-                removeFromCount();
-            }
-            numberOfYears.setText("Currently Selected Number of Years Done: " + count);
-        });
-        Checkbox junior = new Checkbox("11th Grade");
-        junior.addValueChangeListener(event -> {
-            if (junior.getValue())
-                addToCount();
-            else if (!junior.getValue()) {
-                removeFromCount();
-            }
-            numberOfYears.setText("Currently Selected Number of Years Done: " + count);
-        });
-        Checkbox senior = new Checkbox("12th Grade");
-        senior.addValueChangeListener(event -> {
-            if (senior.getValue())
-                addToCount();
-            else if (!senior.getValue()) {
-                removeFromCount();
-            }
-            numberOfYears.setText("Currently Selected Number of Years Done: " + count);
-        });
-        checkBoxes.add("Grade Levels Participated in FBLA (Including This Year)");
-        checkBoxes.add(freshman, sophomore, junior, senior);
-        checkBoxes.setPadding(false);
-        checkBoxes.setSpacing(false);
-        checkBoxes.setMargin(false);
+        CheckboxGroup<String> checkboxes = new CheckboxGroup<>();
+        checkboxes.setLabel("Grades in FBLA (Including Current)");
+        checkboxes.setItems("9th Grade", "10th Grade", "11th Grade", "12th Grade");
+        checkboxes.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
 
         //Makes all components required
         firstNameField.setRequiredIndicatorVisible(true);
@@ -155,8 +111,7 @@ public class CreateStudent extends VerticalLayout {
         addStudentForm.add(emailField, 2);
         addStudentForm.add(gradeField, 1);
         addStudentForm.add(communityServiceCategoryField, 1);
-        addStudentForm.add(checkBoxes, 1);
-        addStudentForm.add(numberOfYears, 1);
+        addStudentForm.add(checkboxes, 1);
 
         //Adds the Form to the layout, keeping padding and spacing to keep things looking clean and cozy
         full.add(addStudentForm);
@@ -209,14 +164,9 @@ public class CreateStudent extends VerticalLayout {
 
         binder.forField(communityServiceCategoryField).bind(StudentData::getCommunityServiceCategory, StudentData::setCommunityServiceCategory);
 
-        binder.forField(freshman).bind(StudentData::isFreshman, StudentData::setFreshman);
-        binder.forField(sophomore).bind(StudentData::isSophomore, StudentData::setSophomore);
-        binder.forField(junior).bind(StudentData::isJunior, StudentData::setJunior);
-        binder.forField(senior).bind(StudentData::isSenior, StudentData::setSenior);
-
         //add listeners for the buttons
         save.addClickListener(event -> {
-            if (count < 1) {
+            if (checkboxes.getValue().size() < 1) {
                 Notification invalid = new Notification();
                 invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
                 Label failed = new Label("Years Done Can Not Be Less Than 1");
@@ -233,16 +183,16 @@ public class CreateStudent extends VerticalLayout {
                 emailField.setErrorMessage("Not A Valid Email Address");
             } else if (binder.writeBeanIfValid(student)) {
                 if (selectTrackerString(student.getFirstName(), student.getLastName(), student.getStudentID(), "firstName") == null) {
-                    student.setYearsDone((short) count);
+                    student.setYearsDone((short) checkboxes.getValue().size());
                     student.createStudent();
                     Notification.show("Your data is being processed...");
                     binder.readBean(null);
-                    Notification invalid = new Notification();
-                    invalid.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                    Label failed = new Label("The Student Was Successfully Added!");
-                    invalid.add(failed);
-                    invalid.setDuration(3000);
-                    invalid.open();
+                    Notification success = new Notification();
+                    success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                    Label succeeded = new Label("The Student Was Successfully Added!");
+                    success.add(succeeded);
+                    success.setDuration(3000);
+                    success.open();
                     communityServiceCategoryField.setInvalid(false);
                 } else {
                     Notification invalid = new Notification();
@@ -269,13 +219,5 @@ public class CreateStudent extends VerticalLayout {
 
         add(full, actions);
         setAlignItems(Alignment.CENTER);
-    }
-
-    private static void addToCount() {
-        count++;
-    }
-
-    private static void removeFromCount() {
-        count--;
     }
 }

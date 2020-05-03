@@ -37,17 +37,7 @@ public class StudentData extends Student implements Cloneable {
      * The number of years this Student participated in FBLA
      */
     private short yearsDone;
-    /**
-     * A Specific Instance Variable designed to reduce errors in the backend between creating a
-     * student and updating a student's information
-     */
-    private boolean fromSelect = false;
 
-
-    private boolean freshman;
-    private boolean sophomore;
-    private boolean junior;
-    private boolean senior;
 
     /**
      * A Constructor which allows the use of
@@ -55,7 +45,6 @@ public class StudentData extends Student implements Cloneable {
      */
     public StudentData(boolean fromSelect) {
         this();
-        this.fromSelect = fromSelect;
     }
 
     /**
@@ -455,48 +444,13 @@ public class StudentData extends Student implements Cloneable {
         updateYearsDone(Short.parseShort(yearsDone));
     }
 
-    public boolean isFreshman() {
-        return freshman;
-    }
-
-    public void setFreshman(boolean freshman) {
-        this.freshman = freshman;
-        if (this.freshman)
-            yearsDone++;
-        else yearsDone--;
-    }
-
-    public boolean isSophomore() {
-        return sophomore;
-    }
-
-    public void setSophomore(boolean sophomore) {
-        this.sophomore = sophomore;
-        if (this.sophomore)
-            yearsDone++;
-        else yearsDone--;
-    }
-
-    public boolean isJunior() {
-        return junior;
-    }
-
-    public void setJunior(boolean junior) {
-        this.junior = junior;
-        if (this.junior)
-            yearsDone++;
-        else yearsDone--;
-    }
-
-    public boolean isSenior() {
-        return senior;
-    }
-
-    public void setSenior(boolean senior) {
-        this.senior = senior;
-        if (this.senior) {
-            yearsDone++;
-        } else yearsDone--;
+    /**
+     * Updates the number of years a student has participated in the FBLA chapter in the backend database
+     *
+     * @param yearsDone The new number of years done
+     */
+    public void updateYearsDone(int yearsDone) {
+        updateYearsDone((short) yearsDone);
     }
 
     /**
@@ -628,7 +582,7 @@ public class StudentData extends Student implements Cloneable {
     }
 
     @Override
-    protected StudentData clone() throws CloneNotSupportedException {
-        return (StudentData) super.clone();
+    public StudentData clone() {
+        return getStudent().getStudentData();
     }
 }

@@ -6,18 +6,31 @@ import com.backend.Student;
 import com.backend.StudentData;
 import com.frontend.MainView;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
+import com.vaadin.flow.component.radiobutton.RadioGroupVariant;
+import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
@@ -58,6 +71,7 @@ public class GetStudentInformation extends VerticalLayout {
         //Creates a Grid with Inline editing and Sorting
         grid = setUpStudentGrid(data);
         grid.addComponentColumn(this::expandButton).setHeader("Expand");
+        grid.addComponentColumn(this::editStudent).setHeader("Edit");
         grid.addComponentColumn(this::deleteButton).setHeader("Delete");
 
         //Makes them AutoWidth, which fixes width for data length
@@ -168,7 +182,7 @@ public class GetStudentInformation extends VerticalLayout {
             layout.add(studentInfo);
             layout.setAlignItems(FlexComponent.Alignment.CENTER);
             layout.setWidth("73em");
-            layout.setHeight("30em");
+            layout.setMaxHeight("30em");
             fullData.add(layout);
             fullData.setPosition(Notification.Position.MIDDLE);
             fullData.open();
@@ -181,6 +195,159 @@ public class GetStudentInformation extends VerticalLayout {
         button.addThemeVariants();
         button.setIcon(VaadinIcon.EXPAND_FULL.create());
         return button;
+    }
+
+    /**
+     * Creates a button which allows editing a student in a form layout
+     *
+     * @param student The Student to Edit
+     * @return A Button with this functionality
+     */
+    public Button editStudent(Student student) {
+        StudentData toEdit = student.getStudentData();
+
+        Button editor = new Button("Edit", VaadinIcon.EDIT.create());
+
+        Notification editStudent = new Notification();
+        editStudent.setPosition(Notification.Position.MIDDLE);
+
+        VerticalLayout layout = new VerticalLayout();
+        layout.setWidth("73em");
+        layout.setMaxHeight("30em");
+        layout.setAlignItems(Alignment.CENTER);
+
+        FormLayout editForm = new FormLayout();
+        editForm.setResponsiveSteps(
+                new ResponsiveStep("25em", 1),
+                new ResponsiveStep("32em", 2),
+                new ResponsiveStep("40em", 3));
+
+        /* Make Different Input Fields */
+        TextField firstNameField = new TextField("First Name");
+        firstNameField.setValue(toEdit.getFirstName());
+        firstNameField.setValueChangeMode(ValueChangeMode.EAGER);
+
+        TextField lastNameField = new TextField("Last Name");
+        lastNameField.setValue(toEdit.getLastName());
+        lastNameField.setValueChangeMode(ValueChangeMode.EAGER);
+
+        IntegerField studentIDField = new IntegerField("Student ID");
+        studentIDField.setValue(toEdit.getStudentID());
+        studentIDField.setValueChangeMode(ValueChangeMode.EAGER);
+
+        IntegerField gradeField = new IntegerField("Grade");
+        gradeField.setValue(toEdit.getGradeInt());
+        gradeField.setHasControls(true);
+        gradeField.setStep(1);
+        gradeField.setMin(6);
+        gradeField.setMax(12);
+        gradeField.setValueChangeMode(ValueChangeMode.EAGER);
+        gradeField.setErrorMessage("That is not a valid grade");
+
+        EmailField emailField = new EmailField("Email");
+        emailField.setValue(toEdit.getEmail());
+        emailField.setClearButtonVisible(true);
+        emailField.setErrorMessage("Please enter a valid email address");
+        emailField.setValueChangeMode(ValueChangeMode.EAGER);
+
+        RadioButtonGroup<String> communityServiceCategoryField = new RadioButtonGroup<>();
+        communityServiceCategoryField.setLabel("Community Service Award Category");
+        communityServiceCategoryField.setItems("CSA Community (50 Hours)", "CSA Service (200 Hours)",
+                "CSA Achievement (500 Hours)");
+        communityServiceCategoryField.setValue(toEdit.getCommunityServiceCategory());
+        communityServiceCategoryField.addThemeVariants(RadioGroupVariant.LUMO_VERTICAL);
+
+        NumberField communityServiceHoursField = new NumberField("Community Service Hours");
+        communityServiceHoursField.setValue(toEdit.getCommunityServiceHours());
+        communityServiceHoursField.setMin(0);
+        communityServiceHoursField.setStep(0.5d);
+        communityServiceHoursField.setHasControls(true);
+
+        IntegerField yearsDoneField = new IntegerField("Years Done");
+        yearsDoneField.setValue((int) toEdit.getYearsDone());
+        yearsDoneField.setMin(1);
+        yearsDoneField.setMax(4);
+        yearsDoneField.setHasControls(true);
+        yearsDoneField.setStep(1);
+
+        editForm.add(firstNameField, 1);
+        editForm.add(lastNameField, 1);
+        editForm.add(studentIDField, 1);
+        editForm.add(emailField, 2);
+        editForm.add(gradeField, 1);
+        editForm.add(communityServiceCategoryField, 1);
+        editForm.add(communityServiceHoursField, 1);
+        editForm.add(yearsDoneField, 1);
+
+        HorizontalLayout actions = new HorizontalLayout();
+        Button save = new Button("Save");
+        Button reset = new Button("Reset");
+        Button cancel = new Button("Cancel");
+        actions.add(save, cancel, reset);
+        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        reset.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        actions.setAlignItems(Alignment.CENTER);
+        actions.setAlignSelf(Alignment.CENTER);
+        save.addClickShortcut(Key.ENTER);
+        cancel.addClickShortcut(Key.ESCAPE);
+
+        save.addClickListener(buttonClickEvent -> {
+            try {
+                toEdit.updateFirstName(firstNameField.getValue());
+                toEdit.updateLastName(lastNameField.getValue());
+                toEdit.updateStudentID(studentIDField.getValue());
+                toEdit.updateGrade(gradeField.getValue());
+                toEdit.updateEmail(emailField.getValue());
+                toEdit.updateCommunityServiceCategory(communityServiceCategoryField.getValue());
+                if (communityServiceHoursField.getValue() > 0)
+                    toEdit.updateCommunityServiceHours(communityServiceHoursField.getValue());
+                else toEdit.updateCommunityServiceHours(0);
+                toEdit.updateYearsDone(yearsDoneField.getValue());
+
+                Notification success = new Notification();
+                success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                Label succeeded = new Label("The Student Was Successfully Updated!");
+                success.add(succeeded);
+                success.setDuration(3000);
+                success.open();
+            } catch (Exception e) {
+                Notification invalid = new Notification();
+                invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                Label failed = new Label("There was an error when updating the student. Changes may be incomplete.");
+                invalid.add(failed);
+                invalid.setDuration(3000);
+                invalid.open();
+            }
+            grid.setItems(MySQLMethods.getStudentData());
+            editStudent.close();
+        });
+
+        cancel.addClickListener(buttonClickEvent -> editStudent.close());
+
+        reset.addClickListener(buttonClickEvent -> {
+            firstNameField.setValue(toEdit.getFirstName());
+            lastNameField.setValue(toEdit.getLastName());
+            studentIDField.setValue(toEdit.getStudentID());
+            gradeField.setValue(toEdit.getGradeInt());
+            emailField.setValue(toEdit.getEmail());
+            communityServiceCategoryField.setValue(toEdit.getCommunityServiceCategory());
+            communityServiceHoursField.setValue(toEdit.getCommunityServiceHours());
+            yearsDoneField.setValue((int) toEdit.getYearsDone());
+
+            Notification success = new Notification();
+            success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            Label succeeded = new Label("The Data was Successfully Reset");
+            success.add(succeeded);
+            success.setDuration(3000);
+            success.open();
+        });
+
+        layout.add(editForm, actions);
+
+        editStudent.add(layout);
+
+        editor.addClickListener(buttonClickEvent -> editStudent.open());
+        return editor;
     }
 
     /**

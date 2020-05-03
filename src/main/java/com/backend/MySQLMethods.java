@@ -979,6 +979,7 @@ public class MySQLMethods {
      * @param newFirstName The Student's new First Name
      */
     public static void updateFirstName(String firstName, String lastName, int studentID, String newFirstName) {
+        if (firstName.equals(newFirstName)) return;
         try {
             connection = getConnection();
             String fullName = makeName(firstName, lastName, studentID);
@@ -1015,6 +1016,7 @@ public class MySQLMethods {
      * @param newLastName The New Last name of the Student
      */
     public static void updateLastName(String firstName, String lastName, int studentID, String newLastName) {
+        if (lastName.equals(newLastName)) return;
         try {
             connection = getConnection();
             String fullName = makeName(firstName, lastName, studentID);
@@ -1052,6 +1054,7 @@ public class MySQLMethods {
      * @param newStudentID The Student's New Student ID
      */
     public static void updateStudentID(String firstName, String lastName, int studentID, int newStudentID) {
+        if (studentID == newStudentID) return;
         try {
             connection = getConnection();
             String fullName = makeName(firstName, lastName, studentID);
@@ -1091,6 +1094,7 @@ public class MySQLMethods {
      * @throws Exception For MySQL Exceptions
      */
     public static void updateTracker(Student initialStudent, StudentData newData) throws Exception {
+        if (initialStudent.equals(newData)) return;
         String fullName = initialStudent.getFullName();
 
         //Rounds hours to the nearest hundredth
