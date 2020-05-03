@@ -20,7 +20,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     /**
      * The main login form
      */
-    LoginForm login = new LoginForm();
+    final LoginForm login = new LoginForm();
 
     /**
      * Sets up the Login View and adds it to the its page
