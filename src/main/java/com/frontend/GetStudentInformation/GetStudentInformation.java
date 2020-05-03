@@ -4,9 +4,11 @@ import com.backend.Event;
 import com.backend.MySQLMethods;
 import com.backend.Student;
 import com.backend.StudentData;
+import com.frontend.Add.AddHours.AddHours;
 import com.frontend.MainView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -188,6 +190,8 @@ public class GetStudentInformation extends VerticalLayout {
             //spacer for close button
             layout.add(new H6(" "));
             layout.add(studentInfo);
+            //Adds a Button to Add Events
+            layout.add(new Button("Add a New Event", buttonClickEvent1 -> UI.getCurrent().navigate(AddHours.class)));
             layout.setAlignItems(FlexComponent.Alignment.CENTER);
             layout.setWidth("73em");
             layout.setMaxHeight("30em");
