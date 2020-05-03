@@ -92,7 +92,7 @@ public class Documentation extends VerticalLayout {
                         new Text(
                                 "Viewing the information is quite simple. After information is added to view, all that needs to be done is navigate to \" View and Edit Students\". " +
                                         "Once that is done, the student information is visible first. If you want to see a student's event history, all you need to do is click the expand button in the " +
-                                        "expand column and a popup will cover the screen, listing all of the events that said student has participated iǹ̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀̀. "
+                                        "expand column and a popup will cover the screen, listing all of the events that said student has participated in. "
                         ),
                         new RouterLink(
                                 "Navigate to \"View and Edit Students\"", GetStudentInformation.class

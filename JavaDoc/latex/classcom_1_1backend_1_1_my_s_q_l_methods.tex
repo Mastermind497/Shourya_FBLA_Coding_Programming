@@ -1,0 +1,944 @@
+\hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods}{}\doxysection{com.\+backend.\+My\+S\+Q\+L\+Methods Class Reference}
+\label{classcom_1_1backend_1_1_my_s_q_l_methods}\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+
+
+This Class will hold all the methods to allow manipulation of the Data in the Database.  
+
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a651ef0fcd99e7108ed4e228decfd378e}{create\+Database}} ()
+\begin{DoxyCompactList}\small\item\em This method runs at the start of any Query. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a1d353775534469d068cd87a118700465}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a1d353775534469d068cd87a118700465}} 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a1d353775534469d068cd87a118700465}{create\+Table}} ()
+\begin{DoxyCompactList}\small\item\em This method creates the main table which would store student information and current hours. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a604c261687e1fadd1389fb0821830441}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a604c261687e1fadd1389fb0821830441}} 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a604c261687e1fadd1389fb0821830441}{create\+Password\+Table}} ()
+\begin{DoxyCompactList}\small\item\em This method creates the password Table which will be implemented in the future to allow multiple users to access different layers of security. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_ae431da17747434acaf1e86eb12b13749}{create\+Student\+Table}} (String first\+Name, String last\+Name, int student\+ID)
+\begin{DoxyCompactList}\small\item\em This method creates a specific student table. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a4bf4c32cbae3396ffced72d9fbd26c0b}{create\+Student}} (String first\+Name, String last\+Name, int student\+ID, short grade, String community\+Service\+Category, String email, short years\+Done)
+\begin{DoxyCompactList}\small\item\em This method makes it very easy to create a student in the main tracker table. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_abdc2915539b26f6c66890e13bdae3678}{add\+Student\+Hours}} (\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} student, String event\+Name, double hours, int year, int month, int day)  throws Exception 
+\begin{DoxyCompactList}\small\item\em This adds events and hours into a students unique table. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a2c0786d5a5e67e8407748283967e6e17}{add\+User\+Pass}} (String username, String hashed\+Password)  throws Exception 
+\begin{DoxyCompactList}\small\item\em This stores the password in a database. \end{DoxyCompactList}\item 
+static String \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a0e6df2a99940b0e89f1bd3307c7ea939}{select\+Pass}} (String username)
+\begin{DoxyCompactList}\small\item\em Gets the hashed password given a username. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a5ea8c0102da63bac835eeed8004b5cb5}{select\+Tracker\+Int}} (String first\+Name, String last\+Name, int student\+ID, String data)
+\begin{DoxyCompactList}\small\item\em This allows someone to get specific integer-\/type data from the Main Table. \end{DoxyCompactList}\item 
+static String \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a2211ee2bc33ce3aa2bb5e6df808a6eec}{select\+Tracker\+String}} (String first\+Name, String last\+Name, int student\+ID, String data)
+\begin{DoxyCompactList}\small\item\em This allows someone to get Specific String-\/type data from the Main table. \end{DoxyCompactList}\item 
+static double \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a3e02b4367852fd0c2e05ea93e369d49f}{select\+Tracker\+Double}} (String first\+Name, String last\+Name, int student\+ID, String data)
+\begin{DoxyCompactList}\small\item\em This allows someone to get specific Double-\/\+Type data from the Main Table. \end{DoxyCompactList}\item 
+static short \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_ab28da8638869638402a3ac88c3bc6b6b}{select\+Tracker\+Short}} (String first\+Name, String last\+Name, int student\+ID, String data)
+\begin{DoxyCompactList}\small\item\em This allows someone to get specific short-\/type data from the Main Table. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{classcom_1_1backend_1_1_student_data}{Student\+Data}} \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a2f5fbcc309e7d8df57521f82c2db3ee1}{select\+Tracker\+As\+Student}} (\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} student)
+\begin{DoxyCompactList}\small\item\em This method gets the data of a student with the information listed, but returns it all in its special class as a \mbox{\hyperlink{classcom_1_1backend_1_1_student_data}{Student\+Data}} object. \end{DoxyCompactList}\item 
+static List$<$ \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} $>$ \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_aa3fec3206ddaacf98200e4d441419a54}{get\+Students}} ()
+\begin{DoxyCompactList}\small\item\em Generates a list of all students being tracked. \end{DoxyCompactList}\item 
+static List$<$ \mbox{\hyperlink{classcom_1_1backend_1_1_student_data}{Student\+Data}} $>$ \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_aa8e1936cd839e31280f3e0a482af97c3}{get\+Student\+Data}} ()
+\begin{DoxyCompactList}\small\item\em Generates a List of All Students being tracked, as well as their hours and other information. \end{DoxyCompactList}\item 
+static List$<$ \mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}} $>$ \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a5e8e44b04499ce45084b21923c2f0dc5}{select\+Student\+Events\+As\+Event}} (String first\+Name, String last\+Name, int student\+ID)
+\begin{DoxyCompactList}\small\item\em This allows access to all of a student\textquotesingle{}s events. \end{DoxyCompactList}\item 
+static List$<$ \mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}} $>$ \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a60a3b6e02c9e019b486613e92d16f394}{select\+Student\+Events\+As\+Event}} (\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} student)
+\begin{DoxyCompactList}\small\item\em This allows access to all of a student\textquotesingle{}s events. \end{DoxyCompactList}\item 
+static List$<$ \mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}} $>$ \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_aaa0ac3c51f88d28cb592f4e0d4029de0}{select\+Student\+Events\+In\+Range}} (\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} student, \mbox{\hyperlink{classcom_1_1backend_1_1_date}{Date}} start\+Date)
+\begin{DoxyCompactList}\small\item\em This is mainly used in reports, where we want to get dates in a certain range. \end{DoxyCompactList}\item 
+static List$<$ \mbox{\hyperlink{classcom_1_1backend_1_1_student_data}{Student\+Data}} $>$ \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a92a87c57b9b2cef35d1af670e174485a}{get\+Student\+Data}} (String range)
+\begin{DoxyCompactList}\small\item\em A List of All Students with their data, but limiting hours to only those earned in a specified range. \end{DoxyCompactList}\item 
+static double \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a70aa2faa30794c20c0be4936dd11414e}{get\+Hours\+Week}} (\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} student)
+\begin{DoxyCompactList}\small\item\em Gets the hours a student earned in the past week. \end{DoxyCompactList}\item 
+static double \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a66afd3f8f5a80fcfbd9895c629458fea}{get\+Hours\+Month}} (\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} student)
+\begin{DoxyCompactList}\small\item\em Gets the number of hours a student earned in a Month. \end{DoxyCompactList}\item 
+static double \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a583c5146daf8525d69d04a653ff7ddf0}{get\+Hours\+Year}} (\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} student)
+\begin{DoxyCompactList}\small\item\em Gets the hours a student earned in a year. \end{DoxyCompactList}\item 
+static double \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a9bd00c8386547cf8554339379bf402a7}{get\+Hours\+All}} (\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} student)
+\begin{DoxyCompactList}\small\item\em Gets the the total hours a student has earned their entire time in F\+B\+LA. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a4ce120a6cb4898f30381d7e2604c4aee}{update\+Tracker}} (String first\+Name, String last\+Name, int student\+ID, String data\+Type, String new\+Data)  throws Exception 
+\begin{DoxyCompactList}\small\item\em This updates a value in the Main Table. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_ae9da23679401796c0d3d71eea207592c}{update\+First\+Name}} (String first\+Name, String last\+Name, int student\+ID, String new\+First\+Name)
+\begin{DoxyCompactList}\small\item\em Updates the first name of a \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} in case that needs to be changed. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a0db627fddc17c004ccd8fe4ca7f9668e}{update\+Last\+Name}} (String first\+Name, String last\+Name, int student\+ID, String new\+Last\+Name)
+\begin{DoxyCompactList}\small\item\em Updates the last Name of a \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} in case that needs to be done. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a1e6686ade3606d02e33633353424fcfa}{update\+Student\+ID}} (String first\+Name, String last\+Name, int student\+ID, int new\+Student\+ID)
+\begin{DoxyCompactList}\small\item\em Updates the \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID of a \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} just in case that changes. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_ae70bb695633c92acbd8938ae4b715c76}{update\+Tracker}} (\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} initial\+Student, \mbox{\hyperlink{classcom_1_1backend_1_1_student_data}{Student\+Data}} new\+Data)  throws Exception 
+\begin{DoxyCompactList}\small\item\em Updates the main, general tracking table. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_ae945b324a575c2e5d9964f809b940e41}{update\+Event}} (\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} student, \mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}} old\+Event, \mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}} new\+Event)
+\begin{DoxyCompactList}\small\item\em Updates a student\textquotesingle{}s event. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a14ac0433ea5b7ae8789df7e6596198c0}{delete}} (\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} student)
+\begin{DoxyCompactList}\small\item\em This method deletes a student and his or her respective data table. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_ac7bee8f0cc312ad53b63d5f2e0aedef4}{delete}} (\mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}} event)
+\begin{DoxyCompactList}\small\item\em Deletes an \mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}}. \end{DoxyCompactList}\item 
+static String \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a954b889632969db70db01ba5bb9825cf}{make\+Name}} (String first\+Name, String last\+Name, int student\+ID)
+\begin{DoxyCompactList}\small\item\em This method would be used to make student table names in My\+S\+QL (first\+Name\+\_\+last\+Name\+\_\+student\+ID) \end{DoxyCompactList}\item 
+static String \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_ad906a9f8c93946f645568829f453e8ce}{make\+Name}} (\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} student)
+\begin{DoxyCompactList}\small\item\em Formats the name of a student. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a031a24e80b50f08591bc90a405012152}{number\+Of\+Rows}} (String table\+Name)  throws Exception 
+\begin{DoxyCompactList}\small\item\em Returns the number of rows in a table. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a80c42701d3ceb4c73d9e26126991b52d}{update\+To\+Current\+Date}} (String first\+Name, String last\+Name, int student\+ID)
+\begin{DoxyCompactList}\small\item\em Updates the date in the tracker to the current date for last\+Edited. \end{DoxyCompactList}\item 
+static double \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a2adcf78b8020d2e5b194122d91d444c8}{round}} (double input)
+\begin{DoxyCompactList}\small\item\em Rounds the double to the nearest hundredth. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_addf6f2fd1779157697d81f3b9c14a36a}\label{classcom_1_1backend_1_1_my_s_q_l_methods_addf6f2fd1779157697d81f3b9c14a36a}} 
+static void \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_addf6f2fd1779157697d81f3b9c14a36a}{set\+Up}} ()
+\begin{DoxyCompactList}\small\item\em Runs the necessary methods to set up the tables in case this is the first time the app is running. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a4acacd13f9c03fc56ee5f56f73ce99d3}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a4acacd13f9c03fc56ee5f56f73ce99d3}} 
+static final String \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a4acacd13f9c03fc56ee5f56f73ce99d3}{pw\+Table\+Name}} = \char`\"{}passwords\char`\"{}
+\begin{DoxyCompactList}\small\item\em The Name of the Passwords Table. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a25e3abad986aae4a1f45afda67efbf9a}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a25e3abad986aae4a1f45afda67efbf9a}} 
+static final String \mbox{\hyperlink{classcom_1_1backend_1_1_my_s_q_l_methods_a25e3abad986aae4a1f45afda67efbf9a}{D\+A\+T\+A\+B\+A\+S\+E\+\_\+\+N\+A\+ME}} = \char`\"{}student\+\_\+data\char`\"{}
+\begin{DoxyCompactList}\small\item\em The Name of the Database. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This Class will hold all the methods to allow manipulation of the Data in the Database. 
+
+This uses My\+S\+QL to actively store and edit data.
+
+\begin{DoxyAuthor}{Author}
+Shourya Bansal 
+\end{DoxyAuthor}
+
+
+Definition at line 16 of file My\+S\+Q\+L\+Methods.\+java.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_abdc2915539b26f6c66890e13bdae3678}\label{classcom_1_1backend_1_1_my_s_q_l_methods_abdc2915539b26f6c66890e13bdae3678}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!addStudentHours@{addStudentHours}}
+\index{addStudentHours@{addStudentHours}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{addStudentHours()}{addStudentHours()}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+add\+Student\+Hours (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}}]{student,  }\item[{String}]{event\+Name,  }\item[{double}]{hours,  }\item[{int}]{year,  }\item[{int}]{month,  }\item[{int}]{day }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This adds events and hours into a students unique table. 
+
+At the same time, this updates the hours in the main table
+
+
+\begin{DoxyParams}{Parameters}
+{\em student} & The student getting hours \\
+\hline
+{\em event\+Name} & The Name of the \mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}} Completed \\
+\hline
+{\em hours} & The Length of the \mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}} \\
+\hline
+{\em year} & The Year the \mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}} Was Done \\
+\hline
+{\em month} & The Month of the \mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}} \\
+\hline
+{\em day} & The Day of the \mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}} \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & This is throws in case the Database is not found \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 258 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a2c0786d5a5e67e8407748283967e6e17}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a2c0786d5a5e67e8407748283967e6e17}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!addUserPass@{addUserPass}}
+\index{addUserPass@{addUserPass}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{addUserPass()}{addUserPass()}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+add\+User\+Pass (\begin{DoxyParamCaption}\item[{String}]{username,  }\item[{String}]{hashed\+Password }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This stores the password in a database. 
+
+However, to secure them, they use a hashing function (explained in the documentation) which securely converts the password into an impenetrable String. It is a one way function, thus stopping anyone from figuring out what the password is.
+
+
+\begin{DoxyParams}{Parameters}
+{\em username} & the Username of the user being added \\
+\hline
+{\em hashed\+Password} & the password after hash encryption \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & This is throws in case the Database is not found \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 306 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a651ef0fcd99e7108ed4e228decfd378e}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a651ef0fcd99e7108ed4e228decfd378e}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!createDatabase@{createDatabase}}
+\index{createDatabase@{createDatabase}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{createDatabase()}{createDatabase()}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+create\+Database (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This method runs at the start of any Query. 
+
+It checks if the database has already been created and, if it hasn\textquotesingle{}t, creates it. 
+
+Definition at line 64 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a4bf4c32cbae3396ffced72d9fbd26c0b}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a4bf4c32cbae3396ffced72d9fbd26c0b}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!createStudent@{createStudent}}
+\index{createStudent@{createStudent}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{createStudent()}{createStudent()}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+create\+Student (\begin{DoxyParamCaption}\item[{String}]{first\+Name,  }\item[{String}]{last\+Name,  }\item[{int}]{student\+ID,  }\item[{short}]{grade,  }\item[{String}]{community\+Service\+Category,  }\item[{String}]{email,  }\item[{short}]{years\+Done }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This method makes it very easy to create a student in the main tracker table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Name} & The First Name of the \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} \\
+\hline
+{\em last\+Name} & The Last Name of the \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} \\
+\hline
+{\em student\+ID} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID Number \\
+\hline
+{\em grade} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s Grade Number \\
+\hline
+{\em community\+Service\+Category} & The Category of Award Aimed for by the \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} \\
+\hline
+{\em email} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s Email Address \\
+\hline
+{\em years\+Done} & The number of years of F\+B\+LA Completed \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 208 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_ae431da17747434acaf1e86eb12b13749}\label{classcom_1_1backend_1_1_my_s_q_l_methods_ae431da17747434acaf1e86eb12b13749}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!createStudentTable@{createStudentTable}}
+\index{createStudentTable@{createStudentTable}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{createStudentTable()}{createStudentTable()}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+create\+Student\+Table (\begin{DoxyParamCaption}\item[{String}]{first\+Name,  }\item[{String}]{last\+Name,  }\item[{int}]{student\+ID }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This method creates a specific student table. 
+
+This would allow more specific storage of data, such as data of specific events and such and make it much easier to analyze a students data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Name} & This is the student\textquotesingle{}s First Name \\
+\hline
+{\em last\+Name} & This is the student\textquotesingle{}s Last Name \\
+\hline
+{\em student\+ID} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID Number \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 166 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_ac7bee8f0cc312ad53b63d5f2e0aedef4}\label{classcom_1_1backend_1_1_my_s_q_l_methods_ac7bee8f0cc312ad53b63d5f2e0aedef4}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!delete@{delete}}
+\index{delete@{delete}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{delete()}{delete()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+delete (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}}}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Deletes an \mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & the \mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 1212 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a14ac0433ea5b7ae8789df7e6596198c0}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a14ac0433ea5b7ae8789df7e6596198c0}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!delete@{delete}}
+\index{delete@{delete}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{delete()}{delete()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+delete (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}}]{student }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This method deletes a student and his or her respective data table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em student} & The Deleted \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 1179 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a9bd00c8386547cf8554339379bf402a7}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a9bd00c8386547cf8554339379bf402a7}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!getHoursAll@{getHoursAll}}
+\index{getHoursAll@{getHoursAll}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{getHoursAll()}{getHoursAll()}}
+{\footnotesize\ttfamily static double com.\+backend.\+My\+S\+Q\+L\+Methods.\+get\+Hours\+All (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}}]{student }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Gets the the total hours a student has earned their entire time in F\+B\+LA. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em student} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} being tracked \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The total hours a student earned 
+\end{DoxyReturn}
+
+
+Definition at line 899 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a66afd3f8f5a80fcfbd9895c629458fea}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a66afd3f8f5a80fcfbd9895c629458fea}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!getHoursMonth@{getHoursMonth}}
+\index{getHoursMonth@{getHoursMonth}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{getHoursMonth()}{getHoursMonth()}}
+{\footnotesize\ttfamily static double com.\+backend.\+My\+S\+Q\+L\+Methods.\+get\+Hours\+Month (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}}]{student }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Gets the number of hours a student earned in a Month. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em student} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} being tracked \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The hours the student earned in a month 
+\end{DoxyReturn}
+
+
+Definition at line 835 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a70aa2faa30794c20c0be4936dd11414e}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a70aa2faa30794c20c0be4936dd11414e}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!getHoursWeek@{getHoursWeek}}
+\index{getHoursWeek@{getHoursWeek}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{getHoursWeek()}{getHoursWeek()}}
+{\footnotesize\ttfamily static double com.\+backend.\+My\+S\+Q\+L\+Methods.\+get\+Hours\+Week (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}}]{student }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Gets the hours a student earned in the past week. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em student} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} being found \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The hours the student earned in a week 
+\end{DoxyReturn}
+
+
+Definition at line 803 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a583c5146daf8525d69d04a653ff7ddf0}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a583c5146daf8525d69d04a653ff7ddf0}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!getHoursYear@{getHoursYear}}
+\index{getHoursYear@{getHoursYear}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{getHoursYear()}{getHoursYear()}}
+{\footnotesize\ttfamily static double com.\+backend.\+My\+S\+Q\+L\+Methods.\+get\+Hours\+Year (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}}]{student }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Gets the hours a student earned in a year. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em student} & The student being tracked \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The hours earned in a year 
+\end{DoxyReturn}
+
+
+Definition at line 867 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_aa8e1936cd839e31280f3e0a482af97c3}\label{classcom_1_1backend_1_1_my_s_q_l_methods_aa8e1936cd839e31280f3e0a482af97c3}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!getStudentData@{getStudentData}}
+\index{getStudentData@{getStudentData}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{getStudentData()}{getStudentData()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static List$<$\mbox{\hyperlink{classcom_1_1backend_1_1_student_data}{Student\+Data}}$>$ com.\+backend.\+My\+S\+Q\+L\+Methods.\+get\+Student\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Generates a List of All Students being tracked, as well as their hours and other information. 
+
+\begin{DoxyReturn}{Returns}
+A List of \mbox{\hyperlink{classcom_1_1backend_1_1_student_data}{Student\+Data}} Objects 
+\end{DoxyReturn}
+
+
+Definition at line 632 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a92a87c57b9b2cef35d1af670e174485a}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a92a87c57b9b2cef35d1af670e174485a}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!getStudentData@{getStudentData}}
+\index{getStudentData@{getStudentData}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{getStudentData()}{getStudentData()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static List$<$\mbox{\hyperlink{classcom_1_1backend_1_1_student_data}{Student\+Data}}$>$ com.\+backend.\+My\+S\+Q\+L\+Methods.\+get\+Student\+Data (\begin{DoxyParamCaption}\item[{String}]{range }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+A List of All Students with their data, but limiting hours to only those earned in a specified range. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em range} & The range of time from where hours should be received \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A list of \mbox{\hyperlink{classcom_1_1backend_1_1_student_data}{Student\+Data}} objects 
+\end{DoxyReturn}
+
+
+Definition at line 773 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_aa3fec3206ddaacf98200e4d441419a54}\label{classcom_1_1backend_1_1_my_s_q_l_methods_aa3fec3206ddaacf98200e4d441419a54}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!getStudents@{getStudents}}
+\index{getStudents@{getStudents}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{getStudents()}{getStudents()}}
+{\footnotesize\ttfamily static List$<$\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}$>$ com.\+backend.\+My\+S\+Q\+L\+Methods.\+get\+Students (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Generates a list of all students being tracked. 
+
+\begin{DoxyReturn}{Returns}
+a List of Students 
+\end{DoxyReturn}
+
+
+Definition at line 593 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a954b889632969db70db01ba5bb9825cf}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a954b889632969db70db01ba5bb9825cf}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!makeName@{makeName}}
+\index{makeName@{makeName}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{makeName()}{makeName()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static String com.\+backend.\+My\+S\+Q\+L\+Methods.\+make\+Name (\begin{DoxyParamCaption}\item[{String}]{first\+Name,  }\item[{String}]{last\+Name,  }\item[{int}]{student\+ID }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This method would be used to make student table names in My\+S\+QL (first\+Name\+\_\+last\+Name\+\_\+student\+ID) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Name} & First Name \\
+\hline
+{\em last\+Name} & Last Name \\
+\hline
+{\em student\+ID} & \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+formatted Name 
+\end{DoxyReturn}
+
+
+Definition at line 1254 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_ad906a9f8c93946f645568829f453e8ce}\label{classcom_1_1backend_1_1_my_s_q_l_methods_ad906a9f8c93946f645568829f453e8ce}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!makeName@{makeName}}
+\index{makeName@{makeName}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{makeName()}{makeName()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static String com.\+backend.\+My\+S\+Q\+L\+Methods.\+make\+Name (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}}]{student }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Formats the name of a student. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em student} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} whose name is being formatted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the name in the format of first\+Name\+\_\+last\+Name\+\_\+student\+ID 
+\end{DoxyReturn}
+
+
+Definition at line 1264 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a031a24e80b50f08591bc90a405012152}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a031a24e80b50f08591bc90a405012152}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!numberOfRows@{numberOfRows}}
+\index{numberOfRows@{numberOfRows}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{numberOfRows()}{numberOfRows()}}
+{\footnotesize\ttfamily static int com.\+backend.\+My\+S\+Q\+L\+Methods.\+number\+Of\+Rows (\begin{DoxyParamCaption}\item[{String}]{table\+Name }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Returns the number of rows in a table. 
+
+This is extremely useful in knowing the number of times to loop a certain event.
+
+
+\begin{DoxyParams}{Parameters}
+{\em table\+Name} & the name of the table being counted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of rows 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & for S\+QL Errors \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 1289 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a2adcf78b8020d2e5b194122d91d444c8}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a2adcf78b8020d2e5b194122d91d444c8}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!round@{round}}
+\index{round@{round}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{round()}{round()}}
+{\footnotesize\ttfamily static double com.\+backend.\+My\+S\+Q\+L\+Methods.\+round (\begin{DoxyParamCaption}\item[{double}]{input }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Rounds the double to the nearest hundredth. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & the double being rounded \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the rounded double 
+\end{DoxyReturn}
+
+
+Definition at line 1336 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a0e6df2a99940b0e89f1bd3307c7ea939}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a0e6df2a99940b0e89f1bd3307c7ea939}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!selectPass@{selectPass}}
+\index{selectPass@{selectPass}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{selectPass()}{selectPass()}}
+{\footnotesize\ttfamily static String com.\+backend.\+My\+S\+Q\+L\+Methods.\+select\+Pass (\begin{DoxyParamCaption}\item[{String}]{username }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Gets the hashed password given a username. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em username} & the Username for which a password is being found \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the hashed password 
+\end{DoxyReturn}
+
+
+Definition at line 333 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a5e8e44b04499ce45084b21923c2f0dc5}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a5e8e44b04499ce45084b21923c2f0dc5}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!selectStudentEventsAsEvent@{selectStudentEventsAsEvent}}
+\index{selectStudentEventsAsEvent@{selectStudentEventsAsEvent}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{selectStudentEventsAsEvent()}{selectStudentEventsAsEvent()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static List$<$\mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}}$>$ com.\+backend.\+My\+S\+Q\+L\+Methods.\+select\+Student\+Events\+As\+Event (\begin{DoxyParamCaption}\item[{String}]{first\+Name,  }\item[{String}]{last\+Name,  }\item[{int}]{student\+ID }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This allows access to all of a student\textquotesingle{}s events. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Name} & the student\textquotesingle{}s first name \\
+\hline
+{\em last\+Name} & the student\textquotesingle{}s last name \\
+\hline
+{\em student\+ID} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID Number \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an array of Strings containing all of the Events and their data 
+\end{DoxyReturn}
+
+
+Definition at line 673 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a60a3b6e02c9e019b486613e92d16f394}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a60a3b6e02c9e019b486613e92d16f394}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!selectStudentEventsAsEvent@{selectStudentEventsAsEvent}}
+\index{selectStudentEventsAsEvent@{selectStudentEventsAsEvent}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{selectStudentEventsAsEvent()}{selectStudentEventsAsEvent()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static List$<$\mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}}$>$ com.\+backend.\+My\+S\+Q\+L\+Methods.\+select\+Student\+Events\+As\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}}]{student }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This allows access to all of a student\textquotesingle{}s events. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em student} & the selected student \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an array of Strings containing all of the Events and their data 
+\end{DoxyReturn}
+
+
+Definition at line 720 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_aaa0ac3c51f88d28cb592f4e0d4029de0}\label{classcom_1_1backend_1_1_my_s_q_l_methods_aaa0ac3c51f88d28cb592f4e0d4029de0}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!selectStudentEventsInRange@{selectStudentEventsInRange}}
+\index{selectStudentEventsInRange@{selectStudentEventsInRange}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{selectStudentEventsInRange()}{selectStudentEventsInRange()}}
+{\footnotesize\ttfamily static List$<$\mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}}$>$ com.\+backend.\+My\+S\+Q\+L\+Methods.\+select\+Student\+Events\+In\+Range (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}}]{student,  }\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_date}{Date}}}]{start\+Date }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This is mainly used in reports, where we want to get dates in a certain range. 
+
+Thus, this method gets a start date and adds a limitation on what to select from the student table.
+
+
+\begin{DoxyParams}{Parameters}
+{\em student} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} whose events we need \\
+\hline
+{\em start\+Date} & The Start \mbox{\hyperlink{classcom_1_1backend_1_1_date}{Date}} of the Events \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A List containing the events being used 
+\end{DoxyReturn}
+
+
+Definition at line 732 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a2f5fbcc309e7d8df57521f82c2db3ee1}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a2f5fbcc309e7d8df57521f82c2db3ee1}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!selectTrackerAsStudent@{selectTrackerAsStudent}}
+\index{selectTrackerAsStudent@{selectTrackerAsStudent}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{selectTrackerAsStudent()}{selectTrackerAsStudent()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classcom_1_1backend_1_1_student_data}{Student\+Data}} com.\+backend.\+My\+S\+Q\+L\+Methods.\+select\+Tracker\+As\+Student (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}}]{student }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This method gets the data of a student with the information listed, but returns it all in its special class as a \mbox{\hyperlink{classcom_1_1backend_1_1_student_data}{Student\+Data}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em student} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} who is being queried \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{classcom_1_1backend_1_1_student_data}{Student\+Data}} Object with all of the \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s Information 
+\end{DoxyReturn}
+
+
+Definition at line 545 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a3e02b4367852fd0c2e05ea93e369d49f}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a3e02b4367852fd0c2e05ea93e369d49f}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!selectTrackerDouble@{selectTrackerDouble}}
+\index{selectTrackerDouble@{selectTrackerDouble}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{selectTrackerDouble()}{selectTrackerDouble()}}
+{\footnotesize\ttfamily static double com.\+backend.\+My\+S\+Q\+L\+Methods.\+select\+Tracker\+Double (\begin{DoxyParamCaption}\item[{String}]{first\+Name,  }\item[{String}]{last\+Name,  }\item[{int}]{student\+ID,  }\item[{String}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This allows someone to get specific Double-\/\+Type data from the Main Table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Name} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s First Name \\
+\hline
+{\em last\+Name} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s Last name \\
+\hline
+{\em student\+ID} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID Number \\
+\hline
+{\em data} & The data field being accessed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A double containing the data 
+\end{DoxyReturn}
+
+
+Definition at line 465 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a5ea8c0102da63bac835eeed8004b5cb5}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a5ea8c0102da63bac835eeed8004b5cb5}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!selectTrackerInt@{selectTrackerInt}}
+\index{selectTrackerInt@{selectTrackerInt}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{selectTrackerInt()}{selectTrackerInt()}}
+{\footnotesize\ttfamily static int com.\+backend.\+My\+S\+Q\+L\+Methods.\+select\+Tracker\+Int (\begin{DoxyParamCaption}\item[{String}]{first\+Name,  }\item[{String}]{last\+Name,  }\item[{int}]{student\+ID,  }\item[{String}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This allows someone to get specific integer-\/type data from the Main Table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Name} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s first name \\
+\hline
+{\em last\+Name} & the student\textquotesingle{}s last name \\
+\hline
+{\em student\+ID} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID Number \\
+\hline
+{\em data} & the data field being accessed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an integer containing the data 
+\end{DoxyReturn}
+
+
+Definition at line 378 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_ab28da8638869638402a3ac88c3bc6b6b}\label{classcom_1_1backend_1_1_my_s_q_l_methods_ab28da8638869638402a3ac88c3bc6b6b}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!selectTrackerShort@{selectTrackerShort}}
+\index{selectTrackerShort@{selectTrackerShort}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{selectTrackerShort()}{selectTrackerShort()}}
+{\footnotesize\ttfamily static short com.\+backend.\+My\+S\+Q\+L\+Methods.\+select\+Tracker\+Short (\begin{DoxyParamCaption}\item[{String}]{first\+Name,  }\item[{String}]{last\+Name,  }\item[{int}]{student\+ID,  }\item[{String}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This allows someone to get specific short-\/type data from the Main Table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Name} & the student\textquotesingle{}s first name \\
+\hline
+{\em last\+Name} & the student\textquotesingle{}s last name \\
+\hline
+{\em student\+ID} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID Number \\
+\hline
+{\em data} & the data field being accessed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a short containing the data 
+\end{DoxyReturn}
+
+
+Definition at line 506 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a2211ee2bc33ce3aa2bb5e6df808a6eec}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a2211ee2bc33ce3aa2bb5e6df808a6eec}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!selectTrackerString@{selectTrackerString}}
+\index{selectTrackerString@{selectTrackerString}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{selectTrackerString()}{selectTrackerString()}}
+{\footnotesize\ttfamily static String com.\+backend.\+My\+S\+Q\+L\+Methods.\+select\+Tracker\+String (\begin{DoxyParamCaption}\item[{String}]{first\+Name,  }\item[{String}]{last\+Name,  }\item[{int}]{student\+ID,  }\item[{String}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This allows someone to get Specific String-\/type data from the Main table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Name} & The student\textquotesingle{}s First Name \\
+\hline
+{\em last\+Name} & The student\textquotesingle{}s Last Name \\
+\hline
+{\em student\+ID} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID Number \\
+\hline
+{\em data} & The data field being accessed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the String Type data 
+\end{DoxyReturn}
+
+
+Definition at line 419 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_ae945b324a575c2e5d9964f809b940e41}\label{classcom_1_1backend_1_1_my_s_q_l_methods_ae945b324a575c2e5d9964f809b940e41}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!updateEvent@{updateEvent}}
+\index{updateEvent@{updateEvent}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{updateEvent()}{updateEvent()}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+update\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}}]{student,  }\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}}}]{old\+Event,  }\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_event}{Event}}}]{new\+Event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Updates a student\textquotesingle{}s event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em student} & The student being updated \\
+\hline
+{\em old\+Event} & The old event information \\
+\hline
+{\em new\+Event} & The new event details \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 1136 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_ae9da23679401796c0d3d71eea207592c}\label{classcom_1_1backend_1_1_my_s_q_l_methods_ae9da23679401796c0d3d71eea207592c}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!updateFirstName@{updateFirstName}}
+\index{updateFirstName@{updateFirstName}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{updateFirstName()}{updateFirstName()}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+update\+First\+Name (\begin{DoxyParamCaption}\item[{String}]{first\+Name,  }\item[{String}]{last\+Name,  }\item[{int}]{student\+ID,  }\item[{String}]{new\+First\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Updates the first name of a \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} in case that needs to be changed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Name} & The Old First Name of the \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} \\
+\hline
+{\em last\+Name} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s last Name \\
+\hline
+{\em student\+ID} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID Number \\
+\hline
+{\em new\+First\+Name} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s new First Name \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 981 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a0db627fddc17c004ccd8fe4ca7f9668e}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a0db627fddc17c004ccd8fe4ca7f9668e}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!updateLastName@{updateLastName}}
+\index{updateLastName@{updateLastName}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{updateLastName()}{updateLastName()}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+update\+Last\+Name (\begin{DoxyParamCaption}\item[{String}]{first\+Name,  }\item[{String}]{last\+Name,  }\item[{int}]{student\+ID,  }\item[{String}]{new\+Last\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Updates the last Name of a \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} in case that needs to be done. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Name} & The First name of the \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} \\
+\hline
+{\em last\+Name} & The Old Last name of the \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} \\
+\hline
+{\em student\+ID} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID Number \\
+\hline
+{\em new\+Last\+Name} & The New Last name of the \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 1018 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a1e6686ade3606d02e33633353424fcfa}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a1e6686ade3606d02e33633353424fcfa}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!updateStudentID@{updateStudentID}}
+\index{updateStudentID@{updateStudentID}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{updateStudentID()}{updateStudentID()}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+update\+Student\+ID (\begin{DoxyParamCaption}\item[{String}]{first\+Name,  }\item[{String}]{last\+Name,  }\item[{int}]{student\+ID,  }\item[{int}]{new\+Student\+ID }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Updates the \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID of a \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} just in case that changes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Name} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s First Name \\
+\hline
+{\em last\+Name} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s Last Name \\
+\hline
+{\em student\+ID} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s Old \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID \\
+\hline
+{\em new\+Student\+ID} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s New \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 1056 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a80c42701d3ceb4c73d9e26126991b52d}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a80c42701d3ceb4c73d9e26126991b52d}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!updateToCurrentDate@{updateToCurrentDate}}
+\index{updateToCurrentDate@{updateToCurrentDate}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{updateToCurrentDate()}{updateToCurrentDate()}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+update\+To\+Current\+Date (\begin{DoxyParamCaption}\item[{String}]{first\+Name,  }\item[{String}]{last\+Name,  }\item[{int}]{student\+ID }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Updates the date in the tracker to the current date for last\+Edited. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Name} & The First Name of the \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} to know who to update \\
+\hline
+{\em last\+Name} & The Last Name of the \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} to Update \\
+\hline
+{\em student\+ID} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID Number \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 1321 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_a4ce120a6cb4898f30381d7e2604c4aee}\label{classcom_1_1backend_1_1_my_s_q_l_methods_a4ce120a6cb4898f30381d7e2604c4aee}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!updateTracker@{updateTracker}}
+\index{updateTracker@{updateTracker}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{updateTracker()}{updateTracker()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+update\+Tracker (\begin{DoxyParamCaption}\item[{String}]{first\+Name,  }\item[{String}]{last\+Name,  }\item[{int}]{student\+ID,  }\item[{String}]{data\+Type,  }\item[{String}]{new\+Data }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+This updates a value in the Main Table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first\+Name} & the student\textquotesingle{}s first name \\
+\hline
+{\em last\+Name} & the student\textquotesingle{}s last name \\
+\hline
+{\em student\+ID} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}\textquotesingle{}s \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID Number \\
+\hline
+{\em data\+Type} & the data field being changed \\
+\hline
+{\em new\+Data} & a new data value (in string form) for the location \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & for S\+QL Errors \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 934 of file My\+S\+Q\+L\+Methods.\+java.
+
+\mbox{\Hypertarget{classcom_1_1backend_1_1_my_s_q_l_methods_ae70bb695633c92acbd8938ae4b715c76}\label{classcom_1_1backend_1_1_my_s_q_l_methods_ae70bb695633c92acbd8938ae4b715c76}} 
+\index{com.backend.MySQLMethods@{com.backend.MySQLMethods}!updateTracker@{updateTracker}}
+\index{updateTracker@{updateTracker}!com.backend.MySQLMethods@{com.backend.MySQLMethods}}
+\doxysubsubsection{\texorpdfstring{updateTracker()}{updateTracker()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static void com.\+backend.\+My\+S\+Q\+L\+Methods.\+update\+Tracker (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}}}]{initial\+Student,  }\item[{\mbox{\hyperlink{classcom_1_1backend_1_1_student_data}{Student\+Data}}}]{new\+Data }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Updates the main, general tracking table. 
+
+There can be no changes in First Name, Last Name, or \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} ID in these two pieces of data for the change to work successfully
+
+
+\begin{DoxyParams}{Parameters}
+{\em initial\+Student} & The \mbox{\hyperlink{classcom_1_1backend_1_1_student}{Student}} Being updated \\
+\hline
+{\em new\+Data} & The Data being inserted into the student \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & For My\+S\+QL Exceptions \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 1096 of file My\+S\+Q\+L\+Methods.\+java.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+My\+S\+Q\+L\+Methods.\+java\end{DoxyCompactItemize}
