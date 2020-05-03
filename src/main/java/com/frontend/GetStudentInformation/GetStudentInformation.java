@@ -40,10 +40,7 @@ import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Gets All Student's General Information and Allows Editing. Also Allows viewing more specific events.
@@ -72,6 +69,7 @@ public class GetStudentInformation extends VerticalLayout {
         add(header);
         //Shows data on a grid (Up to 100k pieces)
         List<StudentData> data = MySQLMethods.getStudentData();
+        data.sort(Comparator.comparing(Student::getLastName));
 
         //Creates a Grid with Inline editing and Sorting
         grid = setUpStudentGrid(data);
@@ -121,6 +119,7 @@ public class GetStudentInformation extends VerticalLayout {
      *
      * @param event               The event being deleted
      * @param studentNotification The notification from where the event was selected
+     * @param eventsGrid          The grid of events to update
      * @return A Button with the capability to delete an event
      */
     public Button deleteButton(Event event, Notification studentNotification, Grid<Event> eventsGrid) {
@@ -372,8 +371,11 @@ public class GetStudentInformation extends VerticalLayout {
     /**
      * Creates a button which allows editing an event within the form layout
      *
-     * @param event The event to edit
-     * @return The new event
+     * @param event             The event to edit
+     * @param eventNotification The notification of expanding
+     * @param eventGrid         The grid of events
+     * @param studentDataGrid   The grid of student data
+     * @return A button which opens the editing dialogue
      */
     public Button editEvent(Event event, Notification eventNotification, Grid<Event> eventGrid, Grid<StudentData> studentDataGrid) {
         Button editor = new Button("Edit", VaadinIcon.EDIT.create());

@@ -265,9 +265,10 @@ public class Date implements Comparator<Date>, Comparable<Date>, Cloneable {
 
     /**
      * Takes a Date in the String format and converts it into a Date object.
+     * <p>
+     * For this method to work, the date has to be in the format of yyyy-mm-dd
      *
      * @param date the Date as a String
-     * @apiNote For this method to work, the date has to be in the format of yyyy-mm-dd
      */
     public void setDate(String date) {
         StringTokenizer st = new StringTokenizer(date, "-");
