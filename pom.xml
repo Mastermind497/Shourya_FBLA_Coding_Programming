@@ -245,6 +245,11 @@
                     <scanIntervalSeconds>2</scanIntervalSeconds>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -259,7 +264,7 @@
             <!-- Production mode is activated using -Pproduction -->
             <id>production</id>
             <properties>
-                <vaadin.productionMode>false</vaadin.productionMode>
+                <vaadin.productionMode>true</vaadin.productionMode>
             </properties>
             <dependencies>
                 <dependency>
@@ -285,6 +290,7 @@
                         <executions>
                             <execution>
                                 <goals>
+                                    <goal>prepare-frontend</goal>
                                     <goal>build-frontend</goal>
                                 </goals>
                                 <phase>compile</phase>
