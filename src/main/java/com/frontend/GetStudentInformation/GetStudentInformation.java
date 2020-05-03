@@ -9,7 +9,9 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.grid.Grid;
@@ -35,6 +37,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -104,7 +107,6 @@ public class GetStudentInformation extends VerticalLayout {
         },
                 "Cancel", this::onClose);
         dialog.setConfirmButtonTheme("error primary");
-        @SuppressWarnings("unchecked")
         Button button = new Button(VaadinIcon.TRASH.create(), buttonClickEvent ->
                 dialog.open()
         );
@@ -119,20 +121,22 @@ public class GetStudentInformation extends VerticalLayout {
      * @param studentNotification The notification from where the event was selected
      * @return A Button with the capability to delete an event
      */
-    public Button deleteButton(Event event, Notification studentNotification) {
+    public Button deleteButton(Event event, Notification studentNotification, Grid<Event> eventsGrid) {
         ConfirmDialog dialog = new ConfirmDialog("Confirm Delete",
                 String.format("Are you sure you want to delete %s, done by %s? This action cannot be undone", event.getEventName(), event.getFirstName() + " " + event.getLastName()),
                 "Delete", onDelete -> {
             event.delete();
             grid.setItems(MySQLMethods.getStudentData());
+            eventsGrid.setItems(MySQLMethods.selectStudentEventsAsEvent(event));
             studentNotification.open();
         },
                 "Cancel", cancelEvent -> {
             onClose(cancelEvent);
+            eventsGrid.setItems(MySQLMethods.selectStudentEventsAsEvent(event));
             studentNotification.open();
+
         });
         dialog.setConfirmButtonTheme("error primary");
-        @SuppressWarnings("unchecked")
         Button button = new Button(VaadinIcon.TRASH.create(), buttonClickEvent -> {
             dialog.open();
             studentNotification.close();
@@ -161,16 +165,20 @@ public class GetStudentInformation extends VerticalLayout {
      * @return The Expand Button
      */
     public Button expandButton(StudentData student) {
-        @SuppressWarnings("unchecked")
         Button button = new Button("Expand", buttonClickEvent -> {
             System.out.println("Notification");
             Notification fullData = new Notification();
             Button close = new Button("Close");
             VerticalLayout layout = new VerticalLayout(close);
-            List<Component> arr = viewEvents(student.getStudent());
+
+            List<Component> arr = viewEvents(student);
+
+            @SuppressWarnings("unchecked")
             Grid<StudentData> studentGrid = (Grid<StudentData>) arr.get(2);
+            @SuppressWarnings("unchecked")
             Grid<Event> events = (Grid<Event>) arr.get(0);
-            events.addComponentColumn(event -> deleteButton(event, fullData)).setHeader("Delete");
+            events.addComponentColumn(event -> editEvent(event, fullData, events, studentGrid)).setHeader("Edit");
+            events.addComponentColumn(event -> deleteButton(event, fullData, events)).setHeader("Delete");
             events.setMultiSort(true);
             events.setMaxHeight("20em");
             VerticalLayout studentInfo = (VerticalLayout) arr.get(1);
@@ -225,18 +233,22 @@ public class GetStudentInformation extends VerticalLayout {
         /* Make Different Input Fields */
         TextField firstNameField = new TextField("First Name");
         firstNameField.setValue(toEdit.getFirstName());
+        firstNameField.setPlaceholder(toEdit.getFirstName());
         firstNameField.setValueChangeMode(ValueChangeMode.EAGER);
 
         TextField lastNameField = new TextField("Last Name");
         lastNameField.setValue(toEdit.getLastName());
+        lastNameField.setPlaceholder(toEdit.getLastName());
         lastNameField.setValueChangeMode(ValueChangeMode.EAGER);
 
         IntegerField studentIDField = new IntegerField("Student ID");
         studentIDField.setValue(toEdit.getStudentID());
+        studentIDField.setPlaceholder(Integer.toString(toEdit.getStudentID()));
         studentIDField.setValueChangeMode(ValueChangeMode.EAGER);
 
         IntegerField gradeField = new IntegerField("Grade");
         gradeField.setValue(toEdit.getGradeInt());
+        gradeField.setPlaceholder(Integer.toString(toEdit.getGradeInt()));
         gradeField.setHasControls(true);
         gradeField.setStep(1);
         gradeField.setMin(6);
@@ -246,6 +258,7 @@ public class GetStudentInformation extends VerticalLayout {
 
         EmailField emailField = new EmailField("Email");
         emailField.setValue(toEdit.getEmail());
+        emailField.setPlaceholder(toEdit.getEmail());
         emailField.setClearButtonVisible(true);
         emailField.setErrorMessage("Please enter a valid email address");
         emailField.setValueChangeMode(ValueChangeMode.EAGER);
@@ -259,12 +272,14 @@ public class GetStudentInformation extends VerticalLayout {
 
         NumberField communityServiceHoursField = new NumberField("Community Service Hours");
         communityServiceHoursField.setValue(toEdit.getCommunityServiceHours());
+        communityServiceHoursField.setPlaceholder(Double.toString(toEdit.getCommunityServiceHours()));
         communityServiceHoursField.setMin(0);
         communityServiceHoursField.setStep(0.5d);
         communityServiceHoursField.setHasControls(true);
 
         IntegerField yearsDoneField = new IntegerField("Years Done");
         yearsDoneField.setValue((int) toEdit.getYearsDone());
+        yearsDoneField.setPlaceholder(Short.toString(toEdit.getYearsDone()));
         yearsDoneField.setMin(1);
         yearsDoneField.setMax(4);
         yearsDoneField.setHasControls(true);
@@ -351,6 +366,139 @@ public class GetStudentInformation extends VerticalLayout {
     }
 
     /**
+     * Creates a button which allows editing an event within the form layout
+     *
+     * @param event The event to edit
+     * @return The new event
+     */
+    public Button editEvent(Event event, Notification eventNotification, Grid<Event> eventGrid, Grid<StudentData> studentDataGrid) {
+        Button editor = new Button("Edit", VaadinIcon.EDIT.create());
+
+        Notification editEvent = new Notification();
+        editEvent.setPosition(Notification.Position.MIDDLE);
+
+        VerticalLayout layout = new VerticalLayout();
+        layout.setWidth("73em");
+        layout.setMaxHeight("30em");
+        layout.setAlignItems(Alignment.CENTER);
+
+        FormLayout editForm = new FormLayout();
+        editForm.setResponsiveSteps(
+                new ResponsiveStep("25em", 1),
+                new ResponsiveStep("32em", 2),
+                new ResponsiveStep("40em", 3));
+
+        /* Makes Labels for Different Input Fields */
+        //Gets all Students as Options for Adding Hours
+        List<Student> students = MySQLMethods.getStudents();
+        ComboBox<Student> studentChoices = new ComboBox<>("Student Name");
+        studentChoices.setItems(students);
+        studentChoices.setValue(event.getStudent());
+        studentChoices.setEnabled(false);
+
+        //A Text Input field for the Name of the Event
+        TextField eventName = new TextField("Event Name");
+        eventName.setPlaceholder(event.getEventName()); //Example Name
+        eventName.setValue(event.getEventName());
+        eventName.setValueChangeMode(ValueChangeMode.EAGER);
+
+        //A Number input field for the length of the event
+        NumberField eventHours = new NumberField("Length of Event (Hours)");
+        eventHours.setHasControls(true);
+        eventHours.setStep(0.5d);
+        eventHours.setMin(0);
+        eventHours.setPlaceholder(Double.toString(event.getHours()));
+        double length = event.getHours();
+        eventHours.setValue(length);
+        eventHours.setValueChangeMode(ValueChangeMode.EAGER);
+
+        //A Date Picker to choose the exact date of the event
+        DatePicker eventDate = new DatePicker("Date");
+        eventDate.setClearButtonVisible(true);
+        eventDate.setPlaceholder(event.getDate().toString());
+        eventDate.setValue(event.getDate().getLocalDate());
+        eventDate.setMax(LocalDate.now());
+
+        //Adds Components with their desired widths
+        editForm.add(studentChoices, 3);
+        editForm.add(eventName, 2);
+        editForm.add(eventHours, 1);
+        editForm.add(eventDate, 1);
+
+        HorizontalLayout actions = new HorizontalLayout();
+        Button save = new Button("Save");
+        Button reset = new Button("Reset");
+        Button cancel = new Button("Cancel");
+        actions.add(save, cancel, reset);
+        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        reset.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        actions.setAlignItems(Alignment.CENTER);
+        actions.setAlignSelf(Alignment.CENTER);
+        save.addClickShortcut(Key.ENTER);
+        cancel.addClickShortcut(Key.ESCAPE);
+
+        layout.add(editForm, actions);
+
+        editEvent.add(layout);
+
+        save.addClickListener(buttonClickEvent -> {
+            try {
+                event.updateEventName(eventName.getValue());
+                event.updateHours(eventHours.getValue());
+                event.updateDate(eventDate.getValue());
+
+                Notification success = new Notification();
+                success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                Label succeeded = new Label("The Event Was Successfully Updated!");
+                success.add(succeeded);
+                success.setDuration(3000);
+                success.open();
+            } catch (Exception e) {
+                Notification invalid = new Notification();
+                invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                Label failed = new Label("There was an error when updating the event. Changes may be incomplete.");
+                invalid.add(failed);
+                invalid.setDuration(3000);
+                invalid.open();
+            }
+            grid.setItems(MySQLMethods.getStudentData());
+            studentDataGrid.setItems(event.getStudentData());
+            eventGrid.setItems(MySQLMethods.selectStudentEventsAsEvent(event));
+            editEvent.close();
+            eventNotification.open();
+        });
+
+        cancel.addClickListener(buttonClickEvent -> {
+            editEvent.close();
+            eventNotification.open();
+        });
+
+        reset.addClickListener(buttonClickEvent -> {
+            studentChoices.setValue(event);
+            eventHours.setValue(event.getHours());
+            eventName.setValue(event.getEventName());
+            eventDate.setValue(event.getDate().getLocalDate());
+
+            Notification success = new Notification();
+            success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            Label succeeded = new Label("The Data was Successfully Reset");
+            success.add(succeeded);
+            success.setDuration(3000);
+            success.open();
+        });
+
+        layout.add(editForm, actions);
+
+        editEvent.add(layout);
+
+        editor.addClickListener(buttonClickEvent -> {
+            eventNotification.close();
+            editEvent.open();
+        });
+        return editor;
+    }
+
+    /**
      * Views events and hours done by the chosen student.
      * <p>
      * This method is used by the expandButton to add all of the events to the dialog box
@@ -383,11 +531,11 @@ public class GetStudentInformation extends VerticalLayout {
         GridPro<Event> events = new GridPro<>();
         events.setItems(eventList);
         events.addEditColumn(Event::getEventName, "Name", "String")
-                .text(Event::setEventName)
+                .text(Event::updateEventName)
                 .setHeader("Event Name");
         events.addEditColumn(Event::getHours, "Hours", "Double")
                 .text((event, hours) -> {
-                    event.setHours(hours);
+                    event.updateHours(hours);
                     grid.setItems(chosen.getStudentData());
                 })
                 .setHeader("Hours of Event");

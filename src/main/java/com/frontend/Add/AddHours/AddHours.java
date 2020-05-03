@@ -35,7 +35,7 @@ import java.util.List;
  * The Class for Adding Hours into a Student
  */
 @Route(value = "add-hours", layout = MainView.class)
-//Uses the Layout from MainView.java wihtout having to recreate the entire thing
+//Uses the Layout from MainView.java without having to recreate the entire thing
 @PageTitle("Add Student Hours | FBLA Genie")
 @PreserveOnRefresh
 public class AddHours extends VerticalLayout {
@@ -88,7 +88,6 @@ public class AddHours extends VerticalLayout {
         NumberField eventHours = new NumberField("Length of Event (Hours)");
         eventHours.setHasControls(true);
         eventHours.setStep(0.5d);
-        eventHours.setMin(0.1);
         eventHours.setPlaceholder("2.5");
         eventHours.setErrorMessage("That is not a Number, Please Enter a Number");
         eventHours.setValueChangeMode(ValueChangeMode.EAGER);
@@ -97,7 +96,7 @@ public class AddHours extends VerticalLayout {
         DatePicker dateOfEvent = new DatePicker("Date");
         dateOfEvent.setClearButtonVisible(true);
         dateOfEvent.addValueChangeListener(e -> {
-            event.setDateNoUpdate(dateOfEvent.getValue());
+            event.setDate(dateOfEvent.getValue());
             System.out.println(dateOfEvent.getValue());
         });
         dateOfEvent.setMax(LocalDate.now());
@@ -143,7 +142,7 @@ public class AddHours extends VerticalLayout {
 
         binder.forField(eventHours)
                 .withValidator(new DoubleRangeValidator(
-                        "Please Enter a Valid Integer", 0.0, null))
+                        "Please Enter a Valid Length", 0.1, null))
                 .bind(Event::getHours, Event::setHours);
 
         //add listeners for the buttons

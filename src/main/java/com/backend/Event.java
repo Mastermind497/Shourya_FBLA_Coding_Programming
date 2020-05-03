@@ -137,15 +137,23 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     }
 
     /**
-     * Sets the name of the event, changing in the Database if necessary
+     * Sets the name of the event
      *
      * @param eventName The new Name of the Event
      */
     public void setEventName(String eventName) {
-        Event oldEvent = new Event(super.getStudent(), this.eventName, this.hours, this.date);
-        boolean needToUpdateSQL = this.eventName != null;
         this.eventName = eventName;
-        if (needToUpdateSQL) updateEvent(oldEvent, this);
+    }
+
+    /**
+     * Changes the backend with the new event name
+     *
+     * @param eventName The new Name of the Event
+     */
+    public void updateEventName(String eventName) {
+        Event oldEvent = new Event(super.getStudent(), this.eventName, this.hours, this.date);
+        this.eventName = eventName;
+        updateEvent(oldEvent, this);
     }
 
     /**
@@ -158,24 +166,32 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     }
 
     /**
-     * Changes the length of the Event, updating database if necessary
+     * Changes the length of the Event
      *
      * @param hours The new Length of the Event
      */
     public void setHours(double hours) {
-        Event oldEvent = new Event(super.getStudent(), this.eventName, this.hours, this.date);
-        boolean needToUpdateSQL = this.hours != 0;
         this.hours = hours;
-        if (needToUpdateSQL) updateEvent(oldEvent, this);
     }
 
     /**
-     * Changes the length of the Event given a String, changing backend if necessary
+     * Updates the hours in the backend
      *
-     * @param hours The new Length (as a String)
+     * @param hours The new number of hours
      */
-    public void setHours(String hours) {
-        setHours(Double.parseDouble(hours));
+    public void updateHours(double hours) {
+        Event oldEvent = new Event(super.getStudent(), this.eventName, this.hours, this.date);
+        this.hours = hours;
+        updateEvent(oldEvent, this);
+    }
+
+    /**
+     * Updates the hours in the backend
+     *
+     * @param hours The new number of hours
+     */
+    public void updateHours(String hours) {
+        updateHours(Double.parseDouble(hours));
     }
 
     /**
@@ -197,6 +213,15 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     }
 
     /**
+     * Updates the Year
+     *
+     * @param year The New Year
+     */
+    public void updateYear(int year) {
+        updateDate(year, date.getMonth(), date.getDay());
+    }
+
+    /**
      * Gets the Month
      *
      * @return The current Month
@@ -212,6 +237,15 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
      */
     public void setMonth(int month) {
         setDate(date.getYear(), month, date.getDay());
+    }
+
+    /**
+     * Updates the Month
+     *
+     * @param month The new Month
+     */
+    public void updateMonth(int month) {
+        updateDate(date.getYear(), month, date.getDay());
     }
 
     /**
@@ -233,7 +267,16 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     }
 
     /**
-     * Sets the date, changing the database if necessary
+     * Updates the Day
+     *
+     * @param day The new Day
+     */
+    public void updateDay(int day) {
+        updateDate(date.getYear(), date.getMonth(), day);
+    }
+
+    /**
+     * Sets the date
      *
      * @param year  The New Year
      * @param month The New Month
@@ -244,6 +287,19 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
         boolean needToUpdateSQL = (date != null);
         date = new Date(year, month, day);
         if (needToUpdateSQL) updateEvent(oldEvent, this);
+    }
+
+    /**
+     * Sets the date
+     *
+     * @param year  The New Year
+     * @param month The New Month
+     * @param day   The New Day
+     */
+    public void updateDate(int year, int month, int day) {
+        Event oldEvent = new Event(super.getStudent(), this.eventName, this.hours, this.date);
+        date = new Date(year, month, day);
+        updateEvent(oldEvent, this);
     }
 
     /**
@@ -282,18 +338,23 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
     }
 
     /**
-     * Sets the Date of the Event based on the LocalDate, changing the Database if necessary
+     * Sets the Date of the Event based on the LocalDate
      *
      * @param localDate The New Date
      */
     public void setDate(LocalDate localDate) {
+        this.date = new Date(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth());
+    }
+
+    /**
+     * Sets the Date of the Event based on the LocalDate, changing the Database if necessary
+     *
+     * @param localDate The New Date
+     */
+    public void updateDate(LocalDate localDate) {
         Event oldEvent = new Event(super.getStudent(), this.eventName, this.hours, this.date);
-        boolean needToUpdateSQL = this.date != null;
-        if (date == null) date = new Date();
-        date.setYear(localDate.getYear());
-        date.setMonth(localDate.getMonthValue());
-        date.setDay(localDate.getDayOfMonth());
-        if (needToUpdateSQL) updateEvent(oldEvent, this);
+        this.date = new Date(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth());
+        updateEvent(oldEvent, this);
     }
 
     /**
@@ -303,15 +364,6 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
      */
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public void setDateNoUpdate(LocalDate localDate) {
-        date.setYear(localDate.getYear());
-        System.out.println(date.getYear());
-        date.setMonth(localDate.getMonthValue());
-        System.out.println(date.getMonth());
-        date.setDay(localDate.getDayOfMonth());
-        System.out.println(date.getDay());
     }
 
     /**
@@ -362,6 +414,11 @@ public class Event extends Student implements Comparable<Event>, Comparator<Even
      */
     public void updateEvent(Event oldEvent, Event newEvent) {
         MySQLMethods.updateEvent(super.getStudent(), oldEvent, newEvent);
+    }
+
+    @Override
+    public Student getStudent() {
+        return this;
     }
 
     /**
