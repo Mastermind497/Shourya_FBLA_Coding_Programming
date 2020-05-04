@@ -35,11 +35,14 @@ public class Documentation extends VerticalLayout {
 
         Html javadoc = new Html("<a href=\"" + JAVA_DOC_LOCATION + "\" download>Download JavaDoc</a>");
         Html tutorial = new Html("<a href=\"" + TUTORIAL_LOCATION + "\" download>Download the Tutorial</a>");
+        Anchor javadocLive = new Anchor("https://mastermind497.github.io/Shourya_FBLA");
+        javadocLive.setText("View the Online JavaDoc");
+        javadocLive.setTarget("_blank");
         Anchor vaadin = new Anchor("https://www.vaadin.com/api");
         vaadin.setText("View the Vaadin API");
         vaadin.setTarget("_blank");
 
-        HorizontalLayout downloads = new HorizontalLayout(javadoc, tutorial, vaadin);
+        HorizontalLayout downloads = new HorizontalLayout(javadoc, javadocLive, tutorial, vaadin);
 
         add(downloads);
         setHorizontalComponentAlignment(Alignment.CENTER, header, downloads);
