@@ -25,6 +25,7 @@ import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.theme.lumo.Lumo;
 
 import java.util.ArrayList;

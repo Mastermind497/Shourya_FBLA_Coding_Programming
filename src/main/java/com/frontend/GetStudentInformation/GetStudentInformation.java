@@ -4,11 +4,9 @@ import com.backend.Event;
 import com.backend.MySQLMethods;
 import com.backend.Student;
 import com.backend.StudentData;
-import com.frontend.Add.AddHours.AddHours;
 import com.frontend.MainView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -169,7 +167,6 @@ public class GetStudentInformation extends VerticalLayout {
      */
     public Button expandButton(StudentData student) {
         Button button = new Button("Expand", buttonClickEvent -> {
-            System.out.println("Notification");
             Notification fullData = new Notification();
             Button close = new Button("Close");
             VerticalLayout layout = new VerticalLayout(close);
@@ -192,7 +189,6 @@ public class GetStudentInformation extends VerticalLayout {
             layout.add(new H6(" "));
             layout.add(studentInfo);
             //Adds a Button to Add Events
-            layout.add(new Button("Add a New Event", buttonClickEvent1 -> UI.getCurrent().navigate(AddHours.class)));
             layout.setAlignItems(FlexComponent.Alignment.CENTER);
             layout.setWidth("73em");
             layout.setMaxHeight("30em");
@@ -203,7 +199,6 @@ public class GetStudentInformation extends VerticalLayout {
                 fullData.close();
                 grid.setItems(MySQLMethods.getStudentData());
             });
-            System.out.println("End Notification");
         });
         button.addThemeVariants();
         button.setIcon(VaadinIcon.EXPAND_FULL.create());
@@ -328,14 +323,14 @@ public class GetStudentInformation extends VerticalLayout {
                 success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                 Label succeeded = new Label("The Student Was Successfully Updated!");
                 success.add(succeeded);
-                success.setDuration(3000);
+                success.setDuration(6000);
                 success.open();
             } catch (Exception e) {
                 Notification invalid = new Notification();
                 invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
                 Label failed = new Label("There was an error when updating the student. Changes may be incomplete.");
                 invalid.add(failed);
-                invalid.setDuration(3000);
+                invalid.setDuration(6000);
                 invalid.open();
             }
             grid.setItems(MySQLMethods.getStudentData());
@@ -358,7 +353,7 @@ public class GetStudentInformation extends VerticalLayout {
             success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             Label succeeded = new Label("The Data was Successfully Reset");
             success.add(succeeded);
-            success.setDuration(3000);
+            success.setDuration(6000);
             success.open();
         });
 
@@ -459,14 +454,14 @@ public class GetStudentInformation extends VerticalLayout {
                 success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                 Label succeeded = new Label("The Event Was Successfully Updated!");
                 success.add(succeeded);
-                success.setDuration(3000);
+                success.setDuration(6000);
                 success.open();
             } catch (Exception e) {
                 Notification invalid = new Notification();
                 invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
                 Label failed = new Label("There was an error when updating the event. Changes may be incomplete.");
                 invalid.add(failed);
-                invalid.setDuration(3000);
+                invalid.setDuration(6000);
                 invalid.open();
             }
             grid.setItems(MySQLMethods.getStudentData());
@@ -491,7 +486,7 @@ public class GetStudentInformation extends VerticalLayout {
             success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             Label succeeded = new Label("The Data was Successfully Reset");
             success.add(succeeded);
-            success.setDuration(3000);
+            success.setDuration(6000);
             success.open();
         });
 

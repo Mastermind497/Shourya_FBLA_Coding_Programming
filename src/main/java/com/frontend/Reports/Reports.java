@@ -236,7 +236,7 @@ public class Reports extends VerticalLayout {
             success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             Label succeeded = new Label("The Report Was Generated!");
             success.add(succeeded);
-            success.setDuration(3000);
+            success.setDuration(6000);
             success.open();
         });
         save.addClickShortcut(Key.ENTER);
@@ -279,7 +279,7 @@ public class Reports extends VerticalLayout {
             success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             Label succeeded = new Label("The Report Was Generated!");
             success.add(succeeded);
-            success.setDuration(3000);
+            success.setDuration(6000);
             success.open();
         });
         setAlignItems(Alignment.CENTER);

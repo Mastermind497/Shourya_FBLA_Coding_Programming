@@ -173,14 +173,14 @@ public class CreateStudent extends VerticalLayout {
                 invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
                 Label failed = new Label("Years Done Can Not Be Less Than 1");
                 invalid.add(failed);
-                invalid.setDuration(3000);
+                invalid.setDuration(6000);
                 invalid.open();
             } else if (!(emailField.getValue().contains("@") && emailField.getValue().contains("."))) {
                 Notification invalid = new Notification();
                 invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
                 Label failed = new Label("Not A Valid Email");
                 invalid.add(failed);
-                invalid.setDuration(3000);
+                invalid.setDuration(6000);
                 invalid.open();
                 emailField.setErrorMessage("Not A Valid Email Address");
             } else if (binder.writeBeanIfValid(student)) {
@@ -193,7 +193,7 @@ public class CreateStudent extends VerticalLayout {
                     success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                     Label succeeded = new Label("The Student Was Successfully Added!");
                     success.add(succeeded);
-                    success.setDuration(3000);
+                    success.setDuration(6000);
                     success.open();
                     communityServiceCategoryField.setInvalid(false);
                 } else {
@@ -201,7 +201,7 @@ public class CreateStudent extends VerticalLayout {
                     invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
                     Label failed = new Label("A Student With Those Details Already Exists");
                     invalid.add(failed);
-                    invalid.setDuration(3000);
+                    invalid.setDuration(6000);
                     invalid.open();
                 }
             } else {
@@ -209,7 +209,7 @@ public class CreateStudent extends VerticalLayout {
                 invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
                 Label failed = new Label("An Unidentifiable Error Occurred. Please Try Again.");
                 invalid.add(failed);
-                invalid.setDuration(3000);
+                invalid.setDuration(6000);
                 invalid.open();
             }
         });

@@ -156,16 +156,16 @@ public class AddHours extends VerticalLayout {
                 studentChoices.setValue(null);
                 Notification success = new Notification();
                 success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                Label succeeded = new Label("The Student Was Successfully Added!");
+                Label succeeded = new Label(String.format("The Event Was Successfully Added to %s!", studentChoices.getValue()));
                 success.add(succeeded);
-                success.setDuration(3000);
+                success.setDuration(6000);
                 success.open();
             } else {
                 Notification invalid = new Notification();
                 invalid.addThemeVariants(NotificationVariant.LUMO_ERROR);
                 Label failed = new Label("There Was An Error. Please Try Again.");
                 invalid.add(failed);
-                invalid.setDuration(3000);
+                invalid.setDuration(6000);
                 invalid.open();
             }
         });
