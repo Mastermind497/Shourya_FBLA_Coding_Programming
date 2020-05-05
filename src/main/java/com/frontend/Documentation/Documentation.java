@@ -18,10 +18,12 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 @Route(value = "documentation", layout = MainView.class)
 @PageTitle("Documentation | FBLA Genie")
 @PreserveOnRefresh
+@UIScope
 public class Documentation extends VerticalLayout {
     static final String JAVA_DOC_LOCATION = "https://github.com/Mastermind497/Shourya_FBLA/raw/master/JavaDoc.pdf";
     static final String TUTORIAL_LOCATION = "";

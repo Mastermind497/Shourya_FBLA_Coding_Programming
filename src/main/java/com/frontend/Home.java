@@ -11,6 +11,7 @@ import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 /* FIXME
     * Add Title to Each Page
@@ -35,6 +36,7 @@ import com.vaadin.flow.router.RouterLink;
  */
 @Route(value = "", layout = MainView.class)
 @PreserveOnRefresh
+@UIScope
 public class Home extends VerticalLayout {
 
     /**

@@ -27,6 +27,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -38,6 +39,7 @@ import java.util.List;
 //Uses the Layout from MainView.java without having to recreate the entire thing
 @PageTitle("Add Student Hours | FBLA Genie")
 @PreserveOnRefresh
+@UIScope
 public class AddHours extends VerticalLayout {
 
     /**

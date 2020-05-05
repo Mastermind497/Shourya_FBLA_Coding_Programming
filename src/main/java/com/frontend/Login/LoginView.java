@@ -5,6 +5,7 @@ import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 import java.util.Collections;
 
@@ -15,6 +16,7 @@ import java.util.Collections;
 @Route(value = "login")
 @PageTitle("Login | FBLA Genie")
 @PreserveOnRefresh
+@UIScope
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
     /**

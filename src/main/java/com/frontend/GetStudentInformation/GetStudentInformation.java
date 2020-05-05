@@ -38,6 +38,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -48,6 +49,7 @@ import java.util.*;
 @Route(value = "get-student-info", layout = MainView.class)
 @PageTitle("View and Edit Information | FBLA Genie")
 @PreserveOnRefresh
+@UIScope
 public class GetStudentInformation extends VerticalLayout {
 
     /** The Main Grid of Student Data */

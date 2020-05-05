@@ -26,6 +26,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 import static com.backend.MySQLMethods.selectTrackerString;
 
@@ -35,6 +36,7 @@ import static com.backend.MySQLMethods.selectTrackerString;
 @Route(value = "create-student", layout = MainView.class)
 @PageTitle("Create a Student | FBLA Genie")
 @PreserveOnRefresh
+@UIScope
 public class CreateStudent extends VerticalLayout {
     /**
      * The Overall Path to create a new Student

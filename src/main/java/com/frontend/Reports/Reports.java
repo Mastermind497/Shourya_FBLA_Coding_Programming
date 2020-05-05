@@ -25,6 +25,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,6 +38,7 @@ import static com.backend.MySQLMethods.round;
 @Route(value = "report", layout = MainView.class)
 @PageTitle("FBLA Genie | Generate Reports")
 @PreserveOnRefresh
+@UIScope
 public class Reports extends VerticalLayout {
     /**
      * The General Button which moves the the Individual Report Field

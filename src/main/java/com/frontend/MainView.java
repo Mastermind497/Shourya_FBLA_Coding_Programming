@@ -49,6 +49,7 @@ import java.util.ArrayList;
         description = "This is the Application made by Shourya Bansal for the FBLA Coding " +
                 "& Programming competition in the 2019-2020 school year")
 @PreserveOnRefresh
+@UIScope
 public class MainView extends AppLayout {
     public static final Tab HOME_TAB = createTab(VaadinIcon.HOME, "Home", Home.class);
     public static final Tab ADD_STUDENT_TAB = createTab(VaadinIcon.FILE_ADD, "Add a Student", CreateStudent.class);
