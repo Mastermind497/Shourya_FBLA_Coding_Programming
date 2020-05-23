@@ -1,11 +1,7 @@
 package com.frontend.Documentation;
 
-
-import com.frontend.Add.AddHours.AddHours;
-import com.frontend.Add.CreateStudent.CreateStudent;
-import com.frontend.GetStudentInformation.GetStudentInformation;
+import com.frontend.Home;
 import com.frontend.MainView;
-import com.frontend.Reports.Reports;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Text;
@@ -58,7 +54,7 @@ public class Documentation extends VerticalLayout {
                                         "of the app can be seen! For a more detailed guide, download the tutorial"
                         ),
                         new RouterLink(
-                                "Navigate to \"Add a Student\"", CreateStudent.class
+                                "Navigate to \"Add a Student\"", Home.class
                         )
                 )
         );
@@ -72,7 +68,7 @@ public class Documentation extends VerticalLayout {
                                         "Otherwise you will get an error notification, which usually means that something entered is invalid."
                         ),
                         new RouterLink(
-                                "Navigate to \"Add a Student\"", CreateStudent.class
+                                "Navigate to \"Add a Student\"", Home.class
                         )
                 )
         );
@@ -87,7 +83,7 @@ public class Documentation extends VerticalLayout {
                                         "This makes it so that you can keep selecting students who did the same event without having to re-enter the event details, as usually one event is done by multiple people."
                         ),
                         new RouterLink(
-                                "Navigate to \"Add Hours\"", AddHours.class
+                                "Navigate to \"Add Hours\"", Home.class
                         )
                 )
         );
@@ -100,7 +96,7 @@ public class Documentation extends VerticalLayout {
                                         "expand column and a popup will cover the screen, listing all of the events that said student has participated in. "
                         ),
                         new RouterLink(
-                                "Navigate to \"View and Edit Students\"", GetStudentInformation.class
+                                "Navigate to \"View and Edit Students\"", Home.class
                         )
                 )
         );
@@ -114,7 +110,7 @@ public class Documentation extends VerticalLayout {
                                         "You can replace the old values with the new ones you need and click save, rendering them into the database. Take note that changes can not be undone."
                         ),
                         new RouterLink(
-                                "Navigate to \"View and Edit Students\"", GetStudentInformation.class
+                                "Navigate to \"View and Edit Students\"", Home.class
                         )
                 )
         );
@@ -136,7 +132,7 @@ public class Documentation extends VerticalLayout {
                                         "All reports have versatile and useful dynamic charts, which help make visualizing data much easier and makes their comparison much simple."
                         ),
                         new RouterLink(
-                                "Navigate to \"Generate Reports\"", Reports.class
+                                "Navigate to \"Generate Reports\"", Home.class
                         )
                 )
         );

@@ -1,6 +1,5 @@
 package com.frontend;
 
-import com.frontend.Add.CreateStudent.CreateStudent;
 import com.frontend.Documentation.Documentation;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.html.H1;
@@ -14,7 +13,6 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.spring.annotation.UIScope;
 
 /* FIXME
-    * Add Title to Each Page
     * Implement Graduation Year
     * Make Community Service Category a Radio Button
     * Make "RESET" Red
@@ -75,7 +73,7 @@ public class Home extends VerticalLayout {
         H2 getStarted = new H2(toDocumentation);
 
         //Links to CreateStudent.java
-        RouterLink toCreateStudent = new RouterLink("Or you can get straight to it and start by Adding your First Student!", CreateStudent.class);
+        RouterLink toCreateStudent = new RouterLink("Or you can get straight to it and start by Adding your First Student!", Home.class);
         toCreateStudent.setHighlightCondition((HighlightConditions.always()));
         H2 getStraightToIt = new H2(toCreateStudent);
 

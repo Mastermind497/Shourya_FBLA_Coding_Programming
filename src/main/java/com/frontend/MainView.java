@@ -1,11 +1,6 @@
 package com.frontend;
 
-import com.backend.MySQLMethods;
-import com.frontend.Add.AddHours.AddHours;
-import com.frontend.Add.CreateStudent.CreateStudent;
 import com.frontend.Documentation.Documentation;
-import com.frontend.GetStudentInformation.GetStudentInformation;
-import com.frontend.Reports.Reports;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.UI;
@@ -53,10 +48,10 @@ import java.util.ArrayList;
 @UIScope
 public class MainView extends AppLayout {
     public static final Tab HOME_TAB = createTab(VaadinIcon.HOME, "Home", Home.class);
-    public static final Tab ADD_STUDENT_TAB = createTab(VaadinIcon.FILE_ADD, "Add a Student", CreateStudent.class);
-    public static final Tab ADD_HOURS_TAB = createTab(VaadinIcon.EDIT, "Add Hours to Student", AddHours.class);
-    public static final Tab VIEW_EDIT_TAB = createTab(VaadinIcon.EYE, "View and Edit Students", GetStudentInformation.class);
-    public static final Tab REPORT_TAB = createTab(VaadinIcon.RECORDS, "Generate Reports", Reports.class);
+    public static final Tab ADD_STUDENT_TAB = createTab(VaadinIcon.FILE_ADD, "Add a Student", Home.class);
+    public static final Tab ADD_HOURS_TAB = createTab(VaadinIcon.EDIT, "Add Hours to Student", Home.class);
+    public static final Tab VIEW_EDIT_TAB = createTab(VaadinIcon.EYE, "View and Edit Students", Home.class);
+    public static final Tab REPORT_TAB = createTab(VaadinIcon.RECORDS, "Generate Reports", Home.class);
     public static final Tab DOC_TAB = createTab(VaadinIcon.QUESTION, "Documentation and FAQs", Documentation.class);
     public static final Tabs tabs = getTabs();
 
@@ -105,9 +100,6 @@ public class MainView extends AppLayout {
 
         //Aligns everything to the center
         verticalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-
-        //Checks to see if main database is made. Makes if not
-        MySQLMethods.setUp();
 
         addToNavbar(verticalLayout);
         this.setDrawerOpened(false);
