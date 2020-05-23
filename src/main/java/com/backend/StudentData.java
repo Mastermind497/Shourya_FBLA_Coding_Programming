@@ -580,9 +580,17 @@ public class StudentData extends Student implements Cloneable {
             e.printStackTrace();
         }
     }
-
-    @Override
+    
+    public String toFullString() {
+        return String.format("FirstName=%s,LastName=%s,StudentID=%d,Grade=%d,CommunityServiceAwardHours=%e,communityServiceAwardCategory=%s,Email=%s,YearsDone=%d",
+                             getFirstName(), getLastName(), getStudentID(), grade, communityServiceHours, communityServiceCategory, email, yearsDone);
+    }
+    
     public StudentData clone() {
-        return getStudent().getStudentData();
+        try {
+            return (StudentData) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

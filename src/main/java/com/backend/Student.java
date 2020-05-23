@@ -184,9 +184,4 @@ public class Student implements Cloneable {
             return "Create New Student";
         }
     }
-
-    @Override
-    protected Student clone() throws CloneNotSupportedException {
-        return (Student) super.clone();
-    }
 }

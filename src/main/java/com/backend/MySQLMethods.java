@@ -5,6 +5,7 @@ import com.frontend.Charts;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -658,7 +659,7 @@ public class MySQLMethods {
             e.printStackTrace();
             System.out.println("Get Students Failed");
         }
-
+        studentData.sort(Comparator.comparing(Student::getLastName));
         return studentData;
     }
 

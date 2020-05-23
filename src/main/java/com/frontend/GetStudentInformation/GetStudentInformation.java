@@ -1,9 +1,6 @@
 package com.frontend.GetStudentInformation;
 
-import com.backend.Event;
-import com.backend.MySQLMethods;
-import com.backend.Student;
-import com.backend.StudentData;
+import com.backend.*;
 import com.frontend.MainView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
@@ -56,17 +53,22 @@ import java.util.*;
 @PreserveOnRefresh
 @UIScope
 public class GetStudentInformation extends VerticalLayout {
-
-    /** The Main Grid of Student Data */
+    
+    StudentDataService dataService = new StudentDataService();
+    
+    /**
+     * The Main Grid of Student Data
+     */
     GridPro<StudentData> grid;
-
+    TextField            filterText = new TextField("Filter");
+    
     /**
      * The Constructor, just runs the Main Table Method
      */
     public GetStudentInformation() {
         mainTable();
     }
-
+    
     /**
      * Creates the main table, which shows student data and allows editing of it
      */
@@ -74,32 +76,51 @@ public class GetStudentInformation extends VerticalLayout {
         removeAll();
         H1 header = new H1("View And Edit Student Information");
         add(header);
-        //Shows data on a grid (Up to 100k pieces)
-        List<StudentData> data = MySQLMethods.getStudentData();
-        data.sort(Comparator.comparing(Student::getLastName));
-
+        
+        configureFilter();
+        
+        HorizontalLayout filterLayout = new HorizontalLayout(filterText);
+        filterLayout.setWidthFull();
+        filterLayout.setAlignItems(Alignment.START);
+        
+        add(filterLayout);
+        
         //Creates a Grid with Inline editing and Sorting
-        grid = setUpStudentGrid(data);
+        grid = setUpStudentGrid(Arrays.asList(new StudentData()));
         grid.addComponentColumn(this::expandButton).setHeader("Expand");
         grid.addComponentColumn(this::editStudent).setHeader("Edit");
         grid.addComponentColumn(this::deleteButton).setHeader("Delete");
-
+        
         //Makes them AutoWidth, which fixes width for data length
         for (Grid.Column<StudentData> al : grid.getColumns()) {
             al.setAutoWidth(true);
         }
-
+        
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
-                GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-
+                              GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+        
         grid.setMultiSort(true);
-
+        
         add(grid);
         setAlignItems(FlexComponent.Alignment.CENTER);
         setAlignSelf(FlexComponent.Alignment.CENTER);
         add(getExportButton());
+        updateList();
     }
-
+    
+    public void configureFilter() {
+        filterText.setPlaceholder("Filter by Data...");
+        filterText.setClearButtonVisible(true);
+        
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        
+        filterText.addValueChangeListener(e -> updateList());
+    }
+    
+    public void updateList() {
+        grid.setItems(dataService.findAll(filterText.getValue()));
+    }
+    
     /**
      * Creates the delete button, which deletes a student if clicked
      *
@@ -108,7 +129,7 @@ public class GetStudentInformation extends VerticalLayout {
      */
     public Button deleteButton(Student student) {
         ConfirmDialog dialog = new ConfirmDialog("Confirm Delete",
-                String.format("Are you sure you want to delete %s? This action cannot be undone", student.getFirstName() + " " + student.getLastName()),
+                                                 String.format("Are you sure you want to delete %s? This action cannot be undone", student.getFirstName() + " " + student.getLastName()),
                 "Delete", onDelete -> {
             student.delete();
             grid.setItems(MySQLMethods.getStudentData());
