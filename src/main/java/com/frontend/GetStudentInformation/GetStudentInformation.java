@@ -86,7 +86,7 @@ public class GetStudentInformation extends VerticalLayout {
         add(filterLayout);
         
         //Creates a Grid with Inline editing and Sorting
-        grid = setUpStudentGrid(Arrays.asList(new StudentData()));
+        grid = setUpStudentGrid(Collections.singletonList(new StudentData()));
         grid.addComponentColumn(this::expandButton).setHeader("Expand");
         grid.addComponentColumn(this::editStudent).setHeader("Edit");
         grid.addComponentColumn(this::deleteButton).setHeader("Delete");
@@ -211,7 +211,7 @@ public class GetStudentInformation extends VerticalLayout {
             events.setMultiSort(true);
             events.setMaxHeight("20em");
             VerticalLayout studentInfo = (VerticalLayout) arr.get(1);
-            studentInfo.add(studentGrid, events);
+            studentInfo.add(studentGrid, events, getExportButton(student, events));
             studentInfo.setMaxHeight("25em");
 
             //spacer for close button
@@ -633,8 +633,44 @@ public class GetStudentInformation extends VerticalLayout {
         return grid;
     }
     
+    private Button getExportButton(Student student, Grid<Event> events) {
+        Button exportButton = new Button("Export Events");
+        exportButton.setIcon(VaadinIcon.DOWNLOAD_ALT.create());
+        exportButton.addClickListener(onClick -> {
+            String       fileName     = student.getFullName() + "_" + LocalDate.now() + ".csv";
+            final String fileNamePath = "/Users/shour/downloads/" + fileName;
+            
+            try (
+                    BufferedWriter writer = Files.newBufferedWriter(Paths.get(fileNamePath));
+                    CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.EXCEL.withHeader(
+                            "Event Name", "Event Length", "Date of Event"
+                    ))
+            ) {
+                @SuppressWarnings("unchecked")
+                Collection<Event> eventList = ((ListDataProvider<Event>) events.getDataProvider()).getItems();
+                for (Event e : eventList) {
+                    csvPrinter.printRecord(e.getEventName(), e.getHours(), e.getDate().toString());
+                }
+                Notification success = new Notification();
+                success.setText("Saved File to Standard Download Location: " + fileNamePath);
+                success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                success.setDuration(5000);
+                success.open();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Notification error = new Notification();
+                error.setText("There was an error when trying to export");
+                error.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                error.setDuration(5000);
+                error.open();
+            }
+        });
+        
+        return exportButton;
+    }
+    
     private Button getExportButton() {
-        Button exportButton = new Button("Export");
+        Button exportButton = new Button("Export Student Data");
         exportButton.setIcon(VaadinIcon.DOWNLOAD_ALT.create());
         
         exportButton.addClickListener(onClick -> {
@@ -653,7 +689,7 @@ public class GetStudentInformation extends VerticalLayout {
                     csvPrinter.printRecord(s.getFirstName(), s.getLastName(), s.getStudentID(), s.getGrade(), s.getCommunityServiceHours(), s.getCommunityServiceCategory(), s.getEmail(), s.getYearsDone(), s.getLastEdited());
                 }
                 Notification success = new Notification();
-                success.setText("Saved File to Standard Download Location: " + fileName);
+                success.setText("Saved File to Standard Download Location: " + fileNamePath);
                 success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                 success.setDuration(5000);
                 success.open();
