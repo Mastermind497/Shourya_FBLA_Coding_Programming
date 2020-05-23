@@ -32,12 +32,19 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -90,6 +97,7 @@ public class GetStudentInformation extends VerticalLayout {
         add(grid);
         setAlignItems(FlexComponent.Alignment.CENTER);
         setAlignSelf(FlexComponent.Alignment.CENTER);
+        add(getExportButton());
     }
 
     /**
@@ -197,7 +205,7 @@ public class GetStudentInformation extends VerticalLayout {
             fullData.open();
             close.addClickListener(onClick -> {
                 fullData.close();
-                grid.setItems(MySQLMethods.getStudentData());
+                grid.getDataProvider().refreshAll();
             });
         });
         button.addThemeVariants();
@@ -600,7 +608,44 @@ public class GetStudentInformation extends VerticalLayout {
                 .text(StudentData::updateYearsDone)
                 .setHeader("Years Done");
         grid.addColumn(StudentData::getLastEdited, "date", "lastedited").setHeader("Last Edited");
-
+    
         return grid;
+    }
+    
+    private Button getExportButton() {
+        Button exportButton = new Button("Export");
+        exportButton.setIcon(VaadinIcon.DOWNLOAD_ALT.create());
+        
+        exportButton.addClickListener(onClick -> {
+            String       fileName     = "Students_" + LocalDate.now() + ".csv";
+            final String fileNamePath = "/Users/shour/downloads/" + fileName;
+            
+            try (
+                    BufferedWriter writer = Files.newBufferedWriter(Paths.get(fileNamePath));
+                    CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.EXCEL.withHeader(
+                            "First Name", "Last Name", "Student ID", "Grade", "Community Service Hours", "Community Service Award Category", "Email", "Years Done", "Last Edited"
+                    ))
+            ) {
+                @SuppressWarnings("unchecked")
+                Collection<StudentData> students = ((ListDataProvider<StudentData>) grid.getDataProvider()).getItems();
+                for (StudentData s : students) {
+                    csvPrinter.printRecord(s.getFirstName(), s.getLastName(), s.getStudentID(), s.getGrade(), s.getCommunityServiceHours(), s.getCommunityServiceCategory(), s.getEmail(), s.getYearsDone(), s.getLastEdited());
+                }
+                Notification success = new Notification();
+                success.setText("Saved File to Standard Download Location: " + fileName);
+                success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                success.setDuration(5000);
+                success.open();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Notification error = new Notification();
+                error.setText("There was an error when trying to export");
+                error.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                error.setDuration(5000);
+                error.open();
+            }
+        });
+        
+        return exportButton;
     }
 }
