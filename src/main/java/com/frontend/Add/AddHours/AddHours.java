@@ -84,7 +84,7 @@ public class AddHours extends VerticalLayout {
         //A Text Input field for the Name of the Event
         TextField eventName = new TextField("Event Name");
         eventName.setPlaceholder("Volunteering at Central Park"); //Example Name
-        eventName.setValueChangeMode(ValueChangeMode.EAGER);
+        eventName.setValueChangeMode(ValueChangeMode.LAZY);
 
         //A Number input field for the length of the event
         NumberField eventHours = new NumberField("Length of Event (Hours)");
@@ -92,7 +92,7 @@ public class AddHours extends VerticalLayout {
         eventHours.setStep(0.5d);
         eventHours.setPlaceholder("2.5");
         eventHours.setErrorMessage("That is not a Number, Please Enter a Number");
-        eventHours.setValueChangeMode(ValueChangeMode.EAGER);
+        eventHours.setValueChangeMode(ValueChangeMode.LAZY);
 
         //A Date Picker to choose the exact date of the event
         DatePicker dateOfEvent = new DatePicker("Date");

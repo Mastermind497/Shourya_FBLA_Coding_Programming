@@ -65,25 +65,25 @@ public class CreateStudent extends VerticalLayout {
         /* Make Different Input Fields */
         TextField firstNameField = new TextField("First Name");
         firstNameField.setPlaceholder("John");
-        firstNameField.setValueChangeMode(ValueChangeMode.EAGER);
+        firstNameField.setValueChangeMode(ValueChangeMode.LAZY);
 
         TextField lastNameField = new TextField("Last Name");
         lastNameField.setPlaceholder("Doe");
-        lastNameField.setValueChangeMode(ValueChangeMode.EAGER);
+        lastNameField.setValueChangeMode(ValueChangeMode.LAZY);
 
         IntegerField studentIDField = new IntegerField("Student ID");
         studentIDField.setPlaceholder("123456");
-        studentIDField.setValueChangeMode(ValueChangeMode.EAGER);
+        studentIDField.setValueChangeMode(ValueChangeMode.LAZY);
 
         IntegerField gradeField = new IntegerField("Grade");
         gradeField.setPlaceholder("10");
-        gradeField.setValueChangeMode(ValueChangeMode.EAGER);
+        gradeField.setValueChangeMode(ValueChangeMode.LAZY);
 
         EmailField emailField = new EmailField("Email");
         emailField.setPlaceholder("john.doe@highschoolstudent.org");
         emailField.setClearButtonVisible(true);
         emailField.setErrorMessage("Please enter a valid email address");
-        emailField.setValueChangeMode(ValueChangeMode.EAGER);
+        emailField.setValueChangeMode(ValueChangeMode.LAZY);
 
         /* Creates a Dropdown to Choose the Community Service Award Category Goal */
         Select<String> communityServiceCategoryField = new Select<>();
