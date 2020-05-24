@@ -34,7 +34,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
  *
  * @author Shourya Bansal
  */
-@Route(value = "", layout = MainView.class)
+@Route(value = "", layout = MainViewAdmin.class)
 @PreserveOnRefresh
 @UIScope
 public class Home extends VerticalLayout {

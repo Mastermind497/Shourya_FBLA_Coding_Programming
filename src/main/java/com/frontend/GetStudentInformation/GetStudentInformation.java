@@ -1,7 +1,7 @@
 package com.frontend.GetStudentInformation;
 
 import com.backend.*;
-import com.frontend.MainView;
+import com.frontend.MainViewAdmin;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
@@ -48,7 +48,7 @@ import java.util.*;
 /**
  * Gets All Student's General Information and Allows Editing. Also Allows viewing more specific events.
  */
-@Route(value = "get-student-info", layout = MainView.class)
+@Route(value = "get-student-info", layout = MainViewAdmin.class)
 @PageTitle("View and Edit Information | FBLA Genie")
 @PreserveOnRefresh
 @UIScope

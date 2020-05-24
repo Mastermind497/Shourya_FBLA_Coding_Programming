@@ -4,7 +4,7 @@ package com.frontend.Documentation;
 import com.frontend.Add.AddHours.AddHours;
 import com.frontend.Add.CreateStudent.CreateStudent;
 import com.frontend.GetStudentInformation.GetStudentInformation;
-import com.frontend.MainView;
+import com.frontend.MainViewAdmin;
 import com.frontend.Reports.Reports;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
@@ -12,6 +12,7 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -20,7 +21,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.spring.annotation.UIScope;
 
-@Route(value = "documentation", layout = MainView.class)
+@Route(value = "documentation", layout = MainViewAdmin.class)
 @PageTitle("Documentation | FBLA Genie")
 @PreserveOnRefresh
 @UIScope
@@ -35,29 +36,31 @@ public class Documentation extends VerticalLayout {
         H1 header = new H1("The Documentation");
         add(header);
 
-        Html javadoc = new Html("<a href=\"" + JAVA_DOC_LOCATION + "\" download>Download JavaDoc</a>");
-        Html tutorial = new Html("<a href=\"" + TUTORIAL_LOCATION + "\" download>Download the Tutorial</a>");
+        Html   javadoc     = new Html("<a href=\"" + JAVA_DOC_LOCATION + "\" download>Download JavaDoc</a>");
+        Html   tutorial    = new Html("<a href=\"" + TUTORIAL_LOCATION + "\" download>Download the Tutorial</a>");
         Anchor javadocLive = new Anchor("https://mastermind497.github.io/Shourya_FBLA");
         javadocLive.setText("View the Online JavaDoc");
         javadocLive.setTarget("_blank");
         Anchor vaadin = new Anchor("https://www.vaadin.com/api");
         vaadin.setText("View the Vaadin API");
         vaadin.setTarget("_blank");
-
+    
         HorizontalLayout downloads = new HorizontalLayout(javadoc, javadocLive, tutorial, vaadin);
-
+    
         add(downloads);
-        setHorizontalComponentAlignment(Alignment.CENTER, header, downloads);
-
+        H2 documentationLink = new H2("JavaDoc: https://mastermind497.github.io/Shourya_FBLA");
+        add(documentationLink);
+        setHorizontalComponentAlignment(Alignment.CENTER, header, downloads, documentationLink);
+    
         //FAQs
         Details getStarted = new Details("How do I get started?",
-                addDetails(
-                        new Text(
-                                "Getting started is simple. The first thing necessary to start using this app is having a student " +
-                                        "in the database. This requires navigating to the \"Add a Student\" tab and typing in the information. After that, the functionality " +
-                                        "of the app can be seen! For a more detailed guide, download the tutorial"
-                        ),
-                        new RouterLink(
+                                         addDetails(
+                                                 new Text(
+                                                         "Getting started is simple. The first thing necessary to start using this app is having a student " +
+                                                         "in the database. This requires navigating to the \"Add a Student\" tab and typing in the information. After that, the functionality " +
+                                                         "of the app can be seen! For a more detailed guide, download the tutorial"
+                                                 ),
+                                                 new RouterLink(
                                 "Navigate to \"Add a Student\"", CreateStudent.class
                         )
                 )

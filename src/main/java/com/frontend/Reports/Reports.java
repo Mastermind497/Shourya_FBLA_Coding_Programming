@@ -2,7 +2,7 @@ package com.frontend.Reports;
 
 import com.backend.*;
 import com.frontend.Charts;
-import com.frontend.MainView;
+import com.frontend.MainViewAdmin;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.board.Board;
@@ -35,7 +35,7 @@ import static com.backend.MySQLMethods.round;
 /**
  * The main class for Generating Reports
  */
-@Route(value = "report", layout = MainView.class)
+@Route(value = "report", layout = MainViewAdmin.class)
 @PageTitle("FBLA Genie | Generate Reports")
 @PreserveOnRefresh
 @UIScope
