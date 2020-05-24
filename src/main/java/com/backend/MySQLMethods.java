@@ -14,6 +14,7 @@ import java.util.List;
  *
  * @author Shourya Bansal
  */
+@SuppressWarnings("SqlResolve")
 public class MySQLMethods {
     /**
      * The Name of the Passwords Table
@@ -42,7 +43,7 @@ public class MySQLMethods {
     /**
      * The Location of the Database, its standard location
      */
-    private static String DATABASE_URL = "jdbc:mysql://localhost:3306/";
+    private static       String DATABASE_URL = "jdbc:mysql://35.224.84.149:fbla-genie?localhost:3306/";
 
     /**
      * A Statement which stores a Query
@@ -466,19 +467,20 @@ public class MySQLMethods {
     public static double selectTrackerDouble(String firstName, String lastName, int studentID, String data) {
         try {
             String fullName = makeName(firstName, lastName, studentID);
-
+    
             //Uses getConnection to create a connection with the database
             connection = getConnection();
-
+    
             //SQL Query to find find data
-            String query = "SELECT " + data + " FROM " + TABLE_NAME + " WHERE fullName = '" + fullName + "'";
-
+            String query = "# noinspection SqlResolveForFile\n"
+                           + "SELECT " + data + " FROM " + TABLE_NAME + " WHERE fullName = '" + fullName + "'";
+    
             //Create the java Statement (Goes in Query)
             statement = connection.createStatement();
-
+    
             //The Result after executing the query
             ResultSet resultSet = statement.executeQuery(query);
-
+    
             //returns the String inside column "data"
             resultSet.next();
             double output = resultSet.getDouble(data);
@@ -578,14 +580,31 @@ public class MySQLMethods {
             statement.close();
             resultSet.close();
             connection.close();
-
+    
             return studentData;
         } catch (Exception e) {
             e.printStackTrace();
             return new StudentData();
         }
     }
+    
+    /**
+     * Creates a connection with the database, which is necessary for all SQL Updates
+     *
+     * @return a connection which we can use
+     * @throws Exception for Connection Errors
+     */
+    private static Connection getConnection() throws Exception {
+        //Uses Driver
+        Class.forName(DRIVER);
+        connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
+        return connection;
 
+//        return DriverManager.getConnection(String.format(
+//                "jdbc:mysql:///%s?cloudSqlInstance=%s&socketFactory=com.google.cloud.sql.mysql.SocketFactory&user=%s&password=%s",
+//                DATABASE_NAME, "fbla-genie:us-east4:fbla-genie", USERNAME, PASSWORD));
+    }
+    
     /**
      * Generates a list of all students being tracked
      *
@@ -593,7 +612,7 @@ public class MySQLMethods {
      */
     public static List<Student> getStudents() {
         List<Student> students = new ArrayList<>();
-
+        
         try {
             connection = getConnection();
 
@@ -1255,7 +1274,7 @@ public class MySQLMethods {
     public static String makeName(String firstName, String lastName, int studentID) {
         return (firstName + "_" + lastName + "_" + studentID).toLowerCase();
     }
-
+    
     /**
      * Formats the name of a student
      *
@@ -1265,20 +1284,32 @@ public class MySQLMethods {
     public static String makeName(Student student) {
         return makeName(student.getFirstName(), student.getLastName(), student.getStudentID());
     }
-
-    /**
-     * Creates a connection with the database, which is necessary for all SQL Updates
-     *
-     * @return a connection which we can use
-     * @throws Exception for Connection Errors
-     */
-    private static Connection getConnection() throws Exception {
-        //Uses Driver
-        Class.forName(DRIVER);
-        connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
-        return connection;
+    
+    public static String getEmails() {
+        StringBuilder emailList = new StringBuilder();
+        try {
+            connection = getConnection();
+            
+            String query = "SELECT email FROM " + TABLE_NAME;
+            
+            statement = connection.createStatement();
+            
+            resultSet = statement.executeQuery(query);
+            
+            while (resultSet.next()) {
+                emailList.append(resultSet.getString("email")).append(",");
+            }
+            
+            connection.close();
+            statement.close();
+            resultSet.close();
+        } catch (Exception e) {
+            System.err.println("Failed to fetch emails");
+            e.printStackTrace();
+        }
+        return emailList.toString();
     }
-
+    
     /**
      * Returns the number of rows in a table. This is extremely useful in knowing the number
      * of times to loop a certain event.
