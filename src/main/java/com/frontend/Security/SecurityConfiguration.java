@@ -51,13 +51,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * https://dzone.com/articles/spring-security-authentication
      */
     public UserDetailsService userDetailsService() {
-        UserDetails user =
+        UserDetails admin =
                 User.withUsername("shourya.bansal")
                         .password("{noop}password")
-                        .roles("USER")
+                        .roles("Admin", "Student")
                         .build();
-
-        return new InMemoryUserDetailsManager(user);
+    
+        UserDetails shourya =
+                User.withUsername("224272")
+                        .password("{noop}password")
+                        .roles("Student")
+                        .build();
+    
+        return new InMemoryUserDetailsManager(admin, shourya);
     }
 
     /**
