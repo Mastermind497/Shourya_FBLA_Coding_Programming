@@ -5,7 +5,6 @@ import com.frontend.Add.AddHours.AddHours;
 import com.frontend.Add.CreateStudent.CreateStudent;
 import com.frontend.Documentation.Documentation;
 import com.frontend.GetStudentInformation.GetStudentInformation;
-import com.frontend.Mail.MailView;
 import com.frontend.Reports.Reports;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
@@ -41,7 +40,7 @@ import java.util.ArrayList;
  */
 
 /**
- * MainViewAdmin is the main view of the entire app. Most pages use MainViewAdmin as the base to format themselves, keeping everything
+ * MainView is the main view of the entire app. Most pages use MainView as the base to format themselves, keeping everything
  * uniform
  *
  * @author Shourya Bansal
@@ -52,20 +51,19 @@ import java.util.ArrayList;
                    "& Programming competition in the 2019-2020 school year")
 @PreserveOnRefresh
 @UIScope
-public class MainViewAdmin extends AppLayout {
+public class MainView extends AppLayout {
     public static final Tab  HOME_TAB        = createTab(VaadinIcon.HOME, "Home", Home.class);
     public static final Tab  ADD_STUDENT_TAB = createTab(VaadinIcon.FILE_ADD, "Add a Student", CreateStudent.class);
     public static final Tab  ADD_HOURS_TAB   = createTab(VaadinIcon.EDIT, "Add Hours to Student", AddHours.class);
     public static final Tab  VIEW_EDIT_TAB   = createTab(VaadinIcon.EYE, "View and Edit Students", GetStudentInformation.class);
     public static final Tab  REPORT_TAB      = createTab(VaadinIcon.RECORDS, "Generate Reports", Reports.class);
-    public static final Tab  MAIL_TAB        = createTab(VaadinIcon.MAILBOX, "Send Message", MailView.class);
     public static final Tab  DOC_TAB         = createTab(VaadinIcon.QUESTION, "Documentation and FAQs", Documentation.class);
     public static final Tabs tabs            = getTabs();
     
     /**
      * Creates the Main View that formats the rest of the App
      */
-    public MainViewAdmin() {
+    public MainView() {
         final Tabs tabs = new Tabs();
         
         //Uses Tabs for Navigation
@@ -136,7 +134,6 @@ public class MainViewAdmin extends AppLayout {
         tabs.add(ADD_HOURS_TAB);
         tabs.add(VIEW_EDIT_TAB);
         tabs.add(REPORT_TAB);
-        tabs.add(MAIL_TAB);
         tabs.add(DOC_TAB);
         tabs.add(createTab(createLogoutLink()));
 

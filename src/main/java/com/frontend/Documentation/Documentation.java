@@ -4,7 +4,7 @@ package com.frontend.Documentation;
 import com.frontend.Add.AddHours.AddHours;
 import com.frontend.Add.CreateStudent.CreateStudent;
 import com.frontend.GetStudentInformation.GetStudentInformation;
-import com.frontend.MainViewAdmin;
+import com.frontend.MainView;
 import com.frontend.Reports.Reports;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
@@ -12,7 +12,6 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -21,7 +20,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.spring.annotation.UIScope;
 
-@Route(value = "documentation", layout = MainViewAdmin.class)
+@Route(value = "documentation", layout = MainView.class)
 @PageTitle("Documentation | FBLA Genie")
 @PreserveOnRefresh
 @UIScope
@@ -61,9 +60,9 @@ public class Documentation extends VerticalLayout {
                                                          "of the app can be seen! For a more detailed guide, download the tutorial"
                                                  ),
                                                  new RouterLink(
-                                "Navigate to \"Add a Student\"", CreateStudent.class
-                        )
-                )
+                                                         "Navigate to \"Add a Student\"", CreateStudent.class
+                                                 )
+                                         )
         );
 
         Details createAStudent = new Details("How do I create a student?",

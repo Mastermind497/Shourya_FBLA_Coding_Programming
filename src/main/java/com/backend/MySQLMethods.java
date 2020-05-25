@@ -43,7 +43,7 @@ public class MySQLMethods {
     /**
      * The Location of the Database, its standard location
      */
-    private static       String DATABASE_URL = "jdbc:mysql://localhost:3306/";
+    private static       String DATABASE_URL = "jdbc:mysql://35.224.84.149:fbla-genie?localhost:3306/";
 
     /**
      * A Statement which stores a Query
