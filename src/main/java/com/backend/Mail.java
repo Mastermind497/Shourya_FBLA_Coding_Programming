@@ -21,7 +21,7 @@ public class Mail {
         properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         
         try {
-            String            to        = MySQLMethods.getEmails();
+            String            to        = "shouryabansal2012@gmail.com, " + MySQLMethods.getEmails();
             InternetAddress[] addresses = InternetAddress.parse(to, true);
             
             for (InternetAddress recipient : addresses) {
@@ -32,7 +32,7 @@ public class Mail {
                     }
                 });
                 MimeMessage message = new MimeMessage(session);
-                message.setRecipients(Message.RecipientType.TO, /*new InternetAddress[] {recipient}*/ addresses);
+                message.setRecipient(Message.RecipientType.TO, /*new InternetAddress[] {recipient}*/ recipient);
                 message.setSubject("FBLA Announcement: " + subject);
                 message.setSentDate(new Date());
                 message.setText(body);

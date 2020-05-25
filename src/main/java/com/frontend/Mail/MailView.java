@@ -54,12 +54,12 @@ public class MailView extends VerticalLayout {
                 error.addThemeVariants(NotificationVariant.LUMO_ERROR);
                 error.setDuration(5000);
                 error.open();
-            } else if (bodyField.getValue() == null || bodyField.getValue().isEmpty()) {
-                Notification error = new Notification();
-                error.setText("Body can not be empty");
-                error.addThemeVariants(NotificationVariant.LUMO_ERROR);
-                error.setDuration(5000);
-                error.open();
+//            } else if (bodyField.getValue() == null || bodyField.getValue().isEmpty()) {
+//                Notification error = new Notification();
+//                error.setText("Body can not be empty");
+//                error.addThemeVariants(NotificationVariant.LUMO_ERROR);
+//                error.setDuration(5000);
+//                error.open();
             } else {
                 Mail.sendMessage(subjectField.getValue(), bodyField.getValue());
                 
