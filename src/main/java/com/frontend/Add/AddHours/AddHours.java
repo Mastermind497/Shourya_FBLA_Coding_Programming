@@ -153,10 +153,10 @@ public class AddHours extends VerticalLayout {
             Notification.show("Your data is being processed...");
             if (binder.writeBeanIfValid(event)) {
                 event.addEvent();
-                studentChoices.setValue(null);
                 Notification success = new Notification();
                 success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                 Label succeeded = new Label(String.format("The Event Was Successfully Added to %s!", studentChoices.getValue()));
+                studentChoices.setValue(null);
                 success.add(succeeded);
                 success.setDuration(6000);
                 success.open();
