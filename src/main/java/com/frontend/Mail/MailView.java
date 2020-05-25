@@ -1,7 +1,7 @@
 package com.frontend.Mail;
 
 import com.backend.Mail;
-import com.frontend.MainViewAdmin;
+import com.frontend.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -14,7 +14,7 @@ import com.vaadin.flow.router.Route;
 
 import static com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.CENTER;
 
-@Route(value = "announcement", layout = MainViewAdmin.class)
+@Route(value = "announcement", layout = MainView.class)
 public class MailView extends VerticalLayout {
     
     TextField subjectField = new TextField();

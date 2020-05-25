@@ -4,7 +4,7 @@ package com.frontend.Documentation;
 import com.frontend.Add.AddHours.AddHours;
 import com.frontend.Add.CreateStudent.CreateStudent;
 import com.frontend.GetStudentInformation.GetStudentInformation;
-import com.frontend.MainViewAdmin;
+import com.frontend.MainView;
 import com.frontend.Reports.Reports;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
@@ -21,7 +21,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.spring.annotation.UIScope;
 
-@Route(value = "documentation", layout = MainViewAdmin.class)
+@Route(value = "documentation", layout = MainView.class)
 @PageTitle("Documentation | FBLA Genie")
 @PreserveOnRefresh
 @UIScope

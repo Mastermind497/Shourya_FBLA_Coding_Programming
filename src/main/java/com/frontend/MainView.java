@@ -41,7 +41,7 @@ import java.util.ArrayList;
  */
 
 /**
- * MainViewAdmin is the main view of the entire app. Most pages use MainViewAdmin as the base to format themselves, keeping everything
+ * MainView is the main view of the entire app. Most pages use MainView as the base to format themselves, keeping everything
  * uniform
  *
  * @author Shourya Bansal
@@ -52,7 +52,7 @@ import java.util.ArrayList;
                    "& Programming competition in the 2019-2020 school year")
 @PreserveOnRefresh
 @UIScope
-public class MainViewAdmin extends AppLayout {
+public class MainView extends AppLayout {
     public static final Tab  HOME_TAB        = createTab(VaadinIcon.HOME, "Home", Home.class);
     public static final Tab  ADD_STUDENT_TAB = createTab(VaadinIcon.FILE_ADD, "Add a Student", CreateStudent.class);
     public static final Tab  ADD_HOURS_TAB   = createTab(VaadinIcon.EDIT, "Add Hours to Student", AddHours.class);
@@ -65,7 +65,7 @@ public class MainViewAdmin extends AppLayout {
     /**
      * Creates the Main View that formats the rest of the App
      */
-    public MainViewAdmin() {
+    public MainView() {
         final Tabs tabs = new Tabs();
         
         //Uses Tabs for Navigation

@@ -4,7 +4,7 @@ import com.backend.Event;
 import com.backend.MySQLMethods;
 import com.backend.Student;
 import com.frontend.Add.CreateStudent.CreateStudent;
-import com.frontend.MainViewAdmin;
+import com.frontend.MainView;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -35,8 +35,8 @@ import java.util.List;
 /**
  * The Class for Adding Hours into a Student
  */
-@Route(value = "add-hours", layout = MainViewAdmin.class)
-//Uses the Layout from MainViewAdmin.java without having to recreate the entire thing
+@Route(value = "add-hours", layout = MainView.class)
+//Uses the Layout from MainView.java without having to recreate the entire thing
 @PageTitle("Add Student Hours | FBLA Genie")
 @PreserveOnRefresh
 @UIScope

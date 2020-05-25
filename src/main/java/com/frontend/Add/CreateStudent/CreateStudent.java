@@ -1,7 +1,7 @@
 package com.frontend.Add.CreateStudent;
 
 import com.backend.StudentData;
-import com.frontend.MainViewAdmin;
+import com.frontend.MainView;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -33,7 +33,7 @@ import static com.backend.MySQLMethods.selectTrackerString;
 /**
  * The Class Used to Allow a User to Add a New Student to their List of Students
  */
-@Route(value = "create-student", layout = MainViewAdmin.class)
+@Route(value = "create-student", layout = MainView.class)
 @PageTitle("Create a Student | FBLA Genie")
 @PreserveOnRefresh
 @UIScope
