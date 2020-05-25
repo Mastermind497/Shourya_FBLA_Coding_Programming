@@ -3,7 +3,6 @@ package com.frontend.Security;
 import com.frontend.Login.LoginView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.NotFoundException;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 import org.springframework.stereotype.Component;
@@ -20,7 +19,7 @@ public class ConfigureUIServiceInitListener implements VaadinServiceInitListener
     public void serviceInit(ServiceInitEvent event) {
         event.getSource().addUIInitListener(uiEvent -> { //
             final UI ui = uiEvent.getUI();
-            ui.addBeforeEnterListener(this::beforeEnter);
+            ui.addBeforeEnterListener(this::authenticateNavigation);
         });
     }
     
@@ -32,13 +31,10 @@ public class ConfigureUIServiceInitListener implements VaadinServiceInitListener
      *
      * @param event A Lambda-reference event directed at navigation
      */
-    private void beforeEnter(BeforeEnterEvent event) {
-        if (!SecurityUtils.isAccessGranted(event.getNavigationTarget())) {
-            if (SecurityUtils.isUserLoggedIn()) {
-                event.rerouteToError(NotFoundException.class);
-            } else {
-                event.rerouteTo(LoginView.class);
-            }
+    private void authenticateNavigation(BeforeEnterEvent event) {
+        if (!LoginView.class.equals(event.getNavigationTarget())
+            && !SecurityUtils.isUserLoggedIn()) { //
+            event.rerouteTo(LoginView.class);
         }
     }
 }
